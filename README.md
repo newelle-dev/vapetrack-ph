@@ -627,8 +627,6 @@ The backend is powered by [Supabase](https://supabase.com/).
 ---
 
 ## 📚 Documentation
-
-- [**SETUP.md**](./docs/SETUP.md) - Quick start guide
 - [**API_SPEC.md**](./docs/API_SPEC.md) - Complete API specification
 - [**API_IMPLEMENTATION.md**](./docs/API_IMPLEMENTATION.md) - Implementation details
 - [**API_USAGE_EXAMPLES.md**](./docs/API_USAGE_EXAMPLES.md) - Code examples
