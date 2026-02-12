@@ -14,14 +14,20 @@ Complete the database schema implementation for VapeTrack PH by adding **9 missi
 
 ## Implementation Steps
 
-### Step 1: Complete Migration File with Product Tables
+### Step 1: Create New Migration for Product Tables
 
 **Files:**
 
-- `supabase/migrations/001_initial_schema.sql`
+- `supabase/migrations/002_add_product_tables.sql` (new)
+
+**Command:**
+
+```bash
+npx supabase migration new add_product_tables
+```
 
 **What:**
-Add product-related tables to the existing migration file:
+Create a NEW migration file for product-related tables (DO NOT modify `001_initial_schema.sql`):
 
 - `product_categories` - Product categorization (e.g., "E-Liquids", "Devices")
 - `products` - Base product information (name, brand, description)
@@ -38,18 +44,24 @@ Each table includes:
 - Auto-update triggers for timestamps
 
 **Testing:**
-Paste the updated migration into Supabase Dashboard SQL Editor (don't run yet). Should show no syntax errors on validation.
+Validate SQL syntax by running `npm run build` (TypeScript checks). SQL will be applied in Step 5.
 
 ---
 
-### Step 2: Add Transaction Tables to Migration
+### Step 2: Create New Migration for Transaction Tables
 
 **Files:**
 
-- `supabase/migrations/001_initial_schema.sql`
+- `supabase/migrations/003_add_transaction_tables.sql` (new)
+
+**Command:**
+
+```bash
+npx supabase migration new add_transaction_tables
+```
 
 **What:**
-Add transaction/sales tables to the migration file:
+Create a NEW migration file for transaction/sales tables:
 
 - `transactions` - Sales records with totals, payment methods, profit calculations
 - `transaction_items` - Line items with variant references, quantities, prices
@@ -65,15 +77,21 @@ Each table includes:
 - Triggers for timestamp management
 
 **Testing:**
-Validate SQL syntax in Dashboard. Verify foreign key paths (transaction_items should reference both transactions and product_variants).
+Validate foreign key references are correct. SQL will be applied in Step 5.
 
 ---
 
-### Step 3: Add Management Tables and Finalize Migration
+### Step 3: Create New Migration for Management Tables
 
 **Files:**
 
-- `supabase/migrations/001_initial_schema.sql`
+- `supabase/migrations/004_add_management_tables.sql` (new)
+
+**Command:**
+
+```bash
+npx supabase migration new add_management_tables
+```
 
 **What:**
 Add supporting tables and finalize the migration:
@@ -89,7 +107,7 @@ Add indexes for performance:
 - `transaction_items(transaction_id)` for order details
 
 **Testing:**
-Full SQL validation. Ensure all foreign keys reference existing tables. Check that `get_user_organization_id()` function is called in all RLS policies.
+Ensure all foreign keys reference existing tables. Verify `get_user_organization_id()` is used in all RLS policies.
 
 ---
 
@@ -254,6 +272,7 @@ npx supabase gen types typescript --project-id jnmikztbpfzsodvqvcys > types/data
 **Status:** ✅ **Configured**
 
 Your `.env.local` is set up with:
+
 - `NEXT_PUBLIC_SUPABASE_URL=https://jnmikztbpfzsodvqvcys.supabase.co`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (configured)
 - `SUPABASE_SERVICE_ROLE_KEY` (configured)
@@ -358,10 +377,10 @@ Supabase clients will connect successfully.
 
 ## Notes
 
-- **Commit Structure:** This plan represents 3-4 commits on the `complete-database-schema` branch:
-  1. "feat(db): add product and inventory tables with RLS policies"
-  2. "feat(db): add transaction and stock movement tables with RLS policies"
-  3. "feat(db): add management tables and performance indexes"
+- **Commit Structure:** This plan represents 5 commits on the `complete-database-schema` branch:
+  1. "feat(db): add product tables migration (002_add_product_tables.sql)"
+  2. "feat(db): add transaction tables migration (003_add_transaction_tables.sql)"
+  3. "feat(db): add management tables migration (004_add_management_tables.sql)"
   4. "feat(lib): create Supabase client factories for browser and server"
   5. "chore(types): regenerate database types with all tables"
 

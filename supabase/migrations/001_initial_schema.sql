@@ -366,6 +366,250 @@ CREATE POLICY branches_delete_policy ON branches
 COMMENT ON POLICY branches_select_policy ON branches IS 'RLS - users can view all branches in their organization';
 COMMENT ON POLICY branches_insert_policy ON branches IS 'RLS - only owners can create new branches';
 
+
 -- =====================================================================
--- END OF MIGRATION: 001_initial_schema.sql
+-- SECTION 5: PRODUCT TABLES
 -- =====================================================================
+
+-- ---------------------------------------------------------------------
+-- 5.1 Product Categories
+-- ---------------------------------------------------------------------
+CREATE TABLE product_categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+
+    -- Category Info
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(100) NOT NULL, -- URL-friendly identifier
+    description TEXT,
+
+    -- Hierarchy (optional)
+    parent_id UUID REFERENCES product_categories(id) ON DELETE SET NULL,
+
+    -- Display
+    display_order INTEGER DEFAULT 0,
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+
+    -- Constraints
+    CONSTRAINT unique_category_slug_per_org UNIQUE(organization_id, slug)
+);
+
+COMMENT ON TABLE product_categories IS 'Product categorization with optional hierarchy (e.g., E-Liquids > Freebase, Devices > Mods)';
+COMMENT ON COLUMN product_categories.parent_id IS 'Optional parent category for hierarchical organization (NULL = root category)';
+COMMENT ON COLUMN product_categories.display_order IS 'Sort order for display in UI (lower numbers appear first)';
+
+-- Indexes for Product Categories
+CREATE INDEX idx_categories_organization ON product_categories(organization_id);
+CREATE INDEX idx_categories_parent ON product_categories(parent_id);
+CREATE INDEX idx_categories_display_order ON product_categories(organization_id, display_order);
+
+-- ---------------------------------------------------------------------
+-- 5.2 Products (Base Product Information)
+-- ---------------------------------------------------------------------
+CREATE TABLE products (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    category_id UUID REFERENCES product_categories(id) ON DELETE SET NULL,
+
+    -- Product Info
+    name VARCHAR(255) NOT NULL, -- e.g., "Premium Vape Juice - Mango"
+    slug VARCHAR(255) NOT NULL,
+    description TEXT,
+    brand VARCHAR(255),
+
+    -- Media
+    image_url TEXT,
+
+    -- Status
+    is_active BOOLEAN DEFAULT true,
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    deleted_at TIMESTAMP WITH TIME ZONE, -- Soft delete
+
+    -- Constraints
+    CONSTRAINT unique_product_slug_per_org UNIQUE(organization_id, slug)
+);
+
+COMMENT ON TABLE products IS 'Base product information - shared attributes across all variants (brand, description, image)';
+COMMENT ON COLUMN products.name IS 'Product display name - can include brand, flavor, or model (e.g., "SMOK RPM40", "Salt-X Mango Ice")';
+COMMENT ON COLUMN products.deleted_at IS 'Soft delete timestamp - prevents data loss while hiding from active listings';
+COMMENT ON COLUMN products.is_active IS 'Active status - allows temporary disabling without deletion';
+
+-- Indexes for Products
+CREATE INDEX idx_products_organization ON products(organization_id);
+CREATE INDEX idx_products_category ON products(category_id);
+CREATE INDEX idx_products_active ON products(organization_id, is_active) WHERE deleted_at IS NULL;
+CREATE INDEX idx_products_org_name ON products(organization_id, name);
+CREATE INDEX idx_products_search ON products USING GIN(to_tsvector('english', name || ' ' || COALESCE(brand, '')));
+
+-- ---------------------------------------------------------------------
+-- 5.3 Product Variants (SKUs, Prices, Variants)
+-- ---------------------------------------------------------------------
+CREATE TABLE product_variants (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+
+    -- Variant Info
+    name VARCHAR(255) NOT NULL, -- e.g., "3mg", "Black", "30ml"
+    sku VARCHAR(100) NOT NULL, -- Unique SKU per variant
+
+    -- Pricing (in centavos/smallest currency unit)
+    selling_price INTEGER NOT NULL, -- Selling price in centavos (₱450.00 = 45000)
+    capital_cost INTEGER NOT NULL, -- Cost of goods in centavos
+
+    -- Stock Alerts
+    low_stock_threshold INTEGER DEFAULT 10,
+
+    -- Status
+    is_active BOOLEAN DEFAULT true,
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    deleted_at TIMESTAMP WITH TIME ZONE, -- Soft delete
+
+    -- Constraints
+    CONSTRAINT unique_variant_sku_per_org UNIQUE(organization_id, sku),
+    CHECK (selling_price >= 0),
+    CHECK (capital_cost >= 0)
+);
+
+COMMENT ON TABLE product_variants IS 'Individual product variants with pricing and SKUs - ALL inventory and sales operations reference variants, not products';
+COMMENT ON COLUMN product_variants.name IS 'Variant distinguisher (e.g., "3mg", "Black", "30ml") - for single-variant products, use "Standard"';
+COMMENT ON COLUMN product_variants.sku IS 'Stock Keeping Unit - unique identifier per variant for inventory tracking';
+COMMENT ON COLUMN product_variants.selling_price IS 'Selling price in CENTAVOS (₱450.00 = 45000) - use INTEGER to avoid floating-point errors';
+COMMENT ON COLUMN product_variants.capital_cost IS 'Cost of goods sold (COGS) in CENTAVOS - used for profit calculations';
+COMMENT ON COLUMN product_variants.low_stock_threshold IS 'Quantity threshold for low stock alerts (default: 10 units)';
+
+-- Indexes for Product Variants
+CREATE INDEX idx_variants_organization ON product_variants(organization_id);
+CREATE INDEX idx_variants_product ON product_variants(product_id);
+CREATE INDEX idx_variants_sku ON product_variants(organization_id, sku);
+CREATE INDEX idx_variants_active ON product_variants(organization_id, is_active) WHERE deleted_at IS NULL;
+
+-- ---------------------------------------------------------------------
+-- 5.4 Inventory (Stock per Branch per Variant)
+-- ---------------------------------------------------------------------
+CREATE TABLE inventory (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    branch_id UUID NOT NULL REFERENCES branches(id) ON DELETE CASCADE,
+    product_variant_id UUID NOT NULL REFERENCES product_variants(id) ON DELETE CASCADE,
+
+    -- Stock Level
+    quantity INTEGER NOT NULL DEFAULT 0,
+
+    -- Metadata
+    last_counted_at TIMESTAMP WITH TIME ZONE,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+
+    -- Constraints
+    CONSTRAINT unique_inventory_branch_variant UNIQUE(branch_id, product_variant_id),
+    CHECK (quantity >= 0)
+);
+
+COMMENT ON TABLE inventory IS 'Current stock levels per branch per variant - one record per unique branch/variant combination';
+COMMENT ON COLUMN inventory.quantity IS 'Current stock quantity - enforced >= 0 via CHECK constraint';
+COMMENT ON COLUMN inventory.last_counted_at IS 'Last physical inventory count timestamp - for audit trail';
+COMMENT ON CONSTRAINT unique_inventory_branch_variant ON inventory IS 'Ensures only ONE inventory record per branch/variant pair';
+
+-- Indexes for Inventory
+CREATE INDEX idx_inventory_organization ON inventory(organization_id);
+CREATE INDEX idx_inventory_branch ON inventory(branch_id);
+CREATE INDEX idx_inventory_variant ON inventory(product_variant_id);
+CREATE INDEX idx_inventory_branch_variant ON inventory(branch_id, product_variant_id);
+CREATE INDEX idx_inventory_low_stock ON inventory(branch_id, product_variant_id) WHERE quantity <= 10; -- For low stock alerts
+
+-- Triggers for Product Tables
+CREATE TRIGGER update_product_categories_updated_at
+    BEFORE UPDATE ON product_categories
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_products_updated_at
+    BEFORE UPDATE ON products
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_product_variants_updated_at
+    BEFORE UPDATE ON product_variants
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_inventory_updated_at
+    BEFORE UPDATE ON inventory
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable RLS on Product Tables
+ALTER TABLE product_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE product_variants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for Product Categories
+CREATE POLICY categories_isolation_policy ON product_categories
+    FOR ALL
+    USING (organization_id = get_user_organization_id());
+
+COMMENT ON POLICY categories_isolation_policy ON product_categories IS 'RLS tenant isolation - users can only access categories in their organization';
+
+-- RLS Policies for Products
+CREATE POLICY products_select_policy ON products
+    FOR SELECT
+    USING (organization_id = get_user_organization_id());
+
+CREATE POLICY products_insert_policy ON products
+    FOR INSERT
+    WITH CHECK (organization_id = get_user_organization_id());
+
+CREATE POLICY products_update_policy ON products
+    FOR UPDATE
+    USING (organization_id = get_user_organization_id());
+
+CREATE POLICY products_delete_policy ON products
+    FOR DELETE
+    USING (organization_id = get_user_organization_id());
+
+COMMENT ON POLICY products_select_policy ON products IS 'RLS - users can view all products in their organization';
+
+-- RLS Policies for Product Variants
+CREATE POLICY variants_select_policy ON product_variants
+    FOR SELECT
+    USING (organization_id = get_user_organization_id());
+
+CREATE POLICY variants_insert_policy ON product_variants
+    FOR INSERT
+    WITH CHECK (organization_id = get_user_organization_id());
+
+CREATE POLICY variants_update_policy ON product_variants
+    FOR UPDATE
+    USING (organization_id = get_user_organization_id());
+
+CREATE POLICY variants_delete_policy ON product_variants
+    FOR DELETE
+    USING (organization_id = get_user_organization_id());
+
+COMMENT ON POLICY variants_select_policy ON product_variants IS 'RLS - users can view all product variants in their organization';
+
+-- RLS Policies for Inventory
+CREATE POLICY inventory_select_policy ON inventory
+    FOR SELECT
+    USING (organization_id = get_user_organization_id());
+
+CREATE POLICY inventory_insert_policy ON inventory
+    FOR INSERT
+    WITH CHECK (organization_id = get_user_organization_id());
+
+-- Note: UPDATE and DELETE on inventory are restricted to RPC functions only for data integrity
+-- Inventory updates must go through proper stock movement tracking
+
+COMMENT ON POLICY inventory_select_policy ON inventory IS 'RLS - users can view inventory in their organization';
+COMMENT ON POLICY inventory_insert_policy ON inventory IS 'RLS - users can create inventory records (initial stock setup)';
+
