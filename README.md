@@ -47,7 +47,6 @@ Install these extensions for optimal developer experience:
 ```bash
 # Install via VS Code Quick Open (Ctrl+P / Cmd+P)
 ext install bradlc.vscode-tailwindcss          # Tailwind IntelliSense
-ext install Prisma.prisma                       # Prisma (for schema viewing)
 ext install dbaeumer.vscode-eslint              # ESLint
 ext install esbenp.prettier-vscode              # Prettier (code formatting)
 ext install usernamehw.errorlens                # Inline error highlighting

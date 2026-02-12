@@ -78,7 +78,7 @@ By end of Week 4, you must be able to:
    ```
 5. ✅ Configure `next.config.ts`, `tailwind.config.ts`, `tsconfig.json`
 6. ✅ Set up `.env.local` with Supabase keys
-7. ✅ Create folder structure (see [README.md](README.md) → Project Structure)
+7. ✅ Create folder structure (see [README.md](/README.md) → Project Structure)
 
 **Deliverables:**
 - ✅ Dev server runs: `npm run dev`
@@ -86,10 +86,10 @@ By end of Week 4, you must be able to:
 - ✅ No console errors
 
 **Definition of Done:**
-- [ ] All dependencies installed successfully
-- [ ] Dev server starts without errors
-- [ ] Tailwind styles render correctly
-- [ ] `.env.local` configured with Supabase credentials
+- ✅ All dependencies installed successfully
+- ✅ Dev server starts without errors
+- ✅ Tailwind styles render correctly
+- ✅ `.env.local` configured with Supabase credentials
 
 ---
 
