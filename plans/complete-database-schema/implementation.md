@@ -932,8 +932,8 @@ feat(lib): create Supabase client factories for browser and server
 
 ### Step 6: Generate TypeScript Types from Database Schema
 
-- [ ] Open terminal in VS Code (Ctrl+`)
-- [ ] Run the following command to regenerate TypeScript types:
+- [x] Open terminal in VS Code (Ctrl+`)
+- [x] Run the following command to regenerate TypeScript types:
 
 ```powershell
 npx supabase gen types typescript --project-id jnmikztbpfzsodvqvcys > types/database.ts
