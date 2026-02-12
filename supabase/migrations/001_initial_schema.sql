@@ -34,7 +34,6 @@ CREATE TABLE organizations (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
     deleted_at TIMESTAMP WITH TIME ZONE -- Soft delete for data retention
-    deleted_at TIMESTAMP WITH TIME ZONE -- Soft delete for data retention
 );
 
 COMMENT ON TABLE organizations IS 'Core tenant/shop entities - each row represents one vape shop organization';
