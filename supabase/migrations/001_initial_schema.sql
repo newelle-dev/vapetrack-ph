@@ -613,3 +613,202 @@ CREATE POLICY inventory_insert_policy ON inventory
 COMMENT ON POLICY inventory_select_policy ON inventory IS 'RLS - users can view inventory in their organization';
 COMMENT ON POLICY inventory_insert_policy ON inventory IS 'RLS - users can create inventory records (initial stock setup)';
 
+-- =====================================================================
+-- SECTION 6: TRANSACTION TABLES
+-- =====================================================================
+
+-- ---------------------------------------------------------------------
+-- 6.1 Transactions (Sales)
+-- ---------------------------------------------------------------------
+CREATE TABLE transactions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    branch_id UUID NOT NULL REFERENCES branches(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT, -- Staff who made the sale
+
+    -- Transaction Info
+    transaction_number VARCHAR(50) UNIQUE NOT NULL, -- e.g., "TXN-2026-0001"
+
+    -- Totals (in centavos)
+    subtotal INTEGER NOT NULL DEFAULT 0, -- Sum of line items
+    total_capital_cost INTEGER NOT NULL DEFAULT 0, -- Sum of capital costs
+    gross_profit INTEGER NOT NULL DEFAULT 0, -- subtotal - total_capital_cost
+
+    -- Payment
+    payment_method VARCHAR(50), -- cash, gcash, card, bank_transfer
+    payment_status VARCHAR(50) DEFAULT 'completed' CHECK (
+        payment_status IN ('completed', 'pending', 'refunded')
+    ),
+
+    -- Customer (optional)
+    customer_name VARCHAR(255),
+    customer_notes TEXT,
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+
+    -- Constraints
+    CHECK (subtotal >= 0),
+    CHECK (total_capital_cost >= 0)
+);
+
+COMMENT ON TABLE transactions IS 'Sales transactions - immutable financial records (use refunds for corrections)';
+COMMENT ON COLUMN transactions.transaction_number IS 'Auto-generated sequential transaction number (e.g., TXN-2026-0001)';
+COMMENT ON COLUMN transactions.subtotal IS 'Total sale amount in CENTAVOS (sum of all line items)';
+COMMENT ON COLUMN transactions.gross_profit IS 'Calculated profit in CENTAVOS (subtotal - total_capital_cost)';
+COMMENT ON COLUMN transactions.user_id IS 'Staff member who processed the sale - ON DELETE RESTRICT prevents deletion of staff with sales history';
+
+-- Indexes for Transactions
+CREATE INDEX idx_transactions_organization ON transactions(organization_id);
+CREATE INDEX idx_transactions_branch ON transactions(branch_id);
+CREATE INDEX idx_transactions_user ON transactions(user_id);
+CREATE INDEX idx_transactions_date ON transactions(organization_id, created_at DESC);
+CREATE INDEX idx_transactions_branch_date ON transactions(branch_id, created_at DESC);
+CREATE INDEX idx_transactions_number ON transactions(transaction_number);
+CREATE INDEX idx_transactions_payment_status ON transactions(organization_id, payment_status);
+
+-- ---------------------------------------------------------------------
+-- 6.2 Transaction Items (Line Items)
+-- ---------------------------------------------------------------------
+CREATE TABLE transaction_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    transaction_id UUID NOT NULL REFERENCES transactions(id) ON DELETE CASCADE,
+    product_variant_id UUID NOT NULL REFERENCES product_variants(id) ON DELETE RESTRICT,
+
+    -- Snapshot of product at time of sale (prices may change later)
+    product_name VARCHAR(255) NOT NULL,
+    variant_name VARCHAR(255) NOT NULL,
+    sku VARCHAR(100) NOT NULL,
+
+    -- Pricing at time of sale (in centavos)
+    unit_price INTEGER NOT NULL,
+    unit_capital_cost INTEGER NOT NULL,
+
+    -- Quantity
+    quantity INTEGER NOT NULL,
+
+    -- Calculated fields (in centavos)
+    line_total INTEGER NOT NULL, -- unit_price * quantity
+    line_capital_cost INTEGER NOT NULL, -- unit_capital_cost * quantity
+    line_profit INTEGER NOT NULL, -- line_total - line_capital_cost
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+
+    -- Constraints
+    CHECK (quantity > 0),
+    CHECK (unit_price >= 0),
+    CHECK (unit_capital_cost >= 0)
+);
+
+COMMENT ON TABLE transaction_items IS 'Line items in sales transactions - immutable audit trail with price snapshots';
+COMMENT ON COLUMN transaction_items.product_name IS 'Product name snapshot at time of sale - preserved even if product is renamed later';
+COMMENT ON COLUMN transaction_items.line_profit IS 'Profit per line item in CENTAVOS - only visible to users with can_view_profits permission';
+COMMENT ON COLUMN transaction_items.product_variant_id IS 'Reference to variant - ON DELETE RESTRICT prevents variant deletion if sold';
+
+-- Indexes for Transaction Items
+CREATE INDEX idx_transaction_items_organization ON transaction_items(organization_id);
+CREATE INDEX idx_transaction_items_transaction ON transaction_items(transaction_id);
+CREATE INDEX idx_transaction_items_variant ON transaction_items(product_variant_id);
+
+-- ---------------------------------------------------------------------
+-- 6.3 Stock Movements (Inventory Audit Trail)
+-- ---------------------------------------------------------------------
+CREATE TABLE stock_movements (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    branch_id UUID NOT NULL REFERENCES branches(id) ON DELETE CASCADE,
+    product_variant_id UUID NOT NULL REFERENCES product_variants(id) ON DELETE RESTRICT,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL, -- Who made the change
+
+    -- Movement Type
+    movement_type VARCHAR(50) NOT NULL CHECK (
+        movement_type IN ('stock_in', 'stock_out', 'transfer_in', 'transfer_out', 'adjustment', 'sale')
+    ),
+
+    -- Quantity Change
+    quantity_change INTEGER NOT NULL, -- Positive for increase, negative for decrease
+    quantity_before INTEGER NOT NULL,
+    quantity_after INTEGER NOT NULL,
+
+    -- Reference
+    reference_type VARCHAR(50), -- transaction, transfer, manual, etc.
+    reference_id UUID, -- ID of related record (transaction_id, transfer_id, etc.)
+
+    -- Notes
+    notes TEXT,
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+
+    -- Constraints
+    CHECK (quantity_before >= 0),
+    CHECK (quantity_after >= 0)
+);
+
+COMMENT ON TABLE stock_movements IS 'Complete audit trail for all inventory changes - immutable log of stock flow';
+COMMENT ON COLUMN stock_movements.movement_type IS 'Type of stock movement: stock_in (restock), stock_out (return), sale, adjustment (count correction), transfer';
+COMMENT ON COLUMN stock_movements.quantity_change IS 'Signed quantity change: positive = increase, negative = decrease';
+COMMENT ON COLUMN stock_movements.reference_id IS 'ID of related transaction/transfer/adjustment - use with reference_type for audit trail';
+
+-- Indexes for Stock Movements
+CREATE INDEX idx_stock_movements_organization ON stock_movements(organization_id);
+CREATE INDEX idx_stock_movements_branch ON stock_movements(branch_id);
+CREATE INDEX idx_stock_movements_variant ON stock_movements(product_variant_id);
+CREATE INDEX idx_stock_movements_date ON stock_movements(organization_id, created_at DESC);
+CREATE INDEX idx_stock_movements_reference ON stock_movements(reference_type, reference_id);
+CREATE INDEX idx_stock_movements_type ON stock_movements(organization_id, movement_type);
+
+-- Triggers for Transaction Tables
+CREATE TRIGGER update_transactions_updated_at
+    BEFORE UPDATE ON transactions
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Note: transaction_items and stock_movements are immutable (no UPDATE trigger needed)
+
+-- Enable RLS on Transaction Tables
+ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE transaction_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stock_movements ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for Transactions
+CREATE POLICY transactions_select_policy ON transactions
+    FOR SELECT
+    USING (organization_id = get_user_organization_id());
+
+-- Note: INSERT/UPDATE/DELETE on transactions are restricted to RPC functions only
+-- Transactions must be created atomically with items and inventory updates
+
+COMMENT ON POLICY transactions_select_policy ON transactions IS 'RLS - users can view transactions in their organization';
+
+-- RLS Policies for Transaction Items
+CREATE POLICY transaction_items_select_policy ON transaction_items
+    FOR SELECT
+    USING (
+        organization_id = get_user_organization_id()
+        AND (
+            -- Allow if user has can_view_profits permission
+            (SELECT can_view_profits FROM users WHERE id = auth.uid()) = true
+            OR
+            -- Or if user is an owner
+            (SELECT role FROM users WHERE id = auth.uid() AND organization_id = get_user_organization_id()) = 'owner'
+        )
+    );
+
+-- Note: INSERT/UPDATE/DELETE on transaction_items are restricted to RPC functions only
+
+COMMENT ON POLICY transaction_items_select_policy ON transaction_items IS 'RLS - users with can_view_profits or owners can view profit data in transaction items';
+
+-- RLS Policies for Stock Movements
+CREATE POLICY stock_movements_select_policy ON stock_movements
+    FOR SELECT
+    USING (organization_id = get_user_organization_id());
+
+-- Note: INSERT/UPDATE/DELETE on stock_movements are restricted to RPC functions only
+-- Stock movements must be logged automatically during inventory operations
+
+COMMENT ON POLICY stock_movements_select_policy ON stock_movements IS 'RLS - users can view stock movements (audit trail) in their organization';
+
