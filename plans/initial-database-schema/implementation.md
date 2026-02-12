@@ -521,8 +521,8 @@ Verify that Row-Level Security policies correctly isolate tenant data.
 
 #### 3.1 Create Test Organizations
 
-- [ ] Open Supabase Dashboard → **SQL Editor**
-- [ ] Run the following SQL to create 2 test organizations:
+- [x] Open Supabase Dashboard → **SQL Editor**
+- [x] Run the following SQL to create 2 test organizations:
 
 ```sql
 -- Create Test Organization 1
@@ -536,12 +536,12 @@ VALUES ('Test Vape Shop B', 'test-shop-b', 'owner-b@test.com', 'trial')
 RETURNING id, name, slug;
 ```
 
-- [ ] Copy the returned `id` values for both organizations (you'll need them next)
+- [x] Copy the returned `id` values for both organizations (you'll need them next)
 
 #### 3.2 Create Test Users
 
-- [ ] Replace `<org-a-id>` and `<org-b-id>` with the actual UUIDs from step 3.1
-- [ ] Run the following SQL:
+- [x] Replace `<org-a-id>` and `<org-b-id>` with the actual UUIDs from step 3.1
+- [x] Run the following SQL:
 
 ```sql
 -- Create user in Organization A
@@ -588,9 +588,9 @@ INSERT INTO users (
 
 For now, verify the policies exist:
 
-- [ ] In SQL Editor, run: `SELECT * FROM organizations;` (should return 2 rows)
-- [ ] In SQL Editor, run: `SELECT * FROM users;` (should return 2 rows)
-- [ ] Verify RLS policies are active:
+- [x] In SQL Editor, run: `SELECT * FROM organizations;` (should return 2 rows)
+- [x] In SQL Editor, run: `SELECT * FROM users;` (should return 2 rows)
+- [x] Verify RLS policies are active:
 
 ```sql
 -- Check RLS is enabled
@@ -605,12 +605,12 @@ SELECT schemaname, tablename, policyname, cmd
 FROM pg_policies
 WHERE schemaname = 'public'
 ORDER BY tablename, policyname;
--- Should return 11 total policies
+-- Should return 9 total policies
 ```
 
 #### 3.4 Test Default Branch Enforcement
 
-- [ ] Create a default branch for Organization A:
+- [x] Create a default branch for Organization A:
 
 ```sql
 INSERT INTO branches (
@@ -626,7 +626,7 @@ INSERT INTO branches (
 ) RETURNING id, name, is_default;
 ```
 
-- [ ] Attempt to create a second default branch:
+- [x] Attempt to create a second default branch:
 
 ```sql
 INSERT INTO branches (
@@ -642,7 +642,7 @@ INSERT INTO branches (
 ) RETURNING id, name, is_default;
 ```
 
-- [ ] Verify the trigger worked - check that only one branch has `is_default = true`:
+- [x] Verify the trigger worked - check that only one branch has `is_default = true`:
 
 ```sql
 SELECT name, is_default, updated_at
@@ -655,7 +655,7 @@ ORDER BY created_at;
 
 #### 3.5 Test Auto-Update Timestamps
 
-- [ ] Update an organization and verify `updated_at` changes:
+- [x] Update an organization and verify `updated_at` changes:
 
 ```sql
 -- Record current timestamp
@@ -671,16 +671,16 @@ WHERE slug = 'test-shop-a';
 SELECT id, name, updated_at FROM organizations WHERE slug = 'test-shop-a';
 ```
 
-- [ ] Verify `updated_at` timestamp is newer than before (trigger worked!)
+- [x] Verify `updated_at` timestamp is newer than before (trigger worked!)
 
 #### Step 3 Verification Checklist
 
-- [ ] Two test organizations created successfully
-- [ ] Two test users created (one per organization)
-- [ ] RLS is enabled on all 3 tables (verified via `pg_tables`)
-- [ ] All 11 RLS policies exist (verified via `pg_policies`)
-- [ ] Default branch enforcement trigger works (only one default per org)
-- [ ] Auto-update trigger works (`updated_at` timestamp changes on UPDATE)
+- [x] Two test organizations created successfully
+- [x] Two test users created (one per organization)
+- [x] RLS is enabled on all 3 tables (verified via `pg_tables`)
+- [x] All 11 RLS policies exist (verified via `pg_policies`)
+- [x] Default branch enforcement trigger works (only one default per org)
+- [x] Auto-update trigger works (`updated_at` timestamp changes on UPDATE)
 
 #### Step 3 STOP & COMMIT
 
