@@ -699,15 +699,15 @@ git commit --allow-empty -m "test(db): verify RLS policies and triggers
 
 Generate type-safe TypeScript definitions from the Supabase schema for use in the application.
 
-- [ ] Verify you have your Supabase project reference ID (find in Dashboard → Settings → API)
-- [ ] Run the type generation command (replace `<your-project-ref>` with actual project ref):
+- [x] Verify you have your Supabase project reference ID (find in Dashboard → Settings → API)
+- [x] Run the type generation command (replace `<your-project-ref>` with actual project ref):
 
 ```bash
 npx supabase gen types typescript --project-id <your-project-ref> > types/database.ts
 ```
 
-- [ ] Verify the file was created: `ls types/database.ts` (should show file size)
-- [ ] Open [types/database.ts](../../types/database.ts) and verify it contains type definitions
+- [x] Verify the file was created: `ls types/database.ts` (should show file size)
+- [x] Open [types/database.ts](../../types/database.ts) and verify it contains type definitions
 
 **Expected Content Preview:**
 
@@ -794,12 +794,12 @@ export interface Database {
 
 #### Step 4 Verification Checklist
 
-- [ ] File `types/database.ts` exists
-- [ ] File contains `export interface Database` definition
-- [ ] File contains table definitions for `organizations`, `users`, `branches`
-- [ ] Each table has `Row`, `Insert`, and `Update` types
-- [ ] File contains function definitions (e.g., `get_user_organization_id`)
-- [ ] No TypeScript syntax errors (check VS Code highlighting)
+- [x] File `types/database.ts` exists
+- [x] File contains `export interface Database` definition
+- [x] File contains table definitions for `organizations`, `users`, `branches`
+- [x] Each table has `Row`, `Insert`, and `Update` types
+- [x] File contains function definitions (e.g., `get_user_organization_id`)
+- [x] No TypeScript syntax errors (check VS Code highlighting)
 
 #### Step 4 STOP & COMMIT
 
