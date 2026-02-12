@@ -812,3 +812,159 @@ CREATE POLICY stock_movements_select_policy ON stock_movements
 
 COMMENT ON POLICY stock_movements_select_policy ON stock_movements IS 'RLS - users can view stock movements (audit trail) in their organization';
 
+-- =====================================================================
+-- SECTION 7: MANAGEMENT TABLES
+-- =====================================================================
+
+-- ---------------------------------------------------------------------
+-- 7.1 Audit Logs (General Activity Logs)
+-- ---------------------------------------------------------------------
+CREATE TABLE audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+
+    -- Action Details
+    action VARCHAR(100) NOT NULL, -- login, create_product, update_inventory, delete_branch, etc.
+    entity_type VARCHAR(100), -- product, branch, user, transaction, etc.
+    entity_id UUID, -- ID of affected entity
+
+    -- Changes
+    old_values JSONB, -- Snapshot before change
+    new_values JSONB, -- Snapshot after change
+
+    -- Context
+    ip_address INET,
+    user_agent TEXT,
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+);
+
+COMMENT ON TABLE audit_logs IS 'Comprehensive audit trail for all user actions - immutable log for compliance and debugging';
+COMMENT ON COLUMN audit_logs.action IS 'Action performed (e.g., login, create_product, update_inventory, delete_branch)';
+COMMENT ON COLUMN audit_logs.old_values IS 'JSONB snapshot of record before change - NULL for CREATE actions';
+COMMENT ON COLUMN audit_logs.new_values IS 'JSONB snapshot of record after change - NULL for DELETE actions';
+COMMENT ON COLUMN audit_logs.ip_address IS 'User IP address for security audits';
+
+-- Indexes for Audit Logs
+CREATE INDEX idx_audit_logs_organization ON audit_logs(organization_id);
+CREATE INDEX idx_audit_logs_user ON audit_logs(user_id);
+CREATE INDEX idx_audit_logs_date ON audit_logs(organization_id, created_at DESC);
+CREATE INDEX idx_audit_logs_entity ON audit_logs(entity_type, entity_id);
+CREATE INDEX idx_audit_logs_action ON audit_logs(organization_id, action);
+-- Note: avoid partial index using non-immutable function (NOW());
+-- Removed partial 'recent' index because PostgreSQL requires IMMUTABLE functions in index predicates.
+
+-- ---------------------------------------------------------------------
+-- 7.2 Subscriptions (Billing)
+-- ---------------------------------------------------------------------
+CREATE TABLE subscriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+
+    -- Plan Details
+    plan VARCHAR(50) NOT NULL CHECK (
+        plan IN ('starter', 'professional', 'enterprise')
+    ),
+    billing_period VARCHAR(50) NOT NULL CHECK (
+        billing_period IN ('monthly', 'yearly')
+    ),
+
+    -- Pricing (in centavos)
+    price_per_period INTEGER NOT NULL,
+
+    -- Dates
+    started_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    current_period_start TIMESTAMP WITH TIME ZONE NOT NULL,
+    current_period_end TIMESTAMP WITH TIME ZONE NOT NULL,
+    cancelled_at TIMESTAMP WITH TIME ZONE,
+
+    -- Status
+    status VARCHAR(50) NOT NULL CHECK (
+        status IN ('active', 'cancelled', 'past_due', 'trialing')
+    ),
+
+    -- Payment Gateway
+    payment_gateway VARCHAR(50), -- paymongo
+    gateway_subscription_id VARCHAR(255), -- PayMongo subscription ID
+
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+);
+
+COMMENT ON TABLE subscriptions IS 'Subscription and billing information - placeholder for post-MVP billing integration';
+COMMENT ON COLUMN subscriptions.plan IS 'Subscription tier: starter (₱499/mo), professional (₱999/mo), enterprise (custom)';
+COMMENT ON COLUMN subscriptions.status IS 'Subscription status: active (paid), trialing (14 days), past_due (payment failed), cancelled';
+COMMENT ON COLUMN subscriptions.gateway_subscription_id IS 'PayMongo subscription ID for webhook processing';
+
+-- Indexes for Subscriptions
+CREATE INDEX idx_subscriptions_organization ON subscriptions(organization_id);
+CREATE INDEX idx_subscriptions_status ON subscriptions(status);
+CREATE INDEX idx_subscriptions_gateway ON subscriptions(gateway_subscription_id) WHERE gateway_subscription_id IS NOT NULL;
+CREATE INDEX idx_subscriptions_active ON subscriptions(organization_id, status) WHERE status = 'active';
+
+-- Triggers for Management Tables
+CREATE TRIGGER update_subscriptions_updated_at
+    BEFORE UPDATE ON subscriptions
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Note: audit_logs is immutable (no UPDATE trigger)
+
+-- Enable RLS on Management Tables
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for Audit Logs
+CREATE POLICY audit_logs_select_policy ON audit_logs
+    FOR SELECT
+    USING (
+        organization_id = get_user_organization_id()
+        AND (
+            -- Only owners can view audit logs
+            (SELECT role FROM users WHERE id = auth.uid() AND organization_id = get_user_organization_id()) = 'owner'
+        )
+    );
+
+-- Note: INSERT/UPDATE/DELETE on audit_logs are restricted to system triggers only
+
+COMMENT ON POLICY audit_logs_select_policy ON audit_logs IS 'RLS - only owners can view audit logs for compliance and security';
+
+-- RLS Policies for Subscriptions
+CREATE POLICY subscriptions_select_policy ON subscriptions
+    FOR SELECT
+    USING (organization_id = get_user_organization_id());
+
+-- Note: INSERT/UPDATE/DELETE on subscriptions are restricted to admin/webhook functions only
+
+COMMENT ON POLICY subscriptions_select_policy ON subscriptions IS 'RLS - users can view their organization subscription details';
+
+-- =====================================================================
+-- SECTION 8: PERFORMANCE INDEXES (COMPOSITE & SPECIALIZED)
+-- =====================================================================
+
+-- Search Performance
+CREATE INDEX idx_products_text_search ON products
+    USING GIN(to_tsvector('english', name || ' ' || COALESCE(brand, '') || ' ' || COALESCE(description, '')));
+
+-- Sales Analytics
+CREATE INDEX idx_transactions_org_user_date ON transactions(organization_id, user_id, created_at DESC);
+CREATE INDEX idx_transaction_items_variant_date ON transaction_items(product_variant_id, created_at DESC);
+
+-- Low Stock Monitoring
+CREATE INDEX idx_inventory_org_low_stock ON inventory(organization_id, quantity)
+    WHERE quantity <= 10 AND quantity > 0;
+
+-- Active Products Query
+CREATE INDEX idx_products_active_org ON products(organization_id, is_active, created_at DESC)
+    WHERE is_active = true AND deleted_at IS NULL;
+
+CREATE INDEX idx_variants_active_product ON product_variants(product_id, is_active)
+    WHERE is_active = true AND deleted_at IS NULL;
+
+-- =====================================================================
+-- END OF MIGRATION: 001_initial_schema.sql
+-- Database Schema Complete: 12 tables, RLS policies, indexes, triggers
+-- =====================================================================
