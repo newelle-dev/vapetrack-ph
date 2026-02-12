@@ -314,9 +314,9 @@ feat(db): add product and inventory tables with RLS policies
 
 ### Step 2: Add Transaction Tables to Migration File
 
-- [ ] Open `supabase/migrations/001_initial_schema.sql`
-- [ ] Scroll to the end of the file (after Step 1 additions)
-- [ ] Copy and paste the following code at the end of the file:
+- [x] Open `supabase/migrations/001_initial_schema.sql`
+- [x] Scroll to the end of the file (after Step 1 additions)
+- [x] Copy and paste the following code at the end of the file:
 
 ```sql
 
@@ -520,16 +520,6 @@ CREATE POLICY stock_movements_select_policy ON stock_movements
 COMMENT ON POLICY stock_movements_select_policy ON stock_movements IS 'RLS - users can view stock movements (audit trail) in their organization';
 ```
 
-##### Step 2 Verification Checklist
-
-- [ ] File saved without syntax errors
-- [ ] All 3 tables added: transactions, transaction_items, stock_movements
-- [ ] All tables have organization_id for multi-tenancy
-- [ ] transaction_items has special RLS policy for profit visibility
-- [ ] All tables have appropriate indexes
-- [ ] Triggers created where needed (transactions.updated_at)
-- [ ] Immutable tables (items, movements) have no UPDATE triggers
-
 ##### Step 2 - Completed
 
 - [x] File saved without syntax errors
@@ -562,9 +552,9 @@ feat(db): add transaction and stock movement tables with RLS policies
 
 ### Step 3: Add Management Tables and Performance Indexes
 
-- [ ] Open `supabase/migrations/001_initial_schema.sql`
-- [ ] Scroll to the end of the file (after Step 2 additions)
-- [ ] Copy and paste the following code at the end of the file:
+- [x] Open `supabase/migrations/001_initial_schema.sql`
+- [x] Scroll to the end of the file (after Step 2 additions)
+- [x] Copy and paste the following code at the end of the file:
 
 ```sql
 
@@ -726,15 +716,6 @@ CREATE INDEX idx_variants_active_product ON product_variants(product_id, is_acti
 -- =====================================================================
 ```
 
-##### Step 3 Verification Checklist
-
-- [ ] File saved without syntax errors
-- [ ] All 2 management tables added: audit_logs, subscriptions
-- [ ] Performance indexes added for common queries
-- [ ] All tables have organization_id for multi-tenancy
-- [ ] All tables have RLS policies enabled
-- [ ] Migration file ends with clear "END OF MIGRATION" marker
-
 ##### Step 3 - Completed
 
 - [x] File saved without syntax errors
@@ -767,9 +748,9 @@ feat(db): add management tables and performance indexes
 
 #### Step 4.1: Create Browser Client Factory
 
-- [ ] Create directory `lib/supabase` if it doesn't exist
-- [ ] Create file `lib/supabase/client.ts`
-- [ ] Copy and paste the following code:
+- [x] Create directory `lib/supabase` if it doesn't exist
+- [x] Create file `lib/supabase/client.ts`
+- [x] Copy and paste the following code:
 
 ````typescript
 import { createBrowserClient } from "@supabase/ssr";
@@ -802,8 +783,8 @@ export function createClient() {
 
 #### Step 4.2: Create Server Client Factory
 
-- [ ] Create file `lib/supabase/server.ts`
-- [ ] Copy and paste the following code:
+- [x] Create file `lib/supabase/server.ts`
+- [x] Copy and paste the following code:
 
 ````typescript
 import { createServerClient } from "@supabase/ssr";
@@ -874,11 +855,11 @@ export async function createClient() {
 
 ##### Step 4 Verification Checklist
 
-- [ ] Directory `lib/supabase` exists
-- [ ] File `lib/supabase/client.ts` created
-- [ ] File `lib/supabase/server.ts` created
-- [ ] Both files import `Database` type from `@/types/database`
-- [ ] No build errors (run `npm run build`)
+- [x] Directory `lib/supabase` exists
+- [x] File `lib/supabase/client.ts` created
+- [x] File `lib/supabase/server.ts` created
+- [x] Both files import `Database` type from `@/types/database`
+- [ ] No build errors (run `npm run build`) — Build attempted; `npm run build` failed due to a TypeScript error unrelated to these files (see `app/(auth)/login/page.tsx`).
 - [ ] TypeScript recognizes the `@/` path alias
 
 #### Step 4 STOP & COMMIT
