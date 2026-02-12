@@ -818,8 +818,8 @@ git commit -m "feat(types): generate TypeScript types from Supabase schema
 
 If you created test organizations and users in Step 3, clean them up:
 
-- [ ] Open Supabase Dashboard → **SQL Editor**
-- [ ] Run cleanup query:
+- [x] Open Supabase Dashboard → **SQL Editor**
+- [x] Run cleanup query:
 
 ```sql
 -- Delete test users (cascades to related records)
@@ -834,7 +834,7 @@ SELECT COUNT(*) FROM users; -- Should be 0
 SELECT COUNT(*) FROM branches; -- Should be 0
 ```
 
-- [ ] Verify all test data is removed
+- [x] Verify all test data is removed
 
 ---
 
