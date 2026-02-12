@@ -21,9 +21,9 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx...
 
 ### Branch Setup
 
-- [ ] Ensure you're on the correct branch: `git branch` (should show `feature/initial-database-schema`)
-- [ ] If branch doesn't exist, create it: `git checkout -b feature/initial-database-schema`
-- [ ] If on wrong branch, switch to it: `git checkout feature/initial-database-schema`
+- [x] Ensure you're on the correct branch: `git branch` (should show `feature/initial-database-schema`)
+- [x] If branch doesn't exist, create it: `git checkout -b feature/initial-database-schema`
+- [x] If on wrong branch, switch to it: `git checkout feature/initial-database-schema`
 
 ### Supabase Project Setup
 
@@ -451,10 +451,10 @@ git commit -m "feat(db): add initial schema with organizations, users, and branc
 
 Now apply the migration to your Supabase database.
 
-- [ ] Ensure you're connected to your Supabase project: `supabase status`
-- [ ] Apply the migration: `supabase db push`
-- [ ] Wait for the migration to complete (should take 5-10 seconds)
-- [ ] Verify success message: "Finished supabase db push"
+- [x] Ensure you're connected to your Supabase project: `supabase status`
+- [x] Apply the migration: `supabase db push`
+- [x] Wait for the migration to complete (should take 5-10 seconds)
+- [x] Verify success message: "Finished supabase db push"
 
 **Expected Output:**
 
@@ -482,25 +482,25 @@ Finished supabase db push.
 
 #### Step 2 Verification Checklist
 
-- [ ] Open your Supabase Dashboard: `https://supabase.com/dashboard/project/<your-project-ref>`
-- [ ] Navigate to **Table Editor** → Verify 3 tables exist:
-  - [ ] `organizations` (8 columns: id, name, slug, owner_email, phone, address, subscription_status, subscription_plan, trial_ends_at, created_at, updated_at, deleted_at)
-  - [ ] `users` (13 columns: id, organization_id, email, password_hash, pin, full_name, role, can_view_profits, can_manage_inventory, can_view_reports, is_active, last_login_at, created_at, updated_at)
-  - [ ] `branches` (9 columns: id, organization_id, name, slug, address, phone, is_active, is_default, created_at, updated_at)
-- [ ] Navigate to **Database** → **Functions** → Verify 4 functions exist:
-  - [ ] `get_user_organization_id()` (returns UUID)
-  - [ ] `update_updated_at_column()` (returns trigger)
-  - [ ] `ensure_single_default_branch()` (returns trigger)
-  - [ ] `set_organization_claim()` (returns trigger)
-- [ ] Navigate to **Database** → **Triggers** → Verify 5 triggers exist:
-  - [ ] `update_organizations_updated_at` (on organizations, BEFORE UPDATE)
-  - [ ] `update_users_updated_at` (on users, BEFORE UPDATE)
-  - [ ] `update_branches_updated_at` (on branches, BEFORE UPDATE)
-  - [ ] `enforce_single_default_branch` (on branches, BEFORE INSERT OR UPDATE)
-  - [ ] `on_auth_user_created` (on auth.users, BEFORE INSERT)
-- [ ] Verify RLS is enabled:
-  - [ ] In Table Editor, each table should show a green "RLS enabled" badge
-  - [ ] Click into each table → "Policies" tab → Should see multiple policies listed
+- [x] Open your Supabase Dashboard: `https://supabase.com/dashboard/project/<your-project-ref>`
+- [x] Navigate to **Table Editor** → Verify 3 tables exist:
+  - [x] `organizations` (8 columns: id, name, slug, owner_email, phone, address, subscription_status, subscription_plan, trial_ends_at, created_at, updated_at, deleted_at)
+  - [x] `users` (13 columns: id, organization_id, email, password_hash, pin, full_name, role, can_view_profits, can_manage_inventory, can_view_reports, is_active, last_login_at, created_at, updated_at)
+  - [x] `branches` (9 columns: id, organization_id, name, slug, address, phone, is_active, is_default, created_at, updated_at)
+- [x] Navigate to **Database** → **Functions** → Verify 4 functions exist:
+  - [x] `get_user_organization_id()` (returns UUID)
+  - [x] `update_updated_at_column()` (returns trigger)
+  - [x] `ensure_single_default_branch()` (returns trigger)
+  - [x] `set_organization_claim()` (returns trigger)
+- [x] Navigate to **Database** → **Triggers** → Verify 5 triggers exist:
+  - [x] `update_organizations_updated_at` (on organizations, BEFORE UPDATE)
+  - [x] `update_users_updated_at` (on users, BEFORE UPDATE)
+  - [x] `update_branches_updated_at` (on branches, BEFORE UPDATE)
+  - [x] `enforce_single_default_branch` (on branches, BEFORE INSERT OR UPDATE)
+  - [x] `on_auth_user_created` (on auth.users, BEFORE INSERT)
+- [x] Verify RLS is enabled:
+  - [x] In Table Editor, each table should show a green "RLS enabled" badge
+  - [x] Click into each table → "Policies" tab → Should see multiple policies listed
 
 #### Step 2 STOP & COMMIT
 
