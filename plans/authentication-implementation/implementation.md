@@ -148,8 +148,8 @@ chore: fix supabase env vars and install auth dependencies
 
 ### Step 2.1: Create Slugify Utility
 
-- [ ] Create a new file `lib/utils/slugify.ts`
-- [ ] Copy and paste this code:
+- [x] Create a new file `lib/utils/slugify.ts`
+- [x] Copy and paste this code:
 
 ```typescript
 /**
@@ -178,9 +178,9 @@ export function generateUniqueSlug(baseSlug: string): string {
 
 ### Step 2.2: Create Validation Schemas
 
-- [ ] Create a new folder `lib/validations/`
-- [ ] Create a new file `lib/validations/auth.ts`
-- [ ] Copy and paste this code:
+- [x] Create a new folder `lib/validations/`
+- [x] Create a new file `lib/validations/auth.ts`
+- [x] Copy and paste this code:
 
 ```typescript
 import { z } from "zod";
@@ -216,9 +216,9 @@ export type SignupInput = z.infer<typeof signupSchema>;
 
 ### Step 2.3: Create Authentication Server Actions
 
-- [ ] Create a new folder `app/actions/`
-- [ ] Create a new file `app/actions/auth.ts`
-- [ ] Copy and paste this complete code:
+- [x] Create a new folder `app/actions/`
+- [x] Create a new file `app/actions/auth.ts`
+- [x] Copy and paste this complete code:
 
 ```typescript
 "use server";
@@ -449,13 +449,13 @@ export async function signOut(): Promise<void> {
 
 ### Step 2 Verification Checklist
 
-- [ ] TypeScript compiles without errors: `npm run build` (cancel after compilation starts)
-- [ ] Files created in correct locations:
+- [x] TypeScript compiles without errors: `npm run build` (cancel after compilation starts)
+- [x] Files created in correct locations:
   - `lib/utils/slugify.ts` exists
   - `lib/validations/auth.ts` exists
   - `app/actions/auth.ts` exists
-- [ ] No import errors in VS Code (red squiggles)
-- [ ] Linter passes: `npm run lint`
+- [x] No import errors in VS Code (red squiggles)
+- [x] Linter passes: `npm run lint`
 
 ### Step 2 STOP & COMMIT
 
