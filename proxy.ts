@@ -1,8 +1,8 @@
 import { type NextRequest } from "next/server"
-import { updateSession } from "@/lib/supabase/proxy"
+import { middleware as supabaseMiddleware } from "@/lib/supabase/proxy"
 
 export async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  return await supabaseMiddleware(request)
 }
 
 export const config = {

@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import type { Database } from "@/types/database";
 
@@ -58,6 +59,27 @@ export async function createClient() {
             // This can be ignored if you have middleware refreshing user sessions
           }
         },
+      },
+    },
+  );
+}
+
+/**
+ * Service role client for admin operations that bypass RLS.
+ * Use ONLY for operations that need elevated privileges (e.g., initial signup).
+ * 
+ * ⚠️ WARNING: This client bypasses all RLS policies. Use with caution.
+ * 
+ * @returns Supabase client with service role privileges
+ */
+export function createServiceClient() {
+  return createSupabaseClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
       },
     },
   );

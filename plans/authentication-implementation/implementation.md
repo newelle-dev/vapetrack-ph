@@ -1145,84 +1145,84 @@ feat: add middleware for route protection and session management
 
 ### Step 5.1: Complete Signup Flow Test
 
-- [ ] Open your browser to http://localhost:3000/signup
-- [ ] Fill in the signup form:
+- [x] Open your browser to http://localhost:3000/signup
+- [x] Fill in the signup form:
   - **Full Name:** Test User A
   - **Shop Name:** Vape Shop A
   - **Email:** test-a@example.com
   - **Password:** password123
   - **Confirm Password:** password123
-- [ ] Click "Create account"
-- [ ] Verify the following:
+- [x] Click "Create account"
+- [x] Verify the following:
   - [ ] Toast notification shows "Account created successfully!"
-  - [ ] Automatically redirects to `/dashboard`
-  - [ ] Dashboard shows correct user name: "Test User A"
-  - [ ] Dashboard shows organization: "Vape Shop A"
-  - [ ] Organization slug is visible (e.g., "vape-shop-a")
-  - [ ] Subscription status shows "trial"
+  - [x] Automatically redirects to `/dashboard`
+  - [x] Dashboard shows correct user name: "Test User A"
+  - [x] Dashboard shows organization: "Vape Shop A"
+  - [x] Organization slug is visible (e.g., "vape-shop-a")
+  - [x] Subscription status shows "trial"
 
 ### Step 5.2: Verify Database Records
 
-- [ ] Go to your Supabase Dashboard → Database → Table Editor
-- [ ] Check the `organizations` table:
-  - [ ] One record exists with name "Vape Shop A"
-  - [ ] Note the organization `id` (UUID)
-  - [ ] Check `slug` is "vape-shop-a" or similar
-  - [ ] Subscription status is "trial"
-- [ ] Check the `users` table:
-  - [ ] One record exists with full_name "Test User A"
-  - [ ] Email is "test-a@example.com"
-  - [ ] `organization_id` matches the org ID from step above
-  - [ ] `role` is "owner"
-  - [ ] `is_active` is true
-- [ ] Check the `branches` table:
-  - [ ] One record exists with name "Main Branch"
-  - [ ] `organization_id` matches the org ID
-  - [ ] `is_default` is true
-  - [ ] `is_active` is true
+- [x] Go to your Supabase Dashboard → Database → Table Editor
+- [x] Check the `organizations` table:
+  - [x] One record exists with name "Vape Shop A"
+  - [x] Note the organization `id` (UUID)
+  - [x] Check `slug` is "vape-shop-a" or similar
+  - [x] Subscription status is "trial"
+- [x] Check the `users` table:
+  - [x] One record exists with full_name "Test User A"
+  - [x] Email is "test-a@example.com"
+  - [x] `organization_id` matches the org ID from step above
+  - [x] `role` is "owner"
+  - [x] `is_active` is true
+- [x] Check the `branches` table:
+  - [x] One record exists with name "Main Branch"
+  - [x] `organization_id` matches the org ID
+  - [x] `is_default` is true
+  - [x] `is_active` is true
 
 ### Step 5.3: Test Logout Flow
 
-- [ ] Click the "Sign out" button on the dashboard
-- [ ] Verify the following:
-  - [ ] Redirects to `/login`
-  - [ ] Session is cleared (no user data visible)
-- [ ] Try to navigate to http://localhost:3000/dashboard
-- [ ] Verify:
+- [x] Click the "Sign out" button on the dashboard
+- [x] Verify the following:
+  - [x] Redirects to `/login`
+  - [x] Session is cleared (no user data visible)
+- [x] Try to navigate to http://localhost:3000/dashboard
+- [x] Verify:
   - [ ] Automatically redirects back to `/login`
 
 ### Step 5.4: Test Login Flow
 
-- [ ] On the login page, enter:
+- [x] On the login page, enter:
   - **Email:** test-a@example.com
   - **Password:** password123
-- [ ] Click "Sign in"
-- [ ] Verify:
-  - [ ] Toast shows "Logged in successfully!"
-  - [ ] Redirects to `/dashboard`
-  - [ ] Dashboard shows correct user info again
-  - [ ] Session persists on page refresh (F5)
+- [x] Click "Sign in"
+- [x] Verify:
+  - [x] Toast shows "Logged in successfully!"
+  - [x] Redirects to `/dashboard`
+  - [x] Dashboard shows correct user info again
+  - [x] Session persists on page refresh (F5)
 
 ### Step 5.5: Test Multi-Tenant Isolation
 
-- [ ] Sign out if currently logged in
-- [ ] Go to http://localhost:3000/signup
-- [ ] Create a second organization:
+- [x] Sign out if currently logged in
+- [x] Go to http://localhost:3000/signup
+- [x] Create a second organization:
   - **Full Name:** Test User B
   - **Shop Name:** Vape Shop B
   - **Email:** test-b@example.com
   - **Password:** password456
   - **Confirm Password:** password456
-- [ ] Click "Create account"
-- [ ] Verify:
-  - [ ] Redirects to `/dashboard`
-  - [ ] Dashboard shows "Test User B" and "Vape Shop B"
-  - [ ] Organization ID is DIFFERENT from User A's org ID
+- [x] Click "Create account"
+- [x] Verify:
+  - [x] Redirects to `/dashboard`
+  - [x] Dashboard shows "Test User B" and "Vape Shop B"
+  - [x] Organization ID is DIFFERENT from User A's org ID
 
 ### Step 5.6: Verify RLS Isolation in Database
 
-- [ ] Go to Supabase Dashboard → SQL Editor
-- [ ] Run this query to verify two separate organizations exist:
+- [x] Go to Supabase Dashboard → SQL Editor
+- [x] Run this query to verify two separate organizations exist:
 
 ```sql
 SELECT id, name, slug, owner_email

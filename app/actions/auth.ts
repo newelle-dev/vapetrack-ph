@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { slugify, generateUniqueSlug } from "@/lib/utils/slugify";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -21,6 +21,17 @@ export async function signUp(
   data: SignupInput,
 ): Promise<ActionResult<{ userId: string }>> {
   const supabase = await createClient();
+  // Service role client for database operations (bypasses RLS during signup)
+  const serviceClient = createServiceClient();
+
+  // Verify service role key is configured
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error("SUPABASE_SERVICE_ROLE_KEY is not configured");
+    return { 
+      success: false, 
+      error: "Server configuration error. Please contact support." 
+    };
+  }
 
   try {
     // 1. Create auth user in Supabase Auth
@@ -53,7 +64,7 @@ export async function signUp(
     const maxAttempts = 5;
 
     while (attempts < maxAttempts) {
-      const { data: existingOrg } = await supabase
+      const { data: existingOrg } = await serviceClient
         .from("organizations")
         .select("id")
         .eq("slug", orgSlug)
@@ -67,7 +78,7 @@ export async function signUp(
 
     if (attempts === maxAttempts) {
       // Rollback auth user if org creation fails
-      await supabase.auth.admin.deleteUser(userId);
+      await serviceClient.auth.admin.deleteUser(userId);
       return {
         success: false,
         error:
@@ -75,8 +86,8 @@ export async function signUp(
       };
     }
 
-    // 3. Create organization record
-    const { data: organization, error: orgError } = await supabase
+    // 3. Create organization record (using service role to bypass RLS)
+    const { data: organization, error: orgError } = await serviceClient
       .from("organizations")
       .insert({
         name: data.shopName,
@@ -92,17 +103,19 @@ export async function signUp(
 
     if (orgError || !organization) {
       // Rollback auth user if org creation fails
-      await supabase.auth.admin.deleteUser(userId);
-      return { success: false, error: "Failed to create organization" };
+      console.error("Organization creation error:", orgError);
+      await serviceClient.auth.admin.deleteUser(userId);
+      return { success: false, error: `Failed to create organization: ${orgError?.message || 'Unknown error'}` };
     }
 
     const organizationId = organization.id;
 
-    // 4. Create user record in public.users table
-    const { error: userError } = await supabase.from("users").insert({
+    // 4. Create user record in public.users table (using service role to bypass RLS)
+    const { error: userError } = await serviceClient.from("users").insert({
       id: userId,
       organization_id: organizationId,
       email: data.email,
+      password_hash: "supabase_auth", // Placeholder - actual auth handled by Supabase Auth
       full_name: data.fullName,
       role: "owner",
       is_active: true,
@@ -113,13 +126,14 @@ export async function signUp(
 
     if (userError) {
       // Rollback organization and auth user
-      await supabase.from("organizations").delete().eq("id", organizationId);
-      await supabase.auth.admin.deleteUser(userId);
-      return { success: false, error: "Failed to create user profile" };
+      console.error("User creation error:", userError);
+      await serviceClient.from("organizations").delete().eq("id", organizationId);
+      await serviceClient.auth.admin.deleteUser(userId);
+      return { success: false, error: `Failed to create user profile: ${userError.message}` };
     }
 
-    // 5. Create default branch
-    const { error: branchError } = await supabase.from("branches").insert({
+    // 5. Create default branch (using service role to bypass RLS)
+    const { error: branchError } = await serviceClient.from("branches").insert({
       organization_id: organizationId,
       name: "Main Branch",
       slug: "main-branch",
@@ -129,14 +143,20 @@ export async function signUp(
 
     if (branchError) {
       // Rollback all previous operations
-      await supabase.from("users").delete().eq("id", userId);
-      await supabase.from("organizations").delete().eq("id", organizationId);
-      await supabase.auth.admin.deleteUser(userId);
-      return { success: false, error: "Failed to create default branch" };
+      console.error("Branch creation error:", branchError);
+      await serviceClient.from("users").delete().eq("id", userId);
+      await serviceClient.from("organizations").delete().eq("id", organizationId);
+      await serviceClient.auth.admin.deleteUser(userId);
+      return { success: false, error: `Failed to create default branch: ${branchError.message}` };
     }
 
-    // 6. Refresh session to get updated JWT with organization_id claim
-    // The database trigger should have already injected organization_id into app_metadata
+    // 6. Update auth user's app_metadata with organization_id
+    // This is needed because the trigger fires before public.users exists
+    await serviceClient.auth.admin.updateUserById(userId, {
+      app_metadata: { organization_id: organizationId },
+    });
+
+    // 7. Refresh session to get updated JWT with organization_id claim
     await supabase.auth.refreshSession();
 
     return { success: true, data: { userId } };

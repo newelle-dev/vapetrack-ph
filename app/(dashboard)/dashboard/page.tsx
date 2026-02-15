@@ -15,14 +15,14 @@ export default async function DashboardPage() {
   }
 
   // Get user profile with organization details
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('users')
     .select(`
       id,
       full_name,
       email,
       role,
-      organizations (
+      organization:organizations (
         id,
         name,
         slug,
@@ -31,6 +31,12 @@ export default async function DashboardPage() {
     `)
     .eq('id', user.id)
     .single()
+
+  if (profileError) {
+    console.error('Profile fetch error:', profileError)
+  }
+
+  console.log('Profile data:', JSON.stringify(profile, null, 2))
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -67,7 +73,7 @@ export default async function DashboardPage() {
             </div>
             <div>
               <span className="text-sm font-medium">User ID:</span>
-              <p className="text-sx text-muted-foreground font-mono text-xs">{profile?.id}</p>
+              <p className="text-xs text-muted-foreground font-mono">{profile?.id}</p>
             </div>
           </CardContent>
         </Card>
@@ -80,22 +86,22 @@ export default async function DashboardPage() {
           <CardContent className="space-y-2">
             <div>
               <span className="text-sm font-medium">Shop Name:</span>
-              <p className="text-sm text-muted-foreground">{profile?.organizations?.name}</p>
+              <p className="text-sm text-muted-foreground">{profile?.organization?.name}</p>
             </div>
             <div>
               <span className="text-sm font-medium">Shop Slug:</span>
-              <p className="text-sm text-muted-foreground">{profile?.organizations?.slug}</p>
+              <p className="text-sm text-muted-foreground">{profile?.organization?.slug}</p>
             </div>
             <div>
               <span className="text-sm font-medium">Subscription:</span>
               <p className="text-sm text-muted-foreground capitalize">
-                {profile?.organizations?.subscription_status}
+                {profile?.organization?.subscription_status}
               </p>
             </div>
             <div>
               <span className="text-sm font-medium">Organization ID:</span>
-              <p className="text-xs text-muted-foreground font-mono text-xs">
-                {profile?.organizations?.id}
+              <p className="text-xs text-muted-foreground font-mono">
+                {profile?.organization?.id}
               </p>
             </div>
           </CardContent>
