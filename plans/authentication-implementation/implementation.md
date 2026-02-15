@@ -480,8 +480,8 @@ feat: implement auth server actions (signup, login, logout)
 
 ### Step 3.1: Create Auth Layout
 
-- [ ] Create a new file `app/(auth)/layout.tsx`
-- [ ] Copy and paste this code:
+- [x] Create a new file `app/(auth)/layout.tsx`
+- [x] Copy and paste this code:
 
 ```typescript
 import { Card } from "@/components/ui/card"
@@ -503,8 +503,8 @@ export default function AuthLayout({
 
 ### Step 3.2: Create Login Page
 
-- [ ] Open `app/(auth)/login/page.tsx`
-- [ ] Replace the entire content with this code:
+- [x] Open `app/(auth)/login/page.tsx`
+- [x] Replace the entire content with this code:
 
 ```typescript
 'use client'
@@ -640,8 +640,8 @@ export default function LoginPage() {
 
 ### Step 3.3: Create Signup Page
 
-- [ ] Open `app/(auth)/signup/page.tsx`
-- [ ] Replace the entire content with this code:
+- [x] Open `app/(auth)/signup/page.tsx`
+- [x] Replace the entire content with this code:
 
 ```typescript
 'use client'
@@ -839,8 +839,8 @@ export default function SignupPage() {
 
 ### Step 3.4: Update Root Layout for Toast Notifications
 
-- [ ] Open `app/layout.tsx`
-- [ ] Add the Toaster component. Replace the entire file with this code:
+- [x] Open `app/layout.tsx`
+- [x] Add the Toaster component. Replace the entire file with this code:
 
 ```typescript
 import type { Metadata } from "next";
@@ -870,8 +870,8 @@ export default function RootLayout({
 
 ### Step 3.5: Create Basic Dashboard Page
 
-- [ ] Open `app/(dashboard)/dashboard/page.tsx`
-- [ ] Replace the entire content with this code:
+- [x] Open `app/(dashboard)/dashboard/page.tsx`
+- [x] Replace the entire content with this code:
 
 ```typescript
 import { createClient } from '@/lib/supabase/server'
