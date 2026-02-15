@@ -1027,12 +1027,12 @@ feat: implement login and signup pages with validation
 
 ---
 
-## Step 4: Create Route Protection Middleware
+### Step 4: Create Route Protection Middleware
 
 ### Step 4.1: Create Middleware File
 
-- [ ] Create a new file `middleware.ts` in the project root (same level as `package.json`)
-- [ ] Copy and paste this complete code:
+- [x] Create a new file `middleware.ts` in the project root (same level as `package.json`)
+- [x] Copy and paste this complete code (merged into `lib/supabase/proxy.ts` to avoid Next.js conflict):
 
 ```typescript
 import { updateSession } from "@/lib/supabase/proxy";
@@ -1115,13 +1115,13 @@ export const config = {
 
 ### Step 4 Verification Checklist
 
-- [ ] File `middleware.ts` exists in project root (not in `app/` folder)
-- [ ] TypeScript compiles without errors: `npm run build` (cancel after it starts)
-- [ ] Run `npm run dev` and test the following:
-  - [ ] Go to http://localhost:3000/dashboard while logged out → redirects to /login
-  - [ ] Go to http://localhost:3000/login while logged out → shows login page
-- [ ] No infinite redirect loops occur
-- [ ] No console errors in terminal or browser
+- [x] File `middleware.ts` exists in project root (not in `app/` folder) — _Note: merged into `lib/supabase/proxy.ts` per Next.js 16 proxy-only requirement_
+- [x] TypeScript compiles without errors: `npm run build` (cancel after it starts)
+- [x] Run `npm run dev` and test the following:
+  - [x] Go to http://localhost:3000/dashboard while logged out → redirects to /login
+  - [x] Go to http://localhost:3000/login while logged out → shows login page
+- [x] No infinite redirect loops occur
+- [x] No console errors in terminal or browser
 
 ### Step 4 STOP & COMMIT
 
