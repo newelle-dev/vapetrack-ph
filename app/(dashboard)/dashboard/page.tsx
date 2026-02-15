@@ -36,8 +36,6 @@ export default async function DashboardPage() {
     console.error('Profile fetch error:', profileError)
   }
 
-  console.log('Profile data:', JSON.stringify(profile, null, 2))
-
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
