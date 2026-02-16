@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -22,16 +22,16 @@ export function MobileNav({ canManageInventory, canViewReports }: MobileNavProps
 
   const navItems: NavItem[] = [
     { label: 'Dashboard', href: '/dashboard', icon: Home, show: true },
-    { label: 'POS', href: '/dashboard/pos', icon: ShoppingCart, show: true },
+    { label: 'POS', href: '/pos', icon: ShoppingCart, show: true },
     {
       label: 'Inventory',
-      href: '/dashboard/inventory',
+      href: '/inventory',
       icon: Package,
       show: canManageInventory,
     },
     {
       label: 'Reports',
-      href: '/dashboard/reports',
+      href: '/reports',
       icon: BarChart3,
       show: canViewReports,
     },
@@ -51,7 +51,7 @@ export function MobileNav({ canManageInventory, canViewReports }: MobileNavProps
               key={item.href}
               href={item.href}
               className={cn(
-                'flex min-w-[44px] flex-col items-center justify-center gap-1 px-3 py-2 transition-colors',
+                'flex min-w-12 flex-col items-center justify-center gap-1 px-3 py-2 transition-colors',
                 isActive ? 'text-primary' : 'text-muted-foreground'
               )}
             >

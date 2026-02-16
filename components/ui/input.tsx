@@ -3,6 +3,11 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  // Ensure we never pass `null` as the input `value` prop.
+  // React warns when `value` is null; use empty string to clear controlled inputs.
+  const { value: maybeValue, ...rest } = props as any
+  const value = maybeValue === null ? "" : maybeValue
+
   return (
     <input
       type={type}
@@ -13,7 +18,8 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
         className
       )}
-      {...props}
+      {...rest}
+      value={value}
     />
   )
 }

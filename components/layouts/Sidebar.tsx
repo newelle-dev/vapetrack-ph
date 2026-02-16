@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -31,28 +31,28 @@ export function Sidebar({ userRole, canManageInventory, canViewReports }: Sideba
 
   const navItems: NavItem[] = [
     { label: 'Dashboard', href: '/dashboard', icon: Home, show: true },
-    { label: 'POS', href: '/dashboard/pos', icon: ShoppingCart, show: true },
+    { label: 'POS', href: '/pos', icon: ShoppingCart, show: true },
     {
       label: 'Inventory',
-      href: '/dashboard/inventory',
+      href: '/inventory',
       icon: Package,
       show: canManageInventory,
     },
     {
       label: 'Branches',
-      href: '/dashboard/branches',
+      href: '/branches',
       icon: Building2,
       show: userRole === 'owner',
     },
     {
       label: 'Reports',
-      href: '/dashboard/reports',
+      href: '/reports',
       icon: BarChart3,
       show: canViewReports,
     },
     {
       label: 'Settings',
-      href: '/dashboard/settings',
+      href: '/settings',
       icon: Settings,
       show: userRole === 'owner',
     },
@@ -76,6 +76,10 @@ export function Sidebar({ userRole, canManageInventory, canViewReports }: Sideba
               href={item.href}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                'hover:bg-accent hover:text-accent-foreground',
+                isActive
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-muted-foreground'
               )}
             >
               <Icon className="size-5" />

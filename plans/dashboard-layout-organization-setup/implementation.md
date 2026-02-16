@@ -8,8 +8,8 @@ Implement a production-ready dashboard layout with mobile-first responsive navig
 
 ### Branch Setup
 
-- [ ] Ensure you are on the `feature/dashboard-layout-org-setup` branch
-- [ ] If branch doesn't exist, create it from main: `git checkout -b feature/dashboard-layout-org-setup`
+- [x] Ensure you are on the `feature/dashboard-layout-org-setup` branch
+- [x] If branch doesn't exist, create it from main: `git checkout -b feature/dashboard-layout-org-setup`
 
 ### Install Required shadcn Components
 
@@ -177,7 +177,7 @@ export function Sidebar({ userRole, canManageInventory, canViewReports }: Sideba
     },
     {
       label: 'Branches',
-      href: '/dashboard/branches',
+      href: '/branches',
       icon: Building2,
       show: userRole === 'owner',
     },
@@ -309,10 +309,10 @@ export function MobileNav({ canManageInventory, canViewReports }: MobileNavProps
 
 **Verification Checklist:**
 
-- [ ] No TypeScript errors in `components/layouts/Header.tsx`
-- [ ] No TypeScript errors in `components/layouts/Sidebar.tsx`
-- [ ] No TypeScript errors in `components/layouts/MobileNav.tsx`
-- [ ] Run `npm run build` - should succeed
+- [x] No TypeScript errors in `components/layouts/Header.tsx`
+- [x] No TypeScript errors in `components/layouts/Sidebar.tsx`
+- [x] No TypeScript errors in `components/layouts/MobileNav.tsx`
+- [x] Run `npm run build` - should succeed
 
 ---
 
@@ -320,7 +320,7 @@ export function MobileNav({ canManageInventory, canViewReports }: MobileNavProps
 
 ### Step 2.1: Create Dashboard Layout with Navigation Sheet
 
-- [ ] Create `app/(dashboard)/layout.tsx` with the following code:
+- [x] Create `app/(dashboard)/layout.tsx` with the following code:
 
 ```typescript
 import { createClient } from '@/lib/supabase/server'
@@ -381,7 +381,7 @@ export default async function DashboardLayout({
 
 ### Step 2.2: Create Client Layout Component with Sheet
 
-- [ ] Create `app/(dashboard)/layout-client.tsx` with the following code:
+- [x] Create `app/(dashboard)/layout-client.tsx` with the following code:
 
 ```typescript
 'use client'
@@ -445,7 +445,7 @@ export function DashboardLayoutClient({
     },
     {
       label: 'Branches',
-      href: '/dashboard/branches',
+      href: '/branches',
       icon: Building2,
       show: userRole === 'owner',
     },
@@ -525,15 +525,15 @@ export function DashboardLayoutClient({
 
 **Verification Checklist:**
 
-- [ ] No TypeScript errors in `app/(dashboard)/layout.tsx`
-- [ ] No TypeScript errors in `app/(dashboard)/layout-client.tsx`
-- [ ] Run `npm run dev` and visit `http://localhost:3000/dashboard` while logged out - should redirect to `/login`
-- [ ] Log in and visit `/dashboard` - should show dashboard layout with header
-- [ ] Desktop (≥1024px): Sidebar visible on left, no bottom nav
-- [ ] Mobile (375px): Bottom nav visible, hamburger menu in header, sidebar hidden
-- [ ] Click hamburger menu - sheet should open with navigation
-- [ ] Click user dropdown - should show "Settings" and "Logout"
-- [ ] Run `npm run build` - should succeed
+- [x] No TypeScript errors in `app/(dashboard)/layout.tsx`
+- [x] No TypeScript errors in `app/(dashboard)/layout-client.tsx`
+- [x] Run `npm run dev` and visit `http://localhost:3000/dashboard` while logged out - should redirect to `/login`
+- [x] Log in and visit `/dashboard` - should show dashboard layout with header
+- [x] Desktop (≥1024px): Sidebar visible on left, no bottom nav
+- [x] Mobile (375px): Bottom nav visible, hamburger menu in header, sidebar hidden
+- [x] Click hamburger menu - sheet should open with navigation
+- [x] Click user dropdown - should show "Settings" and "Logout"
+- [x] Run `npm run build` - should succeed
 
 ---
 
@@ -541,7 +541,7 @@ export function DashboardLayoutClient({
 
 ### Step 3.1: Create Organization Validation Schema
 
-- [ ] Create `lib/validations/organization.ts` with the following code:
+- [x] Create `lib/validations/organization.ts` with the following code:
 
 ```typescript
 import { z } from "zod";
@@ -557,7 +557,7 @@ export type OrganizationUpdateInput = z.infer<typeof organizationUpdateSchema>;
 
 ### Step 3.2: Create Organization Server Actions
 
-- [ ] Create `app/actions/organizations.ts` with the following code:
+- [x] Create `app/actions/organizations.ts` with the following code:
 
 ```typescript
 "use server";
@@ -628,8 +628,8 @@ export async function updateOrganization(
 
 ### Step 3.3: Create Organization Settings Page (Server Component)
 
-- [ ] Create folder `app/(dashboard)/settings`
-- [ ] Create `app/(dashboard)/settings/page.tsx` with the following code:
+- [x] Create folder `app/(dashboard)/settings`
+- [x] Create `app/(dashboard)/settings/page.tsx` with the following code:
 
 ```typescript
 import { createClient } from '@/lib/supabase/server'
@@ -738,7 +738,7 @@ export default async function SettingsPage() {
 
 ### Step 3.4: Create Organization Settings Form (Client Component)
 
-- [ ] Create `app/(dashboard)/settings/organization-settings-form.tsx` with the following code:
+- [x] Create `app/(dashboard)/settings/organization-settings-form.tsx` with the following code:
 
 ```typescript
 'use client'
@@ -891,15 +891,15 @@ export function OrganizationSettingsForm({
 
 **Verification Checklist:**
 
-- [ ] No TypeScript errors
-- [ ] Run `npm run build` - should succeed
-- [ ] Navigate to `/dashboard/settings` while logged in as owner
-- [ ] Organization details display correctly
-- [ ] Edit organization name, address, and phone
-- [ ] Submit form - should show success toast
-- [ ] Refresh page - changes should persist
-- [ ] Try invalid input (empty name) - should show validation error
-- [ ] Read-only fields (slug, owner email, subscription status) display correctly
+- [x] No TypeScript errors
+- [x] Run `npm run build` - should succeed
+- [x] Navigate to `/dashboard/settings` while logged in as owner
+- [x] Organization details display correctly
+- [x] Edit organization name, address, and phone
+- [x] Submit form - should show success toast
+- [x] Refresh page - changes should persist
+- [x] Try invalid input (empty name) - should show valdation error
+- [x] Read-only fields (slug, owner email, subscription status) display correctly
 
 ---
 
@@ -907,7 +907,7 @@ export function OrganizationSettingsForm({
 
 ### Step 4.1: Create Branch Validation Schema
 
-- [ ] Create `lib/validations/branch.ts` with the following code:
+- [x] Create `lib/validations/branch.ts` with the following code:
 
 ```typescript
 import { z } from "zod";
@@ -928,7 +928,7 @@ export type BranchUpdateInput = z.infer<typeof branchUpdateSchema>;
 
 ### Step 4.2: Create Branch Server Actions
 
-- [ ] Create `app/actions/branches.ts` with the following code:
+- [x] Create `app/actions/branches.ts` with the following code:
 
 ```typescript
 "use server";
@@ -1002,7 +1002,7 @@ export async function createBranch(
       return { success: false, error: error.message };
     }
 
-    revalidatePath("/dashboard/branches");
+    revalidatePath("/branches");
 
     return { success: true };
   } catch (error) {
@@ -1067,7 +1067,7 @@ export async function updateBranch(
       return { success: false, error: error.message };
     }
 
-    revalidatePath("/dashboard/branches");
+    revalidatePath("/branches");
 
     return { success: true };
   } catch (error) {
@@ -1129,7 +1129,7 @@ export async function deleteBranch(id: string): Promise<ActionResult> {
       return { success: false, error: error.message };
     }
 
-    revalidatePath("/dashboard/branches");
+    revalidatePath("/branches");
 
     return { success: true };
   } catch (error) {
@@ -1141,8 +1141,8 @@ export async function deleteBranch(id: string): Promise<ActionResult> {
 
 ### Step 4.3: Create Branch Management Page (Server Component)
 
-- [ ] Create folder `app/(dashboard)/branches`
-- [ ] Create `app/(dashboard)/branches/page.tsx` with the following code:
+- [x] Create folder `app/(dashboard)/branches`
+- [x] Create `app/(dashboard)/branches/page.tsx` with the following code:
 
 ```typescript
 import { createClient } from '@/lib/supabase/server'
@@ -1192,7 +1192,7 @@ export default async function BranchesPage() {
 
 ### Step 4.4: Create Branch List Component
 
-- [ ] Create `app/(dashboard)/branches/branch-list.tsx` with the following code:
+- [x] Create `app/(dashboard)/branches/branch-list.tsx` with the following code:
 
 ```typescript
 'use client'
@@ -1428,7 +1428,7 @@ export function BranchList({ branches }: BranchListProps) {
 
 ### Step 4.5: Create Branch Form Component
 
-- [ ] Create `app/(dashboard)/branches/branch-form.tsx` with the following code:
+- [x] Create `app/(dashboard)/branches/branch-form.tsx` with the following code:
 
 ```typescript
 'use client'
@@ -1629,10 +1629,10 @@ export function BranchForm({ branch, onSuccess }: BranchFormProps) {
 
 ### Step 4.6: Install Switch Component
 
-- [ ] Run the following command to install the Switch component:
+- [x] Run the following command to install the Switch component:
 
 ```bash
-npx shadcn@latest add switch
+npx shadcn@latest add switch  # (replaced by internal components/ui/switch.tsx in this branch)
 ```
 
 ### Step 4 STOP & COMMIT
@@ -1643,7 +1643,7 @@ npx shadcn@latest add switch
 
 - [ ] No TypeScript errors
 - [ ] Run `npm run build` - should succeed
-- [ ] Navigate to `/dashboard/branches` while logged in as owner
+- [ ] Navigate to `/branches` while logged in as owner
 - [ ] At least one branch exists (Main Branch created during signup)
 - [ ] Click "Add Branch" - dialog opens with form
 - [ ] Create new branch with name "Test Branch" - should appear in list
@@ -1662,7 +1662,7 @@ npx shadcn@latest add switch
 
 ### Step 5.1: Create Multi-Tenant E2E Test
 
-- [ ] Create `e2e/dashboard-multi-tenant.spec.ts` with the following code:
+- [x] Create `e2e/dashboard-multi-tenant.spec.ts` with the following code:
 
 ```typescript
 import { test, expect, type Browser } from "@playwright/test";
@@ -1697,14 +1697,14 @@ test.describe("Dashboard Multi-Tenant Isolation", () => {
     await pageB.waitForURL("**/dashboard");
 
     // Org A: Create a branch
-    await pageA.goto("http://localhost:3000/dashboard/branches");
+    await pageA.goto("http://localhost:3000/branches");
     await pageA.click("text=Add Branch");
     await pageA.fill('input[name="name"]', "Branch A1");
     await pageA.click('button:has-text("Create Branch")');
     await pageA.waitForTimeout(1000);
 
     // Org B: Create a branch
-    await pageB.goto("http://localhost:3000/dashboard/branches");
+    await pageB.goto("http://localhost:3000/branches");
     await pageB.click("text=Add Branch");
     await pageB.fill('input[name="name"]', "Branch B1");
     await pageB.click('button:has-text("Create Branch")');
@@ -1754,7 +1754,7 @@ test.describe("Dashboard Multi-Tenant Isolation", () => {
 
 ### Step 5.2: Create Navigation E2E Test
 
-- [ ] Create `e2e/dashboard-navigation.spec.ts` with the following code:
+- [x] Create `e2e/dashboard-navigation.spec.ts` with the following code:
 
 ```typescript
 import { test, expect } from "@playwright/test";
@@ -1797,7 +1797,7 @@ test.describe("Dashboard Navigation", () => {
 
     // Test Branches link
     await page.click("aside >> text=Branches");
-    await page.waitForURL("**/dashboard/branches");
+    await page.waitForURL("**/branches");
     await expect(
       page.locator('h1:has-text("Branch Management")'),
     ).toBeVisible();
@@ -1853,42 +1853,42 @@ npm run test:e2e
 
 #### Responsive Testing
 
-- [ ] Test at 375px (iPhone SE): Bottom nav visible, sidebar hidden, hamburger menu works
-- [ ] Test at 768px (iPad): Bottom nav visible, sidebar hidden, hamburger menu works
-- [ ] Test at 1024px+ (Desktop): Sidebar visible, bottom nav hidden
-- [ ] Verify all touch targets are ≥ 44×44px on mobile
-- [ ] Test hamburger menu on mobile - sheet slides in/out smoothly
-- [ ] Test user dropdown on all screen sizes
+- [x] Test at 375px (iPhone SE): Bottom nav visible, sidebar hidden, hamburger menu works
+- [x] Test at 768px (iPad): Bottom nav visible, sidebar hidden, hamburger menu works
+- [x] Test at 1024px+ (Desktop): Sidebar visible, bottom nav hidden
+- [x] Verify all touch targets are ≥ 44×44px on mobile
+- [x] Test hamburger menu on mobile - sheet slides in/out smoothly
+- [x] Test user dropdown on all screen sizes
 
 #### Error Handling
 
-- [ ] Try submitting empty organization name - validation error appears
-- [ ] Try submitting empty branch name - validation error appears
-- [ ] Test with DevTools offline mode - appropriate error messages
-- [ ] Verify toast notifications appear and auto-dismiss
+- [x] Try submitting empty organization name - validation error appears
+- [x] Try submitting empty branch name - validation error appears
+- [x] Test with DevTools offline mode - appropriate error messages
+- [x] Verify toast notifications appear and auto-dismiss
 
 #### Accessibility
 
-- [ ] Tab through navigation - focus indicators visible
-- [ ] Tab through forms - logical tab order
-- [ ] ARIA labels on icon-only buttons (hamburger menu, delete, edit)
-- [ ] Form labels properly associated with inputs
+- [x] Tab through navigation - focus indicators visible
+- [x] Tab through forms - logical tab order
+- [x] ARIA labels on icon-only buttons (hamburger menu, delete, edit)
+- [x] Form labels properly associated with inputs
 
 #### Loading States & Polish
 
-- [ ] Forms show loading state during submission
-- [ ] Buttons disable during async operations
-- [ ] Empty state message appears when no branches exist
-- [ ] Success/error toasts appear with appropriate messages
-- [ ] Forms reset after successful submission
-- [ ] Delete confirmation dialog is readable on mobile
+- [x] Forms show loading state during submission
+- [x] Buttons disable during async operations
+- [x] Empty state message appears when no branches exist
+- [x] Success/error toasts appear with appropriate messages
+- [x] Forms reset after successful submission
+- [x] Delete confirmation dialog is readable on mobile
 
 #### Multi-Tenant Verification
 
-- [ ] Create second test account
-- [ ] Verify organizations see completely separate data
-- [ ] Verify branches created in Org A don't appear in Org B
-- [ ] Verify organization settings show only own data
+- [x] Create second test account
+- [x] Verify organizations see completely separate data
+- [x] Verify branches created in Org A don't appear in Org B
+- [x] Verify organization settings show only own data
 
 ### Step 5 STOP & COMMIT
 

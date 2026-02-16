@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -44,7 +44,7 @@ export function Header({ userFullName, userRole, onMenuClick }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         {/* Mobile menu button */}
         <Button

@@ -4,12 +4,15 @@
 **Description:** Implement responsive dashboard layout with navigation, organization settings, and branch management
 
 ## Goal
+
 Create a production-ready dashboard layout with mobile-first responsive navigation, organization settings management, and branch CRUD operations. This establishes the foundation for all future dashboard features while strictly following multi-tenant RLS patterns and the VapeTrack PH design system.
 
 ## Implementation Steps
 
 ### Step 1: Dashboard Layout Foundation
-**Files:** 
+
+**Files:**
+
 - `app/(dashboard)/layout.tsx` (create)
 - `components/layouts/Sidebar.tsx` (create)
 - `components/layouts/MobileNav.tsx` (create)
@@ -19,10 +22,11 @@ Create a production-ready dashboard layout with mobile-first responsive navigati
 - `components/ui/avatar.tsx` (install via shadcn)
 - `components/ui/dropdown-menu.tsx` (install via shadcn)
 
-**What:** 
+**What:**
 Implement responsive dashboard layout with authentication protection, desktop sidebar navigation, mobile bottom navigation, and user dropdown menu in header. Layout checks user authentication and redirects to /login if not authenticated. Navigation includes: Dashboard, POS, Inventory, Branches, Reports, Settings. Mobile uses bottom navigation (60px height, 44×44px touch targets) and hamburger menu in header. Desktop displays fixed sidebar (240px width) with main content area.
 
-**Testing:** 
+**Testing:**
+
 1. Run dev server and navigate to /dashboard while logged out - should redirect to /login
 2. Log in and verify dashboard layout renders
 3. Test responsive behavior:
@@ -33,11 +37,14 @@ Implement responsive dashboard layout with authentication protection, desktop si
 6. Click "Logout" - should redirect to /login
 
 **Key Implementation Notes:**
+
 - Use Server Component for layout.tsx with `createClient()` from `@/lib/supabase/server`
 - Authentication check pattern:
   ```typescript
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
   ```
 - Get user profile with organization using join pattern from dashboard/page.tsx
 - **Permission-based navigation**: Hide menu items based on user role and permissions
@@ -56,7 +63,9 @@ Implement responsive dashboard layout with authentication protection, desktop si
 ---
 
 ### Step 2: Organization Settings Page
+
 **Files:**
+
 - `app/(dashboard)/settings/page.tsx` (create)
 - `app/actions/organizations.ts` (create)
 - `lib/validations/organization.ts` (create)
@@ -65,6 +74,7 @@ Implement responsive dashboard layout with authentication protection, desktop si
 Create organization settings page that displays current organization details (name, slug, owner email, address, phone) and allows editing of mutable fields (name, address, phone). Implement Zod validation schema and Server Action for updating organization data. Use react-hook-form with optimistic UI updates and toast notifications.
 
 **Testing:**
+
 1. Navigate to /dashboard/settings
 2. Verify organization details display correctly
 3. Edit organization name, address, and phone
@@ -74,6 +84,7 @@ Create organization settings page that displays current organization details (na
 7. Test with slow network (DevTools throttling) - should show loading state
 
 **Key Implementation Notes:**
+
 - Server Component for initial data load (fetch organization via RLS-filtered query)
 - Client Component for form (use 'use client' directive)
 - Validation schema in `lib/validations/organization.ts`:
@@ -81,27 +92,29 @@ Create organization settings page that displays current organization details (na
   export const organizationUpdateSchema = z.object({
     name: z.string().min(2, "Shop name must be at least 2 characters"),
     address: z.string().optional(),
-    phone: z.string().optional()
-  })
+    phone: z.string().optional(),
+  });
   ```
 - Server Action pattern:
   ```typescript
-  'use server'
+  "use server";
   export async function updateOrganization(data: OrganizationUpdateInput) {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return { success: false, error: 'Unauthorized' }
-    
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { success: false, error: "Unauthorized" };
+
     // RLS automatically filters to user's organization
     const { error } = await supabase
-      .from('organizations')
+      .from("organizations")
       .update({ name: data.name, address: data.address, phone: data.phone })
-      .eq('owner_email', user.email)
-    
-    if (error) return { success: false, error: error.message }
-    
-    revalidatePath('/dashboard/settings')
-    return { success: true }
+      .eq("owner_email", user.email);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/dashboard/settings");
+    return { success: true };
   }
   ```
 - Display read-only fields: slug, owner_email, subscription_status, created_at
@@ -111,7 +124,9 @@ Create organization settings page that displays current organization details (na
 ---
 
 ### Step 3: Branch Management Page
+
 **Files:**
+
 - `app/(dashboard)/branches/page.tsx` (create)
 - `app/actions/branches.ts` (create)
 - `lib/validations/branch.ts` (create)
@@ -123,7 +138,8 @@ Create organization settings page that displays current organization details (na
 Create branch management page that lists all branches for the organization, shows branch details (name, address, phone, is_default, is_active), and provides forms to add, edit, and delete branches. Implement validation to ensure only one default branch exists per organization and prevent deletion of the default branch. Use Dialog component for add/edit forms and AlertDialog for delete confirmation.
 
 **Testing:**
-1. Navigate to /dashboard/branches
+
+1. Navigate to /branches
 2. Verify at least one branch exists (the default branch created during signup)
 3. Click "Add Branch" - dialog should open with form
 4. Create new branch with name "Test Branch" - should appear in list
@@ -137,6 +153,7 @@ Create branch management page that lists all branches for the organization, show
 12. Sign up second account - verify branches are isolated (each org sees only their branches)
 
 **Key Implementation Notes:**
+
 - Server Component for initial branch list fetch
 - Client Component for interactive table and dialogs
 - Validation schema in `lib/validations/branch.ts`:
@@ -146,14 +163,14 @@ Create branch management page that lists all branches for the organization, show
     address: z.string().optional(),
     phone: z.string().optional(),
     is_default: z.boolean().default(false),
-    is_active: z.boolean().default(true)
-  })
+    is_active: z.boolean().default(true),
+  });
   ```
 - Server Actions in `app/actions/branches.ts`:
   ```typescript
-  export async function createBranch(data: BranchInput)
-  export async function updateBranch(id: string, data: BranchInput)
-  export async function deleteBranch(id: string) // With default branch check
+  export async function createBranch(data: BranchInput);
+  export async function updateBranch(id: string, data: BranchInput);
+  export async function deleteBranch(id: string); // With default branch check
   ```
 - Default branch validation: Before setting is_default=true, check if another default exists
 - Delete branch validation: Prevent deletion if is_default=true
@@ -166,7 +183,9 @@ Create branch management page that lists all branches for the organization, show
 ---
 
 ### Step 4: Multi-Tenant Testing & Polish
+
 **Files:**
+
 - `e2e/dashboard-multi-tenant.spec.ts` (create)
 - `e2e/dashboard-navigation.spec.ts` (create)
 - `playwright.config.ts` (update if needed)
@@ -175,8 +194,9 @@ Create branch management page that lists all branches for the organization, show
 Create automated Playwright E2E tests for multi-tenant isolation and navigation behavior. Tests verify complete data segregation between organizations, permission-based navigation hiding, and responsive navigation behavior. Also perform manual polish testing for error handling, loading states, and accessibility.
 
 **Testing:**
+
 1. **Automated E2E Tests (Playwright):**
-   - `e2e/dashboard-multi-tenant.spec.ts`: 
+   - `e2e/dashboard-multi-tenant.spec.ts`:
      - Test: Sign up 2 orgs, create branches, verify isolation
      - Test: Organization settings only show own data
      - Test: Branches only show own data
@@ -204,17 +224,18 @@ Create automated Playwright E2E tests for multi-tenant isolation and navigation 
    - ARIA labels on icon-only buttons
 
 **Key Implementation Notes:**
+
 - E2E test patterns:
   ```typescript
-  test('multi-tenant isolation', async ({ browser }) => {
-    const contextA = await browser.newContext()
-    const pageA = await contextA.newPage()
+  test("multi-tenant isolation", async ({ browser }) => {
+    const contextA = await browser.newContext();
+    const pageA = await contextA.newPage();
     // Sign up Org A, create data
-    
-    const contextB = await browser.newContext()
-    const pageB = await contextB.newPage()
+
+    const contextB = await browser.newContext();
+    const pageB = await contextB.newPage();
     // Sign up Org B, verify no Org A data visible
-  })
+  });
   ```
 - Manual testing checklist:
   - Chrome DevTools device emulation for responsive testing
@@ -233,21 +254,24 @@ Create automated Playwright E2E tests for multi-tenant isolation and navigation 
 ## Design Specifications
 
 ### Navigation Items
-| Icon | Label | Route | Role Access |
-|------|-------|-------|-------------|
-| Home | Dashboard | `/dashboard` | All |
-| ShoppingCart | POS | `/dashboard/pos` | All |
-| Package | Inventory | `/dashboard/inventory` | can_manage_inventory |
-| Building2 | Branches | `/dashboard/branches` | Owner |
-| BarChart3 | Reports | `/dashboard/reports` | can_view_reports |
-| Settings | Settings | `/dashboard/settings` | Owner |
+
+| Icon         | Label     | Route                  | Role Access          |
+| ------------ | --------- | ---------------------- | -------------------- |
+| Home         | Dashboard | `/dashboard`           | All                  |
+| ShoppingCart | POS       | `/pos`       | All                  |
+| Package      | Inventory | `/inventory` | can_manage_inventory |
+| Building2    | Branches  | `/branches`  | Owner                |
+| BarChart3    | Reports   | `/reports`   | can_view_reports     |
+| Settings     | Settings  | `/settings`  | Owner                |
 
 ### Responsive Breakpoints
+
 - **Mobile**: < 768px - Bottom nav + hamburger menu
 - **Tablet**: 768px - 1023px - Bottom nav + hamburger menu
 - **Desktop**: ≥ 1024px - Fixed sidebar + no bottom nav
 
 ### Color Tokens (Tailwind Dark Mode)
+
 - Background: `bg-background` (black)
 - Card background: `bg-card` (slate-800)
 - Text primary: `text-foreground` (slate-50)
@@ -255,6 +279,7 @@ Create automated Playwright E2E tests for multi-tenant isolation and navigation 
 - Primary button: `bg-primary` (green-500)
 
 ### Touch Target Sizes
+
 - Minimum: 44×44px
 - Navigation items: 48×48px
 - Buttons: h-10 (40px) minimum, h-11 (44px) preferred

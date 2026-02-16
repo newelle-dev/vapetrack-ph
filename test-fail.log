@@ -1,0 +1,34 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] ΓÇ║ e2e\dashboard-multi-tenant.spec.ts:61:9 ΓÇ║ Dashboard Multi-Tenant Isolation ΓÇ║ organization settings show only own data
+[1A[2K  1) [chromium] ΓÇ║ e2e\dashboard-multi-tenant.spec.ts:61:9 ΓÇ║ Dashboard Multi-Tenant Isolation ΓÇ║ organization settings show only own data 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('input[name="name"]')
+    Expected: [32m"Test Shop"[39m
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
+    [2m  - waiting for locator('input[name="name"]')[22m
+
+
+      78 |
+      79 |         // Verify organization details
+    > 80 |         await expect(page.locator('input[name="name"]')).toHaveValue("Test Shop");
+         |                                                          ^
+      81 |         await expect(page.locator("text=" + email)).toBeVisible();
+      82 |
+      83 |         await context.close();
+        at C:\Users\narq9\Desktop\Projects\vapetrack-ph\e2e\dashboard-multi-tenant.spec.ts:80:58
+
+    Error Context: test-results\dashboard-multi-tenant-Das-21329-settings-show-only-own-data-chromium\error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] ΓÇ║ e2e\dashboard-multi-tenant.spec.ts:61:9 ΓÇ║ Dashboard Multi-Tenant Isolation ΓÇ║ organization settings show only own data 
+
+[36m  Serving HTML report at http://localhost:62546. Press Ctrl+C to quit.[39m
