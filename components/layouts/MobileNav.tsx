@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, ShoppingCart, Package, BarChart3, type LucideIcon } from 'lucide-react'
+import { Home, ShoppingCart, Package, BarChart3, Settings, type LucideIcon } from 'lucide-react'
 
 interface NavItem {
   label: string
@@ -13,11 +13,16 @@ interface NavItem {
 }
 
 interface MobileNavProps {
+  userRole: string
   canManageInventory: boolean
   canViewReports: boolean
 }
 
-export function MobileNav({ canManageInventory, canViewReports }: MobileNavProps) {
+export function MobileNav({
+  userRole,
+  canManageInventory,
+  canViewReports,
+}: MobileNavProps) {
   const pathname = usePathname()
 
   const navItems: NavItem[] = [
@@ -35,9 +40,15 @@ export function MobileNav({ canManageInventory, canViewReports }: MobileNavProps
       icon: BarChart3,
       show: canViewReports,
     },
+    {
+      label: 'Settings',
+      href: '/settings',
+      icon: Settings,
+      show: userRole === 'owner',
+    },
   ]
 
-  const visibleItems = navItems.filter((item) => item.show).slice(0, 4)
+  const visibleItems = navItems.filter((item) => item.show).slice(0, 5)
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background md:hidden">

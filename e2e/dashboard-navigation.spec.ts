@@ -76,6 +76,9 @@ test.describe("Dashboard Navigation", () => {
     await expect(
       page.locator('nav[class*="bottom-0"]:has-text("Dashboard")'),
     ).toBeVisible();
+    await expect(
+      page.locator('nav[class*="bottom-0"]:has-text("Settings")'),
+    ).toBeVisible();
 
     // Hamburger menu should open sheet
     await page.click('button[aria-label="Open menu"]');
