@@ -111,6 +111,7 @@ Edit `.env.local` with your Supabase credentials:
 # .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your-publishable-default-key-here
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key  # Server-side only
 ```
 
@@ -143,7 +144,7 @@ npx supabase gen types typescript --project-id your-project-ref > types/database
 ```bash
 # Option B: Manual SQL Execution
 # 1. Open Supabase Dashboard → SQL Editor
-# 2. Copy contents of `supabase/migrations/001_initial_schema.sql`
+# 2. Copy contents of `./migrations/001_initial_schema.sql`
 # 3. Execute the SQL script
 # 4. Manually copy `types/database.example.ts` to `types/database.ts`
 ```
