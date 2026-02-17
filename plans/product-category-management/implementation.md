@@ -31,8 +31,8 @@ CREATE INDEX IF NOT EXISTS idx_categories_deleted_at ON product_categories(delet
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
 
 #### Step 2: Validation Schema
-- [ ] Create the Zod schema for category validation.
-- [ ] Copy and paste code below into `lib/validations/category.ts`:
+- [x] Create the Zod schema for category validation.
+- [x] Copy and paste code below into `lib/validations/category.ts`:
 
 ```typescript
 import { z } from "zod";
@@ -48,7 +48,7 @@ export type CategoryInput = z.infer<typeof categorySchema>;
 ```
 
 ##### Step 2 Verification Checklist
-- [ ] No type errors in the file.
+- [x] No type errors in the file.
 
 #### Step 2 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
