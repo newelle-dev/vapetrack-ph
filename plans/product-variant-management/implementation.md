@@ -1060,7 +1060,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
 #### Step 4: Create Add Product & Edit Product Pages
 
-- [ ] Create the "Add Product" page at `app/(dashboard)/inventory/products/new/page.tsx`:
+- [x] Create the "Add Product" page at `app/(dashboard)/inventory/products/new/page.tsx`:
 
 ```tsx
 import { createClient } from "@/lib/supabase/server";
@@ -1099,7 +1099,7 @@ export default async function NewProductPage() {
 }
 ```
 
-- [ ] Create the "Edit Product" page at `app/(dashboard)/inventory/products/[id]/edit/page.tsx`:
+- [x] Create the "Edit Product" page at `app/(dashboard)/inventory/products/[id]/edit/page.tsx`:
 
 ```tsx
 import { createClient } from "@/lib/supabase/server";
@@ -1173,11 +1173,11 @@ export default async function EditProductPage({
 ```
 
 ##### Step 4 Verification Checklist
-- [ ] No build errors
-- [ ] Navigate to `/inventory/products/new` → form loads with empty fields and a category dropdown
-- [ ] Fill in product details, add 2+ variants, submit → verify data saved correctly (check Supabase dashboard)
-- [ ] Navigate to `/inventory/products/[id]/edit` → form loads with pre-filled data
-- [ ] Non-existent product ID redirects to `/inventory`
+- [x] No build errors
+- [x] Navigate to `/inventory/products/new` → form loads with empty fields and a category dropdown
+- [x] Fill in product details, add 2+ variants, submit → verify data saved correctly (check Supabase dashboard)
+- [x] Navigate to `/inventory/products/[id]/edit` → form loads with pre-filled data
+- [x] Non-existent product ID redirects to `/inventory`
 
 #### Step 4 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
