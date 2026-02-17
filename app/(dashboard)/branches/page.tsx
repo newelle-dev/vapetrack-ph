@@ -1,7 +1,8 @@
 
+import { BranchList } from '@/components/branch/branch-list'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { BranchList } from './branch-list'
+
 
 
 

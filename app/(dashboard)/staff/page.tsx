@@ -1,6 +1,6 @@
+import { StaffList } from '@/components/staff/staff-list'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { StaffList } from './staff-list'
 
 export default async function StaffPage() {
   const supabase = await createClient()

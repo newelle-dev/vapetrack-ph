@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -27,7 +27,6 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { categorySchema, type CategoryInput } from "@/lib/validations/category";
 import { createCategory, updateCategory } from "@/app/actions/categories";
-import { useState } from "react";
 
 interface CategoryFormProps {
     initialData?: CategoryInput & { id: string };
@@ -45,21 +44,26 @@ export function CategoryForm({
     const [isPending, startTransition] = useTransition();
     const [internalOpen, setInternalOpen] = useState(false);
 
-    // Control dialog state either externally or internally
     const isDialogOpen = open ?? internalOpen;
     const setDialogOpen = onOpenChange ?? setInternalOpen;
 
     const form = useForm<CategoryInput>({
         resolver: zodResolver(categorySchema),
         defaultValues: {
-            name: initialData?.name || "",
-            description: initialData?.description || "",
-            display_order: initialData?.display_order || 0,
-            parent_id: initialData?.parent_id || null,
+            name: "",
+            description: "",
+            display_order: 0,
+            parent_id: null,
         },
+        values: initialData ? {
+            name: initialData.name,
+            description: initialData.description ?? "",
+            display_order: initialData.display_order ?? 0,
+            parent_id: initialData.parent_id ?? null,
+        } : undefined,
     });
 
-    function onSubmit(data: CategoryInput) {
+    async function onSubmit(data: CategoryInput) {
         startTransition(async () => {
             try {
                 const result = initialData
@@ -71,7 +75,9 @@ export function CategoryForm({
                         initialData ? "Category updated" : "Category created"
                     );
                     setDialogOpen(false);
-                    if (!initialData) form.reset();
+                    if (!initialData) {
+                        form.reset();
+                    }
                 } else {
                     toast.error(result.error || "Something went wrong");
                 }
@@ -115,6 +121,7 @@ export function CategoryForm({
                                         <Textarea
                                             placeholder="Category description..."
                                             {...field}
+                                            value={field.value ?? ""}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -131,7 +138,8 @@ export function CategoryForm({
                                         <Input
                                             type="number"
                                             {...field}
-                                            onChange={e => field.onChange(parseInt(e.target.value))}
+                                            value={field.value ?? 0}
+                                            onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                                         />
                                     </FormControl>
                                     <FormMessage />

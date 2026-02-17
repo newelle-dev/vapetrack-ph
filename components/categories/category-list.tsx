@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { Edit, Trash2, Plus } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { type CategoryInput } from "@/lib/validations/category";
 
 interface Category {
     id: string;
@@ -82,9 +83,9 @@ export function CategoryList({ categories }: CategoryListProps) {
                                         initialData={{
                                             id: category.id,
                                             name: category.name,
-                                            description: category.description,
+                                            description: category.description || "",
                                             display_order: category.display_order ?? 0,
-                                            parent_id: category.parent_id
+                                            parent_id: category.parent_id,
                                         }}
                                         trigger={
                                             <Button variant="ghost" size="icon">
