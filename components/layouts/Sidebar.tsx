@@ -1,72 +1,17 @@
-'use client'
-
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import {
-  Home,
-  ShoppingCart,
-  Package,
-  Building2,
-  Users,
-  BarChart3,
-  Settings,
-  type LucideIcon,
-} from 'lucide-react'
-
-interface NavItem {
-  label: string
-  href: string
-  icon: LucideIcon
-  show: boolean
-}
+import { getNavItems } from './menu-config'
 
 interface SidebarProps {
   userRole: string
   canManageInventory: boolean
   canViewReports: boolean
+  className?: string
+  onLinkClick?: () => void
 }
 
 export function Sidebar({ userRole, canManageInventory, canViewReports }: SidebarProps) {
-  const pathname = usePathname()
-
-  const navItems: NavItem[] = [
-    { label: 'Dashboard', href: '/dashboard', icon: Home, show: true },
-    { label: 'POS', href: '/pos', icon: ShoppingCart, show: true },
-    {
-      label: 'Inventory',
-      href: '/inventory',
-      icon: Package,
-      show: canManageInventory,
-    },
-    {
-      label: 'Branches',
-      href: '/branches',
-      icon: Building2,
-      show: userRole === 'owner',
-    },
-    {
-      label: 'Staff',
-      href: '/staff',
-      icon: Users,
-      show: userRole === 'owner',
-    },
-    {
-      label: 'Reports',
-      href: '/reports',
-      icon: BarChart3,
-      show: canViewReports,
-    },
-    {
-      label: 'Settings',
-      href: '/settings',
-      icon: Settings,
-      show: userRole === 'owner',
-    },
-  ]
-
-  const visibleItems = navItems.filter((item) => item.show)
-
   return (
     <aside
       className="hidden md:fixed md:left-0 md:top-0 md:z-30 md:flex md:h-screen md:w-60 md:flex-col md:border-r md:border-border md:bg-card"
@@ -76,29 +21,49 @@ export function Sidebar({ userRole, canManageInventory, canViewReports }: Sideba
       <div className="flex h-[60px] items-center border-b border-border px-6">
         <span className="text-base font-semibold">VapeTrack PH</span>
       </div>
-      <nav className="flex-1 space-y-1 p-4">
-        {visibleItems.map((item) => {
-          const Icon = item.icon
-          const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors min-h-[44px]',
-                'hover:bg-secondary hover:text-foreground',
-                isActive
-                  ? 'bg-primary/15 text-primary'
-                  : 'text-muted-foreground'
-              )}
-            >
-              <Icon className="size-5" />
-              {item.label}
-            </Link>
-          )
-        })}
-      </nav>
+      <SidebarNav
+        userRole={userRole}
+        canManageInventory={canManageInventory}
+        canViewReports={canViewReports}
+      />
     </aside>
+  )
+}
+
+export function SidebarNav({
+  userRole,
+  canManageInventory,
+  canViewReports,
+  onLinkClick
+}: SidebarProps) {
+  const pathname = usePathname()
+  const navItems = getNavItems({ userRole, canManageInventory, canViewReports })
+  const visibleItems = navItems.filter((item) => item.show)
+
+  return (
+    <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
+      {visibleItems.map((item) => {
+        const Icon = item.icon
+        const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onLinkClick}
+            className={cn(
+              'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors min-h-[44px]',
+              'hover:bg-secondary hover:text-foreground',
+              isActive
+                ? 'bg-primary/15 text-primary'
+                : 'text-muted-foreground'
+            )}
+          >
+            <Icon className="size-5" />
+            {item.label}
+          </Link>
+        )
+      })}
+    </nav>
   )
 }

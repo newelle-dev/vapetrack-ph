@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { ShoppingCart, Package } from 'lucide-react'
 import { Header } from '@/components/layouts/Header'
 import { Button } from '@/components/ui/button'
+import { SidebarNav } from '@/components/layouts/Sidebar'
+import { MobileNav } from '@/components/layouts/MobileNav'
 import {
   Sheet,
   SheetContent,
@@ -26,23 +28,15 @@ export function StaffLayoutClient({
   userRole,
   canManageInventory,
 }: StaffLayoutClientProps) {
-  const [inventorySheetOpen, setInventorySheetOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
-  const isPosPage = pathname === '/pos'
-
-  // Minimal navigation for staff: Dashboard (to see sales) and POS
-  const navItems = [
-    { label: 'Dashboard', href: '/dashboard', icon: Package }, // Reusing Package icon or similar if needed, but docs say "Profile" often
-    { label: 'POS', href: '/pos', icon: ShoppingCart },
-  ]
 
   return (
     <div
       className="min-h-screen"
       style={{
         // @ts-ignore - CSS variable
-        '--safe-area-bottom': '10rem'
+        '--safe-area-bottom': '5rem'
       } as React.CSSProperties}
     >
       <Header
@@ -55,30 +49,26 @@ export function StaffLayoutClient({
         {children}
       </main>
 
+      <MobileNav
+        userRole={userRole}
+        canManageInventory={canManageInventory}
+        canViewReports={false}
+      />
+
       {/* Staff Navigation Sheet */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-60">
-          <SheetHeader>
-            <SheetTitle>Navigation</SheetTitle>
+        <SheetContent side="left" className="w-60 p-0 flex flex-col">
+          <SheetHeader className="h-[60px] flex items-center justify-center border-b border-border px-6">
+            <SheetTitle className="text-base font-bold">Navigation</SheetTitle>
           </SheetHeader>
-          <nav className="mt-6 space-y-1">
-            <Link
-              href="/dashboard"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground min-h-[44px]"
-            >
-              <Package className="size-5" />
-              My Sales Today
-            </Link>
-            <Link
-              href="/pos"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground min-h-[44px]"
-            >
-              <ShoppingCart className="size-5" />
-              Point of Sale
-            </Link>
-          </nav>
+          <div className="mt-4">
+            <SidebarNav
+              userRole={userRole}
+              canManageInventory={canManageInventory}
+              canViewReports={false} // Staff cannot view reports in this simplified layout? Reference: original code didn't have reports.
+              onLinkClick={() => setMobileMenuOpen(false)}
+            />
+          </div>
         </SheetContent>
       </Sheet>
 

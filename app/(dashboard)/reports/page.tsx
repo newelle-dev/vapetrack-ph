@@ -1,6 +1,7 @@
 'use client'
 
 import { BarChart3, Calendar } from 'lucide-react'
+import { PageContainer } from '@/components/layouts/page-container'
 
 export default function ReportsScreen() {
   const weeklyData = [
@@ -15,16 +16,17 @@ export default function ReportsScreen() {
 
   const maxRevenue = Math.max(...weeklyData.map(d => d.revenue))
 
-  return (
-    <div className="flex flex-col h-full overflow-hidden bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border px-4 py-4">
-        <h1 className="text-2xl font-bold text-foreground">Reports</h1>
-        <p className="text-xs text-muted-foreground mt-1">Weekly performance analytics</p>
-      </div>
+  const header = (
+    <div className="px-4 py-4">
+      <h1 className="text-2xl font-bold text-foreground">Reports</h1>
+      <p className="text-xs text-muted-foreground mt-1">Weekly performance analytics</p>
+    </div>
+  )
 
+  return (
+    <PageContainer fullHeight noPaddingTop stickyTop={header}>
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-4">
+      <div className="space-y-4 pt-4">
         {/* This Week Summary */}
         <div className="bg-linear-to-br from-primary/20 to-primary/5 rounded-2xl p-4 border border-primary/20">
           <div className="flex items-start justify-between mb-3">
@@ -96,6 +98,6 @@ export default function ReportsScreen() {
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   )
 }

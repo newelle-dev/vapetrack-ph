@@ -30,7 +30,7 @@ export function MetricsCard({
     return (
         <div
             className={cn(
-                'relative overflow-hidden rounded-2xl p-5 border border-white/10 shadow-xl',
+                'relative overflow-hidden rounded-xl p-4 border border-white/10 shadow-xl',
                 `bg-gradient-to-br ${gradient}`,
                 className
             )}

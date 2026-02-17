@@ -3,14 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, ShoppingCart, Package, BarChart3, Settings, type LucideIcon } from 'lucide-react'
-
-interface NavItem {
-  label: string
-  href: string
-  icon: LucideIcon
-  show: boolean
-}
+import { getNavItems } from './menu-config'
 
 interface MobileNavProps {
   userRole: string
@@ -26,30 +19,8 @@ export function MobileNav({
   const pathname = usePathname()
 
   // Mobile bottom nav: show only the primary tabs for mobile users
-  const navItems: NavItem[] = [
-    { label: 'Dashboard', href: '/dashboard', icon: Home, show: true },
-    { label: 'POS', href: '/pos', icon: ShoppingCart, show: true },
-    {
-      label: 'Inventory',
-      href: '/inventory',
-      icon: Package,
-      show: canManageInventory,
-    },
-    {
-      label: 'Reports',
-      href: '/reports',
-      icon: BarChart3,
-      show: canViewReports,
-    },
-    {
-      label: 'Settings',
-      href: '/settings',
-      icon: Settings,
-      show: userRole === 'owner',
-    },
-  ]
-
-  const visibleItems = navItems.filter((item) => item.show)
+  const navItems = getNavItems({ userRole, canManageInventory, canViewReports })
+  const visibleItems = navItems.filter((item) => item.show && item.mobile)
 
   return (
     <nav

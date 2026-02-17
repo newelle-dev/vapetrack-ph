@@ -38,114 +38,123 @@ export default function Dashboard() {
 
   return (
     <PageContainer>
-      {/* Personalized Greeting */}
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <p className="text-xl text-foreground font-bold tracking-tight">
-            {greeting}, {userName}!
-          </p>
-          <button className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 bg-secondary/50 px-2 py-1 rounded-md border border-border/50">
-            <Building2 className="w-3.5 h-3.5" />
-            <span>{currentBranch}</span>
-            <span className="text-[10px] opacity-70">▼</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Hero Card - Today's Revenue */}
-      <MetricsCard
-        title="Today's Revenue"
-        value={todayRevenue}
-        icon={ShoppingCart}
-        trend={{
-          value: parseFloat(revenueGrowth),
-          label: 'growth',
-        }}
-        subValue={{
-          label: 'Profit',
-          value: `₱${todayProfit.toLocaleString()}`,
-        }}
-      />
-
-      {/* Stat Cards Grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* Profit Card */}
-        <StatCard
-          title="Today's Profit"
-          value={todayProfit}
-          subtext={`${profitMargin}% margin`}
-          valueColor="text-success"
-        />
-
-        {/* Transactions Card */}
-        <StatCard
-          title="Transactions"
-          value={24}
-          subtext="+3 from yesterday"
-        />
-      </div>
-
-      {/* Low Stock Alerts */}
-      <div className="space-y-2">
-        <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-accent" />
-          Low Stock Alerts
-        </h3>
-        {lowStockProducts.map(product => (
-          <div key={product.id} className="bg-accent/10 border-l-4 border-accent rounded-xl p-3 flex items-center justify-between">
-            <div>
-              <p className="font-semibold text-sm text-foreground">{product.name}</p>
-              <p className="text-xs text-muted-foreground">Only {product.stock} left</p>
-            </div>
-            <button className="text-xs font-bold text-accent bg-accent/20 px-3 py-1.5 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center">
-              Restock
+      <div className="space-y-8">
+        {/* Personalized Greeting */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              {greeting}, {userName}!
+            </h1>
+            <button className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1.5 rounded-lg border border-border/50 min-h-[44px] touch-target">
+              <Building2 className="w-3.5 h-3.5" />
+              <span>{currentBranch}</span>
+              <span className="text-[10px] opacity-70">▼</span>
             </button>
           </div>
-        ))}
-      </div>
-
-      {/* Top Sellers */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-primary" />
-            Top Sellers Today
-          </h3>
-          <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Weekly Rank</span>
         </div>
-        {topSellers.map((item, idx) => (
-          <div key={idx} className="bg-secondary/30 rounded-xl p-3 border border-border/30">
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-semibold text-sm text-foreground">{item.name}</p>
-              <span className="text-xs font-bold text-primary">#{idx + 1}</span>
-            </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">{item.sales} sold</span>
-              <span className="text-success font-semibold">₱{item.revenue.toLocaleString()}</span>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Recent Activity */}
-      <div className="space-y-3">
-        <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-          <ShoppingCart className="w-4 h-4 text-primary" />
-          Recent Activity
-        </h3>
-        <div className="space-y-1">
-          {recentActivity.map((activity, idx) => (
-            <div key={idx} className="flex items-start gap-3 p-2 rounded-lg hover:bg-secondary/30 transition-colors">
-              <div className={`w-2 h-2 rounded-full mt-2 ${activity.type === 'sale' ? 'bg-primary' : 'bg-warning'}`} />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-foreground font-medium">{activity.description}</p>
-                <p className="text-xs text-muted-foreground">{activity.time}</p>
+        {/* Overview Stats Group */}
+        <div className="space-y-4">
+          {/* Hero Card - Today's Revenue */}
+          <MetricsCard
+            title="Today's Revenue"
+            value={todayRevenue}
+            icon={ShoppingCart}
+            trend={{
+              value: parseFloat(revenueGrowth),
+              label: 'growth',
+            }}
+            subValue={{
+              label: 'Profit',
+              value: `₱${todayProfit.toLocaleString()}`,
+            }}
+          />
+
+          {/* Stat Cards Grid */}
+          <div className="grid grid-cols-2 gap-4">
+            {/* Profit Card */}
+            <StatCard
+              title="Today's Profit"
+              value={todayProfit}
+              subtext={`${profitMargin}% margin`}
+              valueColor="text-success"
+            />
+
+            {/* Transactions Card */}
+            <StatCard
+              title="Transactions"
+              value={24}
+              subtext="+3 from yesterday"
+            />
+          </div>
+        </div>
+
+        {/* Low Stock Alerts */}
+        <div className="space-y-3">
+          <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-accent" />
+            Low Stock Alerts
+          </h3>
+          <div className="space-y-3">
+            {lowStockProducts.map(product => (
+              <div key={product.id} className="bg-accent/10 border-l-4 border-accent rounded-xl p-3 flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-sm text-foreground">{product.name}</p>
+                  <p className="text-xs text-muted-foreground">Only {product.stock} left</p>
+                </div>
+                <button className="text-xs font-bold text-accent bg-accent/20 px-4 py-2 rounded-xl min-h-[44px] touch-target flex items-center justify-center">
+                  Restock
+                </button>
               </div>
-              {activity.amount && (
-                <span className="text-sm font-bold text-primary">₱{activity.amount.toLocaleString()}</span>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* Top Sellers */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between px-0.5">
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-primary" />
+              Top Sellers Today
+            </h3>
+            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Weekly Rank</span>
+          </div>
+          <div className="space-y-3">
+            {topSellers.map((item, idx) => (
+              <div key={idx} className="bg-secondary/30 rounded-xl p-3 border border-border/30">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-semibold text-sm text-foreground">{item.name}</p>
+                  <span className="text-xs font-bold text-primary">#{idx + 1}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">{item.sales} sold</span>
+                  <span className="text-success font-semibold">₱{item.revenue.toLocaleString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="space-y-3">
+          <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <ShoppingCart className="w-4 h-4 text-primary" />
+            Recent Activity
+          </h3>
+          <div className="space-y-2">
+            {recentActivity.map((activity, idx) => (
+              <div key={idx} className="flex items-center gap-3 p-3 rounded-xl hover:bg-secondary/30 transition-colors min-h-[44px]">
+                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${activity.type === 'sale' ? 'bg-primary' : 'bg-warning'}`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-foreground font-medium truncate">{activity.description}</p>
+                  <p className="text-xs text-muted-foreground">{activity.time}</p>
+                </div>
+                {activity.amount && (
+                  <span className="text-sm font-bold text-primary">₱{activity.amount.toLocaleString()}</span>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </PageContainer>

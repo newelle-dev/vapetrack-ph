@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Header } from '@/components/layouts/Header'
-import { Sidebar } from '@/components/layouts/Sidebar'
+import { Sidebar, SidebarNav } from '@/components/layouts/Sidebar'
 import { MobileNav } from '@/components/layouts/MobileNav'
 import {
   Sheet,
@@ -13,16 +13,6 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import {
-  Home,
-  ShoppingCart,
-  Package,
-  Building2,
-  Users,
-  BarChart3,
-  Settings,
-  type LucideIcon,
-} from 'lucide-react'
 
 interface DashboardLayoutClientProps {
   children: React.ReactNode
@@ -30,13 +20,6 @@ interface DashboardLayoutClientProps {
   userRole: string
   canManageInventory: boolean
   canViewReports: boolean
-}
-
-interface NavItem {
-  label: string
-  href: string
-  icon: LucideIcon
-  show: boolean
 }
 
 export function DashboardLayoutClient({
@@ -49,45 +32,14 @@ export function DashboardLayoutClient({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
 
-  const navItems: NavItem[] = [
-    { label: 'Dashboard', href: '/dashboard', icon: Home, show: true },
-    { label: 'POS', href: '/pos', icon: ShoppingCart, show: true },
-    {
-      label: 'Inventory',
-      href: '/inventory',
-      icon: Package,
-      show: canManageInventory,
-    },
-    {
-      label: 'Branches',
-      href: '/branches',
-      icon: Building2,
-      show: userRole === 'owner',
-    },
-    {
-      label: 'Staff',
-      href: '/staff',
-      icon: Users,
-      show: userRole === 'owner',
-    },
-    {
-      label: 'Reports',
-      href: '/reports',
-      icon: BarChart3,
-      show: canViewReports,
-    },
-    {
-      label: 'Settings',
-      href: '/settings',
-      icon: Settings,
-      show: userRole === 'owner',
-    },
-  ]
-
-  const visibleItems = navItems.filter((item) => item.show)
-
   return (
-    <div className="min-h-screen">
+    <div
+      className="min-h-screen"
+      style={{
+        // @ts-ignore - CSS variable
+        '--safe-area-bottom': '5rem'
+      } as React.CSSProperties}
+    >
       <Sidebar
         userRole={userRole}
         canManageInventory={canManageInventory}
@@ -114,30 +66,12 @@ export function DashboardLayoutClient({
             <SheetTitle className="text-base font-bold">VapeTrack PH</SheetTitle>
           </div>
 
-          <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
-            {visibleItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors min-h-[44px]',
-                    'hover:bg-secondary hover:text-foreground',
-                    isActive
-                      ? 'bg-primary/15 text-primary'
-                      : 'text-muted-foreground'
-                  )}
-                >
-                  <Icon className="size-5" />
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
+          <SidebarNav
+            userRole={userRole}
+            canManageInventory={canManageInventory}
+            canViewReports={canViewReports}
+            onLinkClick={() => setMobileMenuOpen(false)}
+          />
 
           <div className="border-t border-border p-4 bg-card">
             <div className="flex items-center gap-3">
