@@ -136,8 +136,8 @@ export function PageContainer({
 
 **Goal:** Extract search input into a reusable component to eliminate duplication between POS and Inventory pages.
 
-- [ ] Create new file `components/ui/search-input.tsx`
-- [ ] Copy and paste the code below:
+- [x] Create new file `components/ui/search-input.tsx`
+- [x] Copy and paste the code below:
 
 ```typescript
 'use client'
@@ -184,8 +184,8 @@ export function SearchInput({
 ```
 
 #### Step 2 Verification Checklist
-- [ ] No TypeScript errors in `components/ui/search-input.tsx`  
-- [ ] Run `npm run build` to ensure no build errors
+- [x] No TypeScript errors in `components/ui/search-input.tsx`  
+- [x] Run `npm run build` to ensure no build errors
 
 #### Step 2 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
