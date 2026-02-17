@@ -409,10 +409,7 @@ Before moving to Sprint 2, verify:
    - List categories
    - Add/edit category form
    - Delete category (soft delete)
-2. [ ] Add shadcn/ui components:
-   ```bash
-   npx shadcn@latest add table dialog alert-dialog badge
-   ```
+   
 3. [ ] Create Server Actions:
    - `app/actions/categories.ts` (CRUD operations)
 4. [ ] Implement category list with search/filter

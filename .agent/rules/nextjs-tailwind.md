@@ -1,4 +1,8 @@
 ---
+trigger: always_on
+---
+
+---
 description: Next.js + Tailwind development standards and instructions
 applyTo: '**/*.tsx, **/*.ts, **/*.jsx, **/*.js, **/*.css'
 ---
