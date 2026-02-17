@@ -29,47 +29,51 @@ export default function SettingsScreen() {
 
   return (
     <PageContainer title="Settings">
-      {/* Shop Info Card */}
-      <div className="bg-card rounded-xl p-4 border border-border/50">
-        <h3 className="text-sm font-bold text-foreground mb-2">Shop Info</h3>
-        <div className="space-y-2 text-sm">
-          <p className="text-foreground"><span className="text-muted-foreground">Shop:</span> VapeTrack PH</p>
-          <p className="text-foreground"><span className="text-muted-foreground">Owner:</span> Manager</p>
-          <p className="text-foreground"><span className="text-muted-foreground">Version:</span> 1.0.0</p>
-        </div>
-      </div>
-
-      {/* Settings Sections */}
-      {settingsSections.map((section, idx) => (
-        <div key={idx} className="space-y-2">
-          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wide px-1">{section.title}</h3>
-          <div className="space-y-1">
-            {section.items.map((item, itemIdx) => {
-              const IconComponent = item.icon
-              return (
-                <button
-                  key={itemIdx}
-                  className="w-full bg-card rounded-xl p-3 border border-border/50 hover:border-border transition-colors flex items-center gap-3 text-left"
-                >
-                  <div className="bg-secondary rounded-lg p-2.5">
-                    <IconComponent className="w-4 h-4 text-foreground" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground">{item.label}</p>
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
-                  </div>
-                </button>
-              )
-            })}
+      <div className="space-y-8">
+        {/* Shop Info Card */}
+        <div className="bg-card rounded-xl p-4 border border-border/50">
+          <h3 className="text-sm font-bold text-foreground mb-3">Shop Info</h3>
+          <div className="space-y-2 text-sm">
+            <p className="text-foreground"><span className="text-muted-foreground">Shop:</span> VapeTrack PH</p>
+            <p className="text-foreground"><span className="text-muted-foreground">Owner:</span> Manager</p>
+            <p className="text-foreground"><span className="text-muted-foreground">Version:</span> 1.0.0</p>
           </div>
         </div>
-      ))}
 
-      {/* Logout Button */}
-      <button className="w-full bg-accent/10 hover:bg-accent/20 text-accent rounded-xl py-3 font-semibold transition-colors flex items-center justify-center gap-2 mt-6 touch-target">
-        <LogOut className="w-5 h-5" />
-        Logout
-      </button>
+        {/* Settings Sections Group */}
+        <div className="space-y-6">
+          {settingsSections.map((section, idx) => (
+            <div key={idx} className="space-y-3">
+              <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wide px-1">{section.title}</h3>
+              <div className="space-y-2">
+                {section.items.map((item, itemIdx) => {
+                  const IconComponent = item.icon
+                  return (
+                    <button
+                      key={itemIdx}
+                      className="w-full bg-card rounded-xl p-3 border border-border/50 hover:border-border transition-colors flex items-center gap-3 text-left touch-target"
+                    >
+                      <div className="bg-secondary rounded-lg p-2.5">
+                        <IconComponent className="w-4 h-4 text-foreground" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-foreground">{item.label}</p>
+                        <p className="text-xs text-muted-foreground">{item.description}</p>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Logout Button */}
+        <button className="w-full bg-accent/10 hover:bg-accent/20 text-accent rounded-xl py-3 font-semibold transition-colors flex items-center justify-center gap-2 touch-target">
+          <LogOut className="w-5 h-5" />
+          Logout
+        </button>
+      </div>
     </PageContainer>
   )
 }

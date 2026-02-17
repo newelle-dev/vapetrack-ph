@@ -58,7 +58,7 @@ export function ProductFilters({
   const hasActiveFilters = search || categoryId || isActive !== undefined;
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-lg bg-card">
+    <div className="flex flex-col gap-4 p-4 border rounded-xl bg-card shadow-sm">
       {/* Search */}
       <div className="w-full">
         <SearchInput

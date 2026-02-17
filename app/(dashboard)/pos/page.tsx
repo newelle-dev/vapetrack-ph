@@ -146,7 +146,7 @@ export default function POSScreen() {
   return (
     <PageContainer fullHeight noPaddingTop stickyTop={stickyContent}>
       {/* Product Grid - 2 Columns */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         {filteredProducts.map(product => (
           <ProductCard
             key={product.id}

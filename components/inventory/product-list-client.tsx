@@ -82,7 +82,7 @@ export function ProductListClient({
           />
 
           {/* Mobile Card View */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:hidden">
             {productsData.data.map((product) => (
               <ProductCard
                 key={product.id}

@@ -100,11 +100,11 @@ export function StaffList({ staffMembers }: StaffListProps) {
       ) : (
         <div className="space-y-4">
           {/* Mobile cards */}
-          <div className="space-y-4 md:hidden">
+          <div className="space-y-3 md:hidden">
             {staffMembers.map((staff) => (
               <div
                 key={staff.id}
-                className="rounded-xl border bg-card p-4 space-y-3"
+                className="rounded-xl border bg-card p-3 space-y-3"
               >
                 <div className="flex items-start justify-between">
                   <div>

@@ -106,11 +106,11 @@ export function BranchList({ branches }: BranchListProps) {
       ) : (
         <div className="space-y-4">
           {/* Mobile cards */}
-          <div className="space-y-4 md:hidden">
+          <div className="space-y-3 md:hidden">
             {branches.map((branch) => (
               <div
                 key={branch.id}
-                className="rounded-xl border bg-card p-4 space-y-3"
+                className="rounded-xl border bg-card p-3 space-y-3"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
