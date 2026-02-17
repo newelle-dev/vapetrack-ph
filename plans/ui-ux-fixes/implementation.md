@@ -441,6 +441,29 @@ const inter = Inter({
 - [ ] Verify no FOUT (flash of unstyled text) on page load
 - [ ] Test on real mobile device if available - font should render cleanly
 
+- [x] Open `app/layout.tsx`
+- [x] Add the Inter font import at the top (after the Metadata import):
+
+- [x] Locate the `<body>` tag in the RootLayout function
+- [x] Update the body className to apply the Inter font:
+
+- [x] Open `app/globals.css`
+- [x] Locate the `@theme inline` block (around line 70-100)
+- [x] Find the line `--font-sans: 'Geist', 'Geist Fallback';`
+- [x] Replace that line with:
+
+- [x] (Optional) Remove or comment out the Geist Mono line if not needed:
+
+- [ ] Run `npm run build` - no TypeScript or ESLint errors
+- [ ] Run `npm run dev` and open http://localhost:3000/dashboard
+- [ ] Open Chrome DevTools → Elements panel
+- [ ] Select any text element (heading, paragraph, button)
+- [ ] In Computed tab, find `font-family`
+- [ ] Verify it shows "Inter" instead of "Geist"
+- [ ] Check multiple pages (login, dashboard, POS) to ensure font applies globally
+- [ ] Verify no FOUT (flash of unstyled text) on page load
+- [ ] Test on real mobile device if available - font should render cleanly
+
 #### Step 6 STOP & COMMIT
 
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.

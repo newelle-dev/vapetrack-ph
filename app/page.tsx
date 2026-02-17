@@ -18,7 +18,7 @@ export default function LandingPage() {
             onClick={() => window.location.href = '/login'}
             className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
           >
-            Login / Sign Up 
+            Start Tracking
           </button>
         </div>
       </header>
@@ -30,7 +30,7 @@ export default function LandingPage() {
             <span className="text-sm font-semibold text-primary">Fast. Profitable. Real-time.</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance leading-tight">
-            Lightning-Fast POS for Filipino Vape Shops
+            Cloud-Based Control for Your Vape Business
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
             Manage sales, track profit margins, monitor inventory—all in seconds. Built for retail speed.

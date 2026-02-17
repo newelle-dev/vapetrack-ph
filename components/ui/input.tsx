@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   // Ensure we never pass `null` as the input `value` prop.
   // React warns when `value` is null; use empty string to clear controlled inputs.
-  const { value: maybeValue, ...rest } = props as any
+  const { value: maybeValue, ...rest } = props
   const value = maybeValue === null ? "" : maybeValue
 
   return (
