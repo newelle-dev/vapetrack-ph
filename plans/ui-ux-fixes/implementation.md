@@ -613,6 +613,7 @@ feat(typography): switch from Geist to Inter font
 }
 ```
 
+
 ##### Step 7 Verification Checklist
 
 - [ ] Run `npm run build` - no CSS compilation errors
@@ -626,6 +627,7 @@ feat(typography): switch from Geist to Inter font
 - [ ] Verify colors display correctly in browser
 - [ ] Verify blue info color (#3b82f6) meets WCAG AA contrast ratio (4.5:1) against white text
 - [ ] Check that new tokens are available in Tailwind (can use `bg-info`, `text-neutral`, etc.)
+  - NOTE: I added the new color tokens and Tailwind mappings to `app/globals.css` and ran `npm run build`; the build completed successfully.
 
 #### Step 7 STOP & COMMIT
 
