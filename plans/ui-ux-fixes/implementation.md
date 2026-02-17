@@ -142,9 +142,9 @@ feat(mobile-nav): add POS link and touch-target utility
 
 ##### Instructions:
 
-- [ ] Open `components/ui/button.tsx`
-- [ ] Locate the `buttonVariants` definition (around line 10-60)
-- [ ] Find the `size` object within `variants` and replace it completely with:
+- [x] Open `components/ui/button.tsx`
+- [x] Locate the `buttonVariants` definition (around line 10-60)
+- [x] Find the `size` object within `variants` and replace it completely with:
 
 ```tsx
 size: {
@@ -169,6 +169,7 @@ size: {
 ##### Step 2 Verification Checklist
 
 - [ ] Run `npm run build` - no TypeScript or ESLint errors
+  - NOTE: I ran `npm run build`. The build failed due to an unrelated TypeScript error in `app/(dashboard)/staff/staff-form.tsx` (see build output). This prevents a clean build until fixed.
 - [ ] Run `npm run dev` and open http://localhost:3000/login
 - [ ] Inspect the "Sign in" button in DevTools
 - [ ] Verify height is 40px (h-10) or 56px if using `size="xl"`

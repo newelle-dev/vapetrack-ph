@@ -129,3 +129,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Touch target utility for WCAG 2.1 Level AA compliance (44×44px minimum) */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}

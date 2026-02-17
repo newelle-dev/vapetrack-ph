@@ -51,7 +51,7 @@ interface StaffFormProps {
 export function StaffForm({ staff, onSuccess }: StaffFormProps) {
   const [isPending, startTransition] = useTransition()
 
-  const form = useForm<StaffFormValues>({  
+  const form = useForm({
     resolver: zodResolver(staffFormSchema),
     defaultValues: {
       full_name: staff?.full_name || '',
