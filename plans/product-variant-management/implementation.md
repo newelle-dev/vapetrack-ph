@@ -1186,7 +1186,7 @@ export default async function EditProductPage({
 
 #### Step 5: Wire Up Navigation & Update Inventory Page
 
-- [ ] Update the inventory page at `app/(dashboard)/inventory/page.tsx` to link the "Create Product" button:
+- [x] Update the inventory page at `app/(dashboard)/inventory/page.tsx` to link the "Create Product" button:
 
 ```tsx
 import { createClient } from "@/lib/supabase/server";
@@ -1226,7 +1226,7 @@ export default async function InventoryPage() {
 }
 ```
 
-- [ ] Update the product table at `components/inventory/product-table.tsx` to add an "Edit" action:
+- [x] Update the product table at `components/inventory/product-table.tsx` to add an "Edit" action:
 
 ```tsx
 "use client";
@@ -1321,7 +1321,7 @@ export function ProductTable({ products, onViewProduct }: ProductTableProps) {
 }
 ```
 
-- [ ] Update the product card at `components/inventory/product-card.tsx` to add an edit action:
+- [x] Update the product card at `components/inventory/product-card.tsx` to add an edit action:
 
 ```tsx
 "use client";
@@ -1399,7 +1399,7 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
 }
 ```
 
-- [ ] Update the product details dialog at `components/inventory/product-details-dialog.tsx` to add an "Edit Product" button:
+- [x] Update the product details dialog at `components/inventory/product-details-dialog.tsx` to add an "Edit Product" button:
 
 ```tsx
 "use client";
@@ -1573,12 +1573,12 @@ export function ProductDetailsDialog({
 ```
 
 ##### Step 5 Verification Checklist
-- [ ] No build errors
-- [ ] On the inventory page, the "Create Product" button navigates to `/inventory/products/new`
-- [ ] In the desktop table, each product row shows a "View" and "Edit" action
-- [ ] In the mobile card view, each card shows an "Edit Product" button
-- [ ] In the product details dialog, an "Edit Product" button navigates to the edit page
-- [ ] Full flow: create product → see it in list → edit it → verify changes
+- [x] No build errors
+- [x] On the inventory page, the "Create Product" button navigates to `/inventory/products/new`
+- [x] In the desktop table, each product row shows a "View" and "Edit" action
+- [x] In the mobile card view, each card shows an "Edit Product" button
+- [x] In the product details dialog, an "Edit Product" button navigates to the edit page
+- [x] Full flow: create product → see it in list → edit it → verify changes
 
 #### Step 5 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.

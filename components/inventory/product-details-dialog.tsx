@@ -7,7 +7,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pencil } from "lucide-react";
+import Link from "next/link";
 import { useProductById } from "@/lib/hooks/useProducts";
 import { formatCurrency } from "@/lib/utils";
 
@@ -105,15 +108,25 @@ export function ProductDetailsDialog({
                         </Badge>
                       </div>
 
-                      {/* Pricing (if available) */}
-                      {variant.selling_price && (
-                        <div className="text-sm">
+                      {/* Pricing */}
+                      <div className="flex items-center gap-4 text-sm">
+                        <div>
                           <span className="text-muted-foreground">Price: </span>
                           <span className="font-medium">
                             {formatCurrency(variant.selling_price)}
                           </span>
                         </div>
-                      )}
+                        {variant.capital_cost > 0 && (
+                          <div>
+                            <span className="text-muted-foreground">
+                              Cost:{" "}
+                            </span>
+                            <span className="font-medium">
+                              {formatCurrency(variant.capital_cost)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -122,6 +135,16 @@ export function ProductDetailsDialog({
                   No variants available
                 </p>
               )}
+            </div>
+
+            {/* Edit Button */}
+            <div className="pt-4 border-t">
+              <Button asChild className="w-full sm:w-auto">
+                <Link href={`/inventory/products/${product.id}/edit`}>
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Edit Product
+                </Link>
+              </Button>
             </div>
 
             {/* Metadata */}

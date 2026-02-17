@@ -10,7 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Eye } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
+import Link from "next/link";
 import type { ProductWithCategory } from "@/types";
 
 interface ProductTableProps {
@@ -63,14 +64,22 @@ export function ProductTable({ products, onViewProduct }: ProductTableProps) {
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onViewProduct(product.id)}
-                >
-                  <Eye className="mr-2 h-4 w-4" />
-                  View
-                </Button>
+                <div className="flex items-center justify-end gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onViewProduct(product.id)}
+                  >
+                    <Eye className="mr-1 h-4 w-4" />
+                    View
+                  </Button>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={`/inventory/products/${product.id}/edit`}>
+                      <Pencil className="mr-1 h-4 w-4" />
+                      Edit
+                    </Link>
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
