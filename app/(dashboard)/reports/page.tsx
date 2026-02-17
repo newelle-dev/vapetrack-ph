@@ -42,7 +42,7 @@ export default function ReportsScreen() {
         {/* Weekly Chart */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold text-foreground">Daily Revenue</h3>
-          <div className="bg-card rounded-[14px] p-4 border border-border/50 space-y-3">
+          <div className="bg-card rounded-xl p-4 border border-border/50 space-y-3">
             {weeklyData.map(item => {
               const barWidth = (item.revenue / maxRevenue) * 100
               return (
@@ -65,13 +65,13 @@ export default function ReportsScreen() {
 
         {/* Performance Metrics */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-card rounded-[14px] p-3 border border-border/50">
+          <div className="bg-card rounded-xl p-3 border border-border/50">
             <p className="text-xs text-muted-foreground font-medium mb-1.5">Best Day</p>
             <p className="text-xl font-bold text-success">Saturday</p>
             <p className="text-xs text-muted-foreground">₱21,500</p>
           </div>
 
-          <div className="bg-card rounded-[14px] p-3 border border-border/50">
+          <div className="bg-card rounded-xl p-3 border border-border/50">
             <p className="text-xs text-muted-foreground font-medium mb-1.5">Lowest Day</p>
             <p className="text-xl font-bold text-warning">Wednesday</p>
             <p className="text-xs text-muted-foreground">₱11,800</p>
@@ -88,7 +88,7 @@ export default function ReportsScreen() {
             {['Week', 'Month', 'Year'].map(period => (
               <button
                 key={period}
-                className="py-2.5 px-3 rounded-[12px] border-2 border-border/60 bg-secondary/40 text-foreground font-semibold text-xs hover:border-border/80 transition-colors"
+                className="py-2.5 px-3 rounded-xl border-2 border-border/60 bg-secondary/40 text-foreground font-semibold text-xs hover:border-border/80 transition-colors"
               >
                 {period}
               </button>

@@ -69,7 +69,7 @@ export default function CheckoutCart({
           {items.map((item) => (
             <div
               key={`${item.id}-${item.variant}`}
-              className="flex gap-3 bg-secondary/30 rounded-[14px] p-3 border border-border/30 hover:border-border/50 transition-colors"
+              className="flex gap-3 bg-secondary/30 rounded-xl p-3 border border-border/30 hover:border-border/50 transition-colors"
             >
               {/* Item Info */}
               <div className="flex-1 min-w-0">
@@ -122,7 +122,7 @@ export default function CheckoutCart({
           />
 
           {/* Totals */}
-          <div className="bg-secondary/40 rounded-[14px] p-3 border border-border/30 space-y-1.5">
+          <div className="bg-secondary/40 rounded-xl p-3 border border-border/30 space-y-1.5">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Subtotal</span>
               <span className="text-foreground font-medium">₱{subtotal.toLocaleString()}</span>
@@ -149,7 +149,7 @@ export default function CheckoutCart({
                 <button
                   key={method.id}
                   onClick={() => setPaymentMethod(method.id as 'cash' | 'gcash' | 'card')}
-                  className={`py-2.5 px-2 rounded-[12px] border-2 transition-all text-xs font-semibold touch-target ${
+                  className={`py-2.5 px-2 rounded-xl border-2 transition-all text-xs font-semibold touch-target ${
                     paymentMethod === method.id
                       ? 'border-primary bg-primary/15 text-primary shadow-md shadow-primary/20'
                       : 'border-border/60 bg-secondary/40 text-foreground hover:border-border/80'
@@ -165,7 +165,7 @@ export default function CheckoutCart({
           {/* Complete Sale Button - Full Width */}
           <button
             onClick={handleCompleteSale}
-            className="w-full bg-primary text-primary-foreground rounded-[12px] py-3.5 font-bold text-base touch-target hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
+            className="w-full bg-primary text-primary-foreground rounded-xl py-3.5 font-bold text-base touch-target hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
           >
             Complete Sale
           </button>

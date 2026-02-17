@@ -87,9 +87,9 @@ export function Sidebar({ userRole, canManageInventory, canViewReports }: Sideba
               href={item.href}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors min-h-[44px]',
-                'hover:bg-accent hover:text-accent-foreground',
+                'hover:bg-secondary hover:text-foreground',
                 isActive
-                  ? 'bg-accent text-accent-foreground'
+                  ? 'bg-primary/15 text-primary'
                   : 'text-muted-foreground'
               )}
             >

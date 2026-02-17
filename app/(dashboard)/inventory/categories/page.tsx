@@ -8,6 +8,7 @@ import { CategoryList } from "@/components/categories/category-list";
 import { CategoryForm } from "@/components/categories/category-form";
 import { getCategories } from "@/app/actions/categories";
 import { createClient } from "@/lib/supabase/server";
+import { PageContainer } from "@/components/layouts/page-container";
 
 export const metadata = {
     title: "Categories - VapeTrack PH",
@@ -29,20 +30,18 @@ export default async function CategoriesPage({
     const { data, metadata } = await getCategories(query, page);
 
     return (
-        <div className="flex-1 space-y-4 p-4 pb-20 md:p-6 md:pb-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold tracking-tight">Product Categories</h2>
-                <div className="flex items-center space-x-2">
-                    <CategoryForm
-                        trigger={
-                            <Button>
-                                <Plus className="mr-2 h-4 w-4" /> Add Category
-                            </Button>
-                        }
-                    />
-                </div>
-            </div>
-
+        <PageContainer
+            title="Product Categories"
+            action={
+                <CategoryForm
+                    trigger={
+                        <Button>
+                            <Plus className="mr-2 h-4 w-4" /> Add Category
+                        </Button>
+                    }
+                />
+            }
+        >
             <div className="flex items-center space-x-2">
                 <form className="flex-1 max-w-sm flex items-center gap-2">
                     <div className="relative flex-1">
@@ -70,6 +69,6 @@ export default async function CategoriesPage({
                     </div>
                 )}
             </div>
-        </div>
+        </PageContainer>
     );
 }

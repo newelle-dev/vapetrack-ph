@@ -3,7 +3,7 @@
 import { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
-interface PageContainerProps {
+interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     children: ReactNode
     title?: string
     subtitle?: string
@@ -51,6 +51,8 @@ export function PageContainer({
     fullHeight = false,
     stickyTop,
     noPaddingTop = false,
+    style,
+    ...props
 }: PageContainerProps) {
     return (
         <div
@@ -58,9 +60,17 @@ export function PageContainer({
                 'flex-1 space-y-4',
                 fullHeight ? 'h-full flex flex-col' : '',
                 noPaddingTop ? 'p-0' : 'p-4 md:p-6',
-                !noPaddingTop && 'pb-20 md:pb-6', // Bottom padding for mobile nav
+                // Remove the static pb-20 class, we will handle it via style
+                !noPaddingTop && 'md:pb-6',
                 className
             )}
+            style={{
+                // Apply dynamic bottom padding on mobile (md: breakpoint handles desktop reset via class)
+                paddingBottom: !noPaddingTop ? 'var(--safe-area-bottom)' : undefined,
+                ...style
+            }}
+            {...props}
+
         >
             {/* Sticky top content (optional) */}
             {stickyTop && (

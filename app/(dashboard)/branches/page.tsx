@@ -1,10 +1,8 @@
-
 import { BranchList } from '@/components/branch/branch-list'
+import { CreateBranchDialog } from '@/components/branch/create-branch-dialog'
+import { PageContainer } from '@/components/layouts/page-container'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-
-
-
 
 export default async function BranchesPage() {
   const supabase = await createClient()
@@ -29,17 +27,12 @@ export default async function BranchesPage() {
     .order('created_at', { ascending: true })
 
   return (
-    <div className="container max-w-6xl space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Branch Management</h1>
-          <p className="text-muted-foreground">
-            Manage your shop locations and settings.
-          </p>
-        </div>
-      </div>
-
+    <PageContainer
+      title="Branch Management"
+      subtitle="Manage your shop locations and settings."
+      action={<CreateBranchDialog />}
+    >
       <BranchList branches={branches ?? []} />
-    </div>
+    </PageContainer>
   )
 }

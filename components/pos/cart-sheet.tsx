@@ -93,7 +93,7 @@ function CartSheet({ items, onClose, onUpdateCart }: CartSheetProps) {
               return (
                 <div
                   key={`${item.id}-${item.variant}`}
-                  className="flex gap-3 bg-secondary/30 rounded-[14px] p-3 border border-border/30 hover:border-border/50 transition-colors"
+                  className="flex gap-3 bg-secondary/30 rounded-xl p-3 border border-border/30 hover:border-border/50 transition-colors"
                 >
                   {/* Item Info */}
                   <div className="flex-1 min-w-0">
@@ -150,11 +150,11 @@ function CartSheet({ items, onClose, onUpdateCart }: CartSheetProps) {
               placeholder="Customer name (optional)"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full px-3 py-2.5 bg-secondary rounded-[12px] border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors"
+              className="w-full px-3 py-2.5 bg-secondary rounded-xl border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors"
             />
 
             {/* Totals Card */}
-            <div className="bg-linear-to-br from-primary/15 to-primary/5 rounded-[14px] p-3 border border-primary/20 space-y-1.5">
+            <div className="bg-linear-to-br from-primary/15 to-primary/5 rounded-xl p-3 border border-primary/20 space-y-1.5">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="text-foreground font-medium">₱{subtotal.toLocaleString()}</span>
@@ -187,7 +187,7 @@ function CartSheet({ items, onClose, onUpdateCart }: CartSheetProps) {
                   <button
                     key={method.id}
                     onClick={() => setPaymentMethod(method.id as 'cash' | 'gcash' | 'card')}
-                    className={`py-2.5 px-3 rounded-[12px] border-2 transition-all text-xs font-semibold touch-target flex flex-col items-center gap-1 ${
+                    className={`py-2.5 px-3 rounded-xl border-2 transition-all text-xs font-semibold touch-target flex flex-col items-center gap-1 ${
                       paymentMethod === method.id
                         ? 'border-primary bg-primary/15 text-primary shadow-md shadow-primary/20'
                         : 'border-border/60 bg-secondary/40 text-foreground hover:border-border/80'
@@ -203,7 +203,7 @@ function CartSheet({ items, onClose, onUpdateCart }: CartSheetProps) {
             {/* Complete Sale Button - Full Width */}
             <button
               onClick={handleCompleteSale}
-              className="w-full bg-primary text-primary-foreground rounded-[12px] py-4 font-bold text-base touch-target hover:bg-primary/90 active:scale-95 shadow-lg hover:shadow-xl transition-all"
+              className="w-full bg-primary text-primary-foreground rounded-xl py-4 font-bold text-base touch-target hover:bg-primary/90 active:scale-95 shadow-lg hover:shadow-xl transition-all"
             >
               Complete Sale
             </button>

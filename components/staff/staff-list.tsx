@@ -52,7 +52,6 @@ interface StaffListProps {
 }
 
 export function StaffList({ staffMembers }: StaffListProps) {
-  const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [editingStaff, setEditingStaff] = useState<StaffMember | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -90,28 +89,9 @@ export function StaffList({ staffMembers }: StaffListProps) {
 
   return (
     <>
-      <div className="flex justify-end">
-        <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg">
-              <Plus className="mr-2 size-4" />
-              Add Staff Member
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Add New Staff Member</DialogTitle>
-              <DialogDescription>
-                Create a new staff account with permissions and PIN access.
-              </DialogDescription>
-            </DialogHeader>
-            <StaffForm onSuccess={() => setCreateDialogOpen(false)} />
-          </DialogContent>
-        </Dialog>
-      </div>
 
       {staffMembers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed p-12 text-center bg-card">
           <p className="text-lg font-medium">No staff members yet</p>
           <p className="text-sm text-muted-foreground">
             Get started by adding your first staff member.
@@ -124,7 +104,7 @@ export function StaffList({ staffMembers }: StaffListProps) {
             {staffMembers.map((staff) => (
               <div
                 key={staff.id}
-                className="rounded-lg border bg-card p-4 space-y-3"
+                className="rounded-xl border bg-card p-4 space-y-3"
               >
                 <div className="flex items-start justify-between">
                   <div>
@@ -171,20 +151,18 @@ export function StaffList({ staffMembers }: StaffListProps) {
                 <div className="flex gap-2 pt-2">
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="flex-1"
+                    className="flex-1 touch-target"
                     onClick={() => handleEdit(staff)}
                   >
-                    <Pencil className="mr-2 size-3" />
+                    <Pencil className="mr-2 size-4" />
                     Edit
                   </Button>
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive touch-target px-4"
                     onClick={() => handleDelete(staff.id)}
                   >
-                    <Trash2 className="size-3" />
+                    <Trash2 className="size-4" />
                   </Button>
                 </div>
               </div>
@@ -192,7 +170,7 @@ export function StaffList({ staffMembers }: StaffListProps) {
           </div>
 
           {/* Desktop table */}
-          <div className="hidden md:block rounded-md border">
+          <div className="hidden md:block rounded-xl border overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>

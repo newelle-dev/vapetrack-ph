@@ -50,8 +50,8 @@ export default function VariantSelector({ product, onAddToCart, onClose }: Varia
           </div>
 
           {/* Product Info Card */}
-          <div className="flex gap-3 bg-secondary/40 rounded-[14px] p-3 border border-border/30">
-            <div className="w-16 h-16 bg-secondary rounded-[12px] shrink-0 flex items-center justify-center text-3xl">
+          <div className="flex gap-3 bg-secondary/40 rounded-xl p-3 border border-border/30">
+            <div className="w-16 h-16 bg-secondary rounded-xl shrink-0 flex items-center justify-center text-3xl">
               {product.image}
             </div>
             <div className="flex-1 min-w-0">
@@ -69,7 +69,7 @@ export default function VariantSelector({ product, onAddToCart, onClose }: Varia
                 <button
                   key={variant}
                   onClick={() => setSelectedVariant(variant)}
-                  className={`py-2.5 px-3 rounded-[12px] border-2 transition-all text-xs font-semibold touch-target ${
+                  className={`py-2.5 px-3 rounded-xl border-2 transition-all text-xs font-semibold touch-target ${
                     selectedVariant === variant
                       ? 'border-primary bg-primary/15 text-primary shadow-md shadow-primary/20'
                       : 'border-border/60 bg-secondary/40 text-foreground hover:border-border/80'
@@ -104,7 +104,7 @@ export default function VariantSelector({ product, onAddToCart, onClose }: Varia
           </div>
 
           {/* Subtotal Preview Box */}
-          <div className="bg-primary/10 rounded-[14px] p-3 border border-primary/20">
+          <div className="bg-primary/10 rounded-xl p-3 border border-primary/20">
             <div className="flex justify-between items-center gap-2">
               <span className="text-xs text-muted-foreground font-medium">Subtotal</span>
               <span className="text-xl font-bold text-primary">₱{subtotal.toLocaleString()}</span>
@@ -116,14 +116,14 @@ export default function VariantSelector({ product, onAddToCart, onClose }: Varia
           <div className="grid grid-cols-2 gap-2 pt-2">
             <button
               onClick={onClose}
-              className="px-4 py-3 bg-secondary hover:bg-secondary/80 text-foreground rounded-[12px] font-semibold transition-colors touch-target text-sm"
+              className="px-4 py-3 bg-secondary hover:bg-secondary/80 text-foreground rounded-xl font-semibold transition-colors touch-target text-sm"
             >
               Cancel
             </button>
             <button
               onClick={handleAddToCart}
               disabled={!selectedVariant}
-              className={`px-4 py-3 rounded-[12px] font-semibold transition-all touch-target text-sm ${
+              className={`px-4 py-3 rounded-xl font-semibold transition-all touch-target text-sm ${
                 selectedVariant
                   ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg'
                   : 'bg-muted text-muted-foreground cursor-not-allowed'

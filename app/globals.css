@@ -46,6 +46,10 @@
   --neutral: #737373;
   --neutral-foreground: #a3a3a3;
   --surface-elevated: #2d2d2d;
+
+  /* Layout Safe Areas */
+  --safe-area-bottom: 5rem;
+  /* Default 80px (pb-20) */
 }
 
 .dark {
@@ -90,6 +94,10 @@
   --neutral: #737373;
   --neutral-foreground: #a3a3a3;
   --surface-elevated: #2d2d2d;
+
+  /* Layout Safe Areas */
+  --safe-area-bottom: 5rem;
+  /* Default 80px (pb-20) */
 }
 
 @theme inline {
@@ -137,12 +145,15 @@
   --color-neutral: var(--neutral);
   --color-neutral-foreground: var(--neutral-foreground);
   --color-surface-elevated: var(--surface-elevated);
+
+  --spacing-safe-area-bottom: var(--safe-area-bottom);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -153,6 +164,8 @@
   min-width: 44px;
   min-height: 44px;
 }
+
+/* Standard border radius: rounded-xl (12px) for cards and containers */
 
 /* Standard card styling utility */
 .card-standard {

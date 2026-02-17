@@ -3,6 +3,7 @@
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,9 +20,10 @@ interface HeaderProps {
   userFullName: string
   userRole: string
   onMenuClick: () => void
+  alwaysShowMenu?: boolean
 }
 
-export function Header({ userFullName, userRole, onMenuClick }: HeaderProps) {
+export function Header({ userFullName, userRole, onMenuClick, alwaysShowMenu = false }: HeaderProps) {
   const router = useRouter()
 
   const getInitials = (name: string): string => {
@@ -50,7 +52,10 @@ export function Header({ userFullName, userRole, onMenuClick }: HeaderProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden min-w-[44px] min-h-[44px]"
+          className={cn(
+            "min-w-[44px] min-h-[44px]",
+            !alwaysShowMenu && "md:hidden"
+          )}
           onClick={onMenuClick}
           aria-label="Open menu"
         >

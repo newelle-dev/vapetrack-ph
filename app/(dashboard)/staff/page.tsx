@@ -1,4 +1,6 @@
 import { StaffList } from '@/components/staff/staff-list'
+import { CreateStaffDialog } from '@/components/staff/create-staff-dialog'
+import { PageContainer } from '@/components/layouts/page-container'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -25,17 +27,12 @@ export default async function StaffPage() {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="container max-w-6xl space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Staff Management</h1>
-          <p className="text-muted-foreground">
-            Manage your staff members, permissions, and PIN access
-          </p>
-        </div>
-      </div>
-
+    <PageContainer
+      title="Staff Management"
+      subtitle="Manage your staff members, permissions, and PIN access"
+      action={<CreateStaffDialog />}
+    >
       <StaffList staffMembers={staffMembers ?? []} />
-    </div>
+    </PageContainer>
   )
 }

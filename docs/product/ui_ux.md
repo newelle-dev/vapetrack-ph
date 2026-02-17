@@ -145,7 +145,7 @@ VapeTrack PH (Staff)
 
 **Navigation Pattern:**
 - **Owner:** Bottom Navigation (5 tabs: Dashboard, POS, Inventory, Reports, Settings)
-- **Staff:** Single-Screen Focus (POS fullscreen, minimal navigation)
+- **Staff:** Floating Action Button (FAB) for primary actions (POS, Quick Inventory), with hidden bottom nav to maximize screen real estate.
 
 ---
 
@@ -333,6 +333,22 @@ graph TD
 - **Auto-Submit:** No "Enter" button needed
 - **Biometric Future:** Face unlock on supported devices
 - **Remember Branch:** Default to last-selected branch
+
+
+### Staff Navigation (FAB Pattern)
+
+Instead of the standard bottom navigation bar, staff users get a simplified interface focused on speed:
+
+**Quick Actions FAB (Floating Action Button)**
+- **Position:** Fixed bottom-right (24px from edges)
+- **Primary Action (POS):** Large circular button (64px), shadow-xl
+- **Secondary Action (Inventory):** Smaller circular button (56px) above POS button
+- **Behavior:** Always visible on non-POS pages.
+
+**Why this pattern?**
+- Maximizes screen real estate for data entry
+- Reduces cognitive load (fewer navigation choices)
+- Explicit "Speed-First" optimization for the most common task (opening POS)
 
 ---
 

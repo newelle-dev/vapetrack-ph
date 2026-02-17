@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { ShoppingCart, Search } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PageContainer } from '@/components/layouts/page-container'
+import { SearchInput } from '@/components/ui/search-input'
 import ProductCard from '@/components/pos/product-card'
 import CartSheet from '@/components/pos/cart-sheet'
 import VariantSelector from '@/components/pos/variant-selector'
@@ -95,70 +97,63 @@ export default function POSScreen() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
 
-  return (
-    <div className="h-full flex flex-col bg-background">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-20 border-b border-border/50 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-        <div className="px-4 py-3 space-y-3">
-          {/* Title & Cart Button */}
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-foreground">VapeTrack PH</h1>
-            <button
-              onClick={() => setShowCart(true)}
-              className="relative bg-primary text-primary-foreground px-3 py-2 rounded-[12px] font-semibold text-sm hover:bg-primary/90 transition-colors flex items-center gap-2 touch-target"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-secondary border border-border/50 rounded-[12px] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors"
-            />
-          </div>
-
-          {/* Category Chips - Horizontal Scroll */}
-          <div className="flex gap-2 overflow-x-auto pb-2 scroll-smooth">
-            {CATEGORIES.map(category => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={cn(
-                  'px-4 py-2.5 min-h-11 rounded-full text-xs font-semibold whitespace-nowrap transition-all touch-target',
-                  selectedCategory === category
-                    ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
-                    : 'bg-secondary/50 text-foreground hover:bg-secondary'
-                )}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
+  // Sticky top content (search + categories + cart button)
+  const stickyContent = (
+    <div className="px-4 py-3 space-y-3">
+      {/* Title & Cart Button */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-foreground">VapeTrack PH</h1>
+        <button
+          onClick={() => setShowCart(true)}
+          className="relative bg-primary text-primary-foreground px-3 py-2 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors flex items-center gap-2 touch-target"
+        >
+          <ShoppingCart className="w-5 h-5" />
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
       </div>
 
+      {/* Search Bar */}
+      <SearchInput
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder="Search products..."
+      />
+
+      {/* Category Chips - Horizontal Scroll */}
+      <div className="flex gap-2 overflow-x-auto pb-2 scroll-smooth">
+        {CATEGORIES.map(category => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className={cn(
+              'px-4 py-2.5 min-h-11 rounded-full text-xs font-semibold whitespace-nowrap transition-all touch-target',
+              selectedCategory === category
+                ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
+                : 'bg-secondary/50 text-foreground hover:bg-secondary'
+            )}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+
+  return (
+    <PageContainer fullHeight noPaddingTop stickyTop={stickyContent}>
       {/* Product Grid - 2 Columns */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 pb-20">
-        <div className="grid grid-cols-2 gap-3">
-          {filteredProducts.map(product => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={() => handleAddToCart(product)}
-            />
-          ))}
-        </div>
+      <div className="grid grid-cols-2 gap-3">
+        {filteredProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onAddToCart={() => handleAddToCart(product)}
+          />
+        ))}
       </div>
 
       {/* Cart Sheet */}
@@ -172,6 +167,6 @@ export default function POSScreen() {
           onClose={() => setShowVariantSelector(false)}
         />
       )}
-    </div>
+    </PageContainer>
   )
 }

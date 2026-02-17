@@ -53,7 +53,6 @@ interface BranchListProps {
 
 export function BranchList({ branches }: BranchListProps) {
   const router = useRouter()
-  const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -96,28 +95,9 @@ export function BranchList({ branches }: BranchListProps) {
 
   return (
     <>
-      <div className="flex justify-end">
-        <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg">
-              <Plus className="mr-2 size-4" />
-              Add Branch
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add New Branch</DialogTitle>
-              <DialogDescription>
-                Create a new branch location for your organization.
-              </DialogDescription>
-            </DialogHeader>
-            <BranchForm onSuccess={() => setCreateDialogOpen(false)} />
-          </DialogContent>
-        </Dialog>
-      </div>
 
       {branches.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed p-12 text-center bg-card">
           <p className="text-lg font-medium">No branches yet</p>
           <p className="text-sm text-muted-foreground">
             Get started by creating your first branch location.
@@ -130,7 +110,7 @@ export function BranchList({ branches }: BranchListProps) {
             {branches.map((branch) => (
               <div
                 key={branch.id}
-                className="rounded-lg border bg-card p-4 space-y-3"
+                className="rounded-xl border bg-card p-4 space-y-3"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -161,21 +141,19 @@ export function BranchList({ branches }: BranchListProps) {
                 <div className="flex gap-2 pt-2">
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="flex-1"
+                    className="flex-1 touch-target"
                     onClick={() => handleEdit(branch)}
                   >
-                    <Pencil className="mr-2 size-3" />
+                    <Pencil className="mr-2 size-4" />
                     Edit
                   </Button>
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive touch-target px-4"
                     onClick={() => handleDelete(branch.id)}
                     disabled={branch.is_default ?? false}
                   >
-                    <Trash2 className="size-3" />
+                    <Trash2 className="size-4" />
                   </Button>
                 </div>
               </div>
@@ -183,7 +161,7 @@ export function BranchList({ branches }: BranchListProps) {
           </div>
 
           {/* Desktop table */}
-          <div className="hidden md:block rounded-md border">
+          <div className="hidden md:block rounded-xl border overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>

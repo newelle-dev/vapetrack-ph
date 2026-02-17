@@ -53,7 +53,7 @@ export function MobileNav({
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/50 bg-background/80 backdrop-blur-lg md:hidden"
       aria-label="Mobile navigation"
       role="navigation"
     >
@@ -67,8 +67,8 @@ export function MobileNav({
               key={item.href}
               href={item.href}
               className={cn(
-                'flex min-w-[44px] min-h-[44px] flex-col items-center justify-center gap-1 px-3 py-2 transition-colors',
-                isActive ? 'text-primary' : 'text-muted-foreground'
+                'flex min-w-[44px] min-h-[44px] flex-col items-center justify-center gap-1 px-3 py-2 transition-colors rounded-lg',
+                isActive ? 'text-primary bg-primary/10' : 'text-muted-foreground'
               )}
             >
               <Icon className="size-5" />
