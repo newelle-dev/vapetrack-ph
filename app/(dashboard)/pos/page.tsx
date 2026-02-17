@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ShoppingCart, Search } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import ProductCard from '@/components/pos/product-card'
 import CartSheet from '@/components/pos/cart-sheet'
 import VariantSelector from '@/components/pos/variant-selector'
@@ -113,11 +114,12 @@ export default function POSScreen() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all touch-target ${
+                className={cn(
+                  'px-4 py-2.5 min-h-11 rounded-full text-xs font-semibold whitespace-nowrap transition-all touch-target',
                   selectedCategory === category
                     ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
                     : 'bg-secondary/50 text-foreground hover:bg-secondary'
-                }`}
+                )}
               >
                 {category}
               </button>

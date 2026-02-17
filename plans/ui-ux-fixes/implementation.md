@@ -282,7 +282,6 @@ feat(input): increase height for mobile accessibility
 
 **Note:** MobileNav was already updated with ARIA labels in Step 1.
 
-
 ##### Step 4 Verification Checklist
 
 - [ ] Run `npm run build` - no TypeScript or ESLint errors
@@ -357,6 +356,9 @@ className={cn(
 - [ ] Tap each category chip - should be easy to hit without mis-taps
 - [ ] Verify active state shows green gradient background
 - [ ] Verify horizontal scroll works smoothly for all categories
+
+- [ ] Run `npm run build` - no TypeScript or ESLint errors
+  - NOTE: I updated `app/(dashboard)/pos/page.tsx` to increase category chip touch targets and ran `npm run build`; the build completed successfully.
 
 #### Step 5 STOP & COMMIT
 
