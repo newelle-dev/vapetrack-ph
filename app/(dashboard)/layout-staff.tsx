@@ -29,7 +29,9 @@ export function StaffLayoutClient({
   canManageInventory,
 }: StaffLayoutClientProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [inventorySheetOpen, setInventorySheetOpen] = useState(false)
   const pathname = usePathname()
+  const isPosPage = pathname === '/pos'
 
   return (
     <div
@@ -72,7 +74,6 @@ export function StaffLayoutClient({
         </SheetContent>
       </Sheet>
 
-      {/* Quick Actions FAB - Show only on non-POS pages */}
       {/* Quick Actions FAB - Show only on non-POS pages */}
       {!isPosPage && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
