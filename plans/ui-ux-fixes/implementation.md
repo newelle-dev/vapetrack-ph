@@ -613,7 +613,6 @@ feat(typography): switch from Geist to Inter font
 }
 ```
 
-
 ##### Step 7 Verification Checklist
 
 - [ ] Run `npm run build` - no CSS compilation errors

@@ -1,4 +1,4 @@
-import { test, expect, type Browser } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
 test.describe("Dashboard Multi-Tenant Isolation", () => {
   test("organizations see only their own branches", async ({ browser }) => {

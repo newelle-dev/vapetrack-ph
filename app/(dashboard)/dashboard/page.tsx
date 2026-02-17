@@ -39,7 +39,7 @@ export default function Dashboard() {
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-4">
         {/* Hero Card - Today's Revenue */}
-        <div className="bg-linear-to-br from-primary/20 to-primary/5 rounded-[16px] p-4 border border-primary/20">
+        <div className="bg-linear-to-br from-primary/20 to-primary/5 rounded-2xl p-4 border border-primary/20">
           <div className="flex items-start justify-between mb-3">
             <div>
               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Today&apos;s Revenue</p>

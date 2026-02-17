@@ -4,7 +4,7 @@ import { ArrowRight, TrendingUp, Zap, BarChart3, Lock } from 'lucide-react'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-secondary/10 to-background">
+    <div className="min-h-screen bg-linear-to-b from-background via-secondary/10 to-background">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/30 bg-background/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -50,7 +50,7 @@ export default function LandingPage() {
 
         {/* Hero Image Placeholder */}
         <div className="relative bg-secondary/50 border border-border/50 rounded-2xl p-8 backdrop-blur-sm aspect-video flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
+          <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10" />
           <div className="relative space-y-4 text-center">
             <Zap className="w-12 h-12 text-primary mx-auto" />
             <p className="text-muted-foreground">Live POS System Preview</p>
@@ -126,7 +126,7 @@ export default function LandingPage() {
             }
           ].map((benefit, idx) => (
             <div key={idx} className="flex gap-6 items-start">
-              <div className="w-12 h-12 bg-primary/15 rounded-lg flex-shrink-0 flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary/15 rounded-lg shrink-0 flex items-center justify-center">
                 <span className="font-bold text-primary">{benefit.number}</span>
               </div>
               <div>
@@ -178,7 +178,7 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       <section className="max-w-4xl mx-auto px-4 py-16">
-        <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border border-primary/30 rounded-2xl p-12 text-center">
+        <div className="bg-linear-to-br from-primary/20 via-primary/10 to-transparent border border-primary/30 rounded-2xl p-12 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">Ready to Speed Up Your Shop?</h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
             Get faster checkouts, better profit visibility, and smarter inventory management today.

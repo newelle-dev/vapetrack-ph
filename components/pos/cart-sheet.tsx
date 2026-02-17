@@ -154,7 +154,7 @@ function CartSheet({ items, onClose, onUpdateCart }: CartSheetProps) {
             />
 
             {/* Totals Card */}
-            <div className="bg-gradient-to-br from-primary/15 to-primary/5 rounded-[14px] p-3 border border-primary/20 space-y-1.5">
+            <div className="bg-linear-to-br from-primary/15 to-primary/5 rounded-[14px] p-3 border border-primary/20 space-y-1.5">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="text-foreground font-medium">₱{subtotal.toLocaleString()}</span>

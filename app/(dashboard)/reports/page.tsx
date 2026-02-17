@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart3, TrendingUp, Calendar } from 'lucide-react'
+import { BarChart3, Calendar } from 'lucide-react'
 
 export default function ReportsScreen() {
   const weeklyData = [
@@ -26,7 +26,7 @@ export default function ReportsScreen() {
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-20 space-y-4">
         {/* This Week Summary */}
-        <div className="bg-gradient-to-br from-primary/20 to-primary/5 rounded-[16px] p-4 border border-primary/20">
+        <div className="bg-linear-to-br from-primary/20 to-primary/5 rounded-2xl p-4 border border-primary/20">
           <div className="flex items-start justify-between mb-3">
             <div>
               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">This Week Total</p>
@@ -53,7 +53,7 @@ export default function ReportsScreen() {
                   </div>
                   <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full transition-all"
+                      className="h-full bg-linear-to-r from-primary to-primary/60 rounded-full transition-all"
                       style={{ width: `${barWidth}%` }}
                     />
                   </div>

@@ -9,7 +9,18 @@ import VariantSelector from '@/components/pos/variant-selector'
 
 const CATEGORIES = ['All', 'Pods', 'Mods', 'Juice', 'Accessories', 'Coils']
 
-const PRODUCTS = [
+interface Product {
+  id: number
+  name: string
+  price: number
+  cost: number
+  image: string
+  category: string
+  stock: number
+  hasVariants: boolean
+}
+
+const PRODUCTS: Product[] = [
   { id: 1, name: 'IQOS Heets', price: 220, cost: 150, image: '🟫', category: 'Pods', stock: 45, hasVariants: true },
   { id: 2, name: 'Voopoo Drag X', price: 2500, cost: 1800, image: '⬛', category: 'Mods', stock: 12, hasVariants: false },
   { id: 3, name: 'Nice Salt 30mg', price: 350, cost: 200, image: '🟦', category: 'Juice', stock: 28, hasVariants: true },
@@ -30,11 +41,11 @@ interface CartItem {
 }
 
 export default function POSScreen() {
-  const [cart, setCart] = useState<any[]>([])
+  const [cart, setCart] = useState<CartItem[]>([])
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [showCart, setShowCart] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<any>(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [showVariantSelector, setShowVariantSelector] = useState(false)
 
   const filteredProducts = PRODUCTS.filter(product => {
@@ -43,7 +54,7 @@ export default function POSScreen() {
     return matchesCategory && matchesSearch
   })
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     if (product.hasVariants) {
       setSelectedProduct(product)
       setShowVariantSelector(true)
@@ -60,6 +71,8 @@ export default function POSScreen() {
   }
 
   const handleAddVariant = (variant: string, quantity: number) => {
+    if (!selectedProduct) return
+
     const existingItem = cart.find(item => item.id === selectedProduct.id && item.variant === variant)
     if (existingItem) {
       setCart(cart.map(item =>
@@ -68,7 +81,14 @@ export default function POSScreen() {
           : item
       ))
     } else {
-      setCart([...cart, { ...selectedProduct, quantity, variant }])
+      setCart([...cart, {
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        cost: selectedProduct.cost,
+        quantity,
+        variant
+      }])
     }
     setShowVariantSelector(false)
   }
@@ -78,7 +98,7 @@ export default function POSScreen() {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-20 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="sticky top-0 z-20 border-b border-border/50 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="px-4 py-3 space-y-3">
           {/* Title & Cart Button */}
           <div className="flex items-center justify-between">

@@ -1,6 +1,6 @@
 'use client'
 
-import { Plus, Search, Edit2, AlertCircle } from 'lucide-react'
+import { Plus, Search, Edit2 } from 'lucide-react'
 import { useState } from 'react'
 
 export default function InventoryScreen() {

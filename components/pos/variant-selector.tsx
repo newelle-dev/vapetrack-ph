@@ -51,7 +51,7 @@ export default function VariantSelector({ product, onAddToCart, onClose }: Varia
 
           {/* Product Info Card */}
           <div className="flex gap-3 bg-secondary/40 rounded-[14px] p-3 border border-border/30">
-            <div className="w-16 h-16 bg-secondary rounded-[12px] flex-shrink-0 flex items-center justify-center text-3xl">
+            <div className="w-16 h-16 bg-secondary rounded-[12px] shrink-0 flex items-center justify-center text-3xl">
               {product.image}
             </div>
             <div className="flex-1 min-w-0">
