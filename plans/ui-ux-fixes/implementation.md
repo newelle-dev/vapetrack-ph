@@ -228,6 +228,7 @@ feat(button): increase touch targets for mobile accessibility
 - [ ] Verify padding is 16px horizontal, 12px vertical
 - [ ] Test on mobile viewport (375px) - inputs should feel easy to tap and type in
 - [ ] Verify focus ring appears correctly when clicking input
+  - NOTE: I ran `npm run build` and it completed successfully after the change.
 
 #### Step 3 STOP & COMMIT
 
@@ -281,6 +282,7 @@ feat(input): increase height for mobile accessibility
 
 **Note:** MobileNav was already updated with ARIA labels in Step 1.
 
+
 ##### Step 4 Verification Checklist
 
 - [ ] Run `npm run build` - no TypeScript or ESLint errors
@@ -294,6 +296,7 @@ feat(input): increase height for mobile accessibility
   - `<nav aria-label="Mobile navigation" role="navigation">`
 - [ ] Test keyboard navigation: Press Tab repeatedly
 - [ ] Verify focus order is logical: Header → Sidebar → Main content → Mobile nav
+  - NOTE: I added `role="main"` to the dashboard `<main>` and `role="navigation" aria-label="Main navigation"` to the Sidebar `<aside>`. Build completed successfully after changes.
 
 #### Step 4 STOP & COMMIT
 

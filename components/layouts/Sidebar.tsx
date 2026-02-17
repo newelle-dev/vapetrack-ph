@@ -68,7 +68,11 @@ export function Sidebar({ userRole, canManageInventory, canViewReports }: Sideba
   const visibleItems = navItems.filter((item) => item.show)
 
   return (
-    <aside className="hidden md:fixed md:left-0 md:top-0 md:z-30 md:flex md:h-screen md:w-60 md:flex-col md:border-r md:border-border md:bg-card">
+    <aside
+      className="hidden md:fixed md:left-0 md:top-0 md:z-30 md:flex md:h-screen md:w-60 md:flex-col md:border-r md:border-border md:bg-card"
+      role="navigation"
+      aria-label="Main navigation"
+    >
       <div className="flex h-16 items-center border-b border-border px-6">
         <span className="text-lg font-bold">VapeTrack PH</span>
       </div>

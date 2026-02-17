@@ -25,7 +25,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   const profitMargin = Math.round((profit / product.price) * 100)
 
   return (
-    <div className="group relative bg-card rounded-[16px] overflow-hidden border border-border/50 hover:border-primary/40 transition-all hover:shadow-lg hover:shadow-primary/10 active:scale-[0.98]">
+    <div className="group relative bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/40 transition-all hover:shadow-lg hover:shadow-primary/10 active:scale-[0.98]">
       {/* Product Image Container */}
       <div className="relative w-full aspect-square bg-secondary/40 flex items-center justify-center text-4xl overflow-hidden border-b border-border/30">
         {product.image}

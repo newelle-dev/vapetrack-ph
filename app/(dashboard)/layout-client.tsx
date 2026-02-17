@@ -99,7 +99,7 @@ export function DashboardLayoutClient({
           userRole={userRole}
           onMenuClick={() => setMobileMenuOpen(true)}
         />
-        <main className="flex-1 p-4 pb-20 md:p-6 md:pb-6">{children}</main>
+        <main className="flex-1 p-4 pb-20 md:p-6 md:pb-6" role="main">{children}</main>
       </div>
       <MobileNav
         userRole={userRole}
