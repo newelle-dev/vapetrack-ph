@@ -68,7 +68,7 @@ export function CategoryList({ categories }: CategoryListProps) {
                 <TableBody>
                     {categories.length === 0 ? (
                         <TableRow>
-                            <TableCell className="text-center h-24 text-muted-foreground">
+                            <TableCell colSpan={4} className="text-center h-24 text-muted-foreground">
                                 No categories found.
                             </TableCell>
                         </TableRow>

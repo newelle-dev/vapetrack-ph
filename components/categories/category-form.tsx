@@ -48,7 +48,7 @@ export function CategoryForm({
     const setDialogOpen = onOpenChange ?? setInternalOpen;
 
     const form = useForm<CategoryInput>({
-        resolver: zodResolver(categorySchema),
+        resolver: zodResolver(categorySchema) as any,
         defaultValues: {
             name: "",
             description: "",

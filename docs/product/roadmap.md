@@ -17,7 +17,7 @@
 | Sprint                             | Status           | Completion |
 | ---------------------------------- | ---------------- | ---------- |
 | **Sprint 1: Foundation**           | ✅ **COMPLETED** | 100%       |
-| **Sprint 2: Inventory Management** | ⏸️ Not Started   | 0%         |
+| **Sprint 2: Inventory Management** | 🔄 In Progress   | 30%        |
 | **Sprint 3: Point of Sale (POS)**  | ⏸️ Not Started   | 0%         |
 | **Sprint 4: Analytics & Polish**   | ⏸️ Not Started   | 0%         |
 
@@ -404,43 +404,43 @@ Before moving to Sprint 2, verify:
 
 **Day 8:**
 
-1. [ ] Create product category management:
+1. [x] Create product category management:
    - `app/(dashboard)/inventory/categories/page.tsx`
    - List categories
    - Add/edit category form
    - Delete category (soft delete)
    
-3. [ ] Create Server Actions:
+3. [x] Create Server Actions:
    - `app/actions/categories.ts` (CRUD operations)
-4. [ ] Implement category list with search/filter
+4. [x] Implement category list with search/filter
 
 **Day 9:**
 
-1. [ ] Create product list page:
+1. [x] Create product list page:
    - `app/(dashboard)/inventory/page.tsx`
    - Display products in table/grid view
    - Show product name, brand, category, variant count
    - Search by name/SKU
    - Filter by category, active status
-2. [ ] Add TanStack Query hooks:
+2. [x] Add TanStack Query hooks:
    - `lib/hooks/useProducts.ts`
    - `useProducts()` - fetch all products
    - `useProductById(id)` - fetch single product
 
 **Deliverables:**
 
-- [ ] Category CRUD functional
-- [ ] Product list with search/filter
-- [ ] TanStack Query caching working
+- [x] Category CRUD functional
+- [x] Product list with search/filter
+- [x] TanStack Query caching working
 
 **Definition of Done:**
 
-- [ ] Can create/edit/delete categories
-- [ ] Product list loads and displays correctly
-- [ ] Search filters products by name/SKU
-- [ ] Category filter works
-- [ ] Loading states show spinner/skeleton
-- [ ] Mobile-optimized (table scrolls horizontally if needed)
+- [x] Can create/edit/delete categories
+- [x] Product list loads and displays correctly
+- [x] Search filters products by name/SKU
+- [x] Category filter works
+- [x] Loading states show spinner/skeleton
+- [x] Mobile-optimized (table scrolls horizontally if needed)
 
 ---
 
