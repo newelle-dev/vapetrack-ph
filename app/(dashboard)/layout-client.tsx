@@ -7,9 +7,9 @@ import { MobileNav } from '@/components/layouts/MobileNav'
 import {
   Sheet,
   SheetContent,
-  SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -109,11 +109,12 @@ export function DashboardLayoutClient({
 
       {/* Mobile navigation sheet */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-60">
-          <SheetHeader>
-            <SheetTitle>Navigation</SheetTitle>
-          </SheetHeader>
-          <nav className="mt-6 space-y-1">
+        <SheetContent side="left" className="w-72 p-0 flex flex-col bg-card border-r border-border">
+          <div className="flex h-[60px] items-center border-b border-border px-6">
+            <SheetTitle className="text-base font-bold">VapeTrack PH</SheetTitle>
+          </div>
+
+          <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
             {visibleItems.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
@@ -125,9 +126,9 @@ export function DashboardLayoutClient({
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
                     'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors min-h-[44px]',
-                    'hover:bg-accent hover:text-accent-foreground',
+                    'hover:bg-secondary hover:text-foreground',
                     isActive
-                      ? 'bg-accent text-accent-foreground'
+                      ? 'bg-primary/15 text-primary'
                       : 'text-muted-foreground'
                   )}
                 >
@@ -137,6 +138,25 @@ export function DashboardLayoutClient({
               )
             })}
           </nav>
+
+          <div className="border-t border-border p-4 bg-card">
+            <div className="flex items-center gap-3">
+              <Avatar className="size-9 border border-border">
+                <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                  {userFullName
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col overflow-hidden">
+                <span className="text-sm font-medium truncate">{userFullName}</span>
+                <span className="text-xs text-muted-foreground capitalize">{userRole}</span>
+              </div>
+            </div>
+          </div>
         </SheetContent>
       </Sheet>
     </div>
