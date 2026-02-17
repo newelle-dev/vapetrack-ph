@@ -18,6 +18,7 @@ import {
   ShoppingCart,
   Package,
   Building2,
+  Users,
   BarChart3,
   Settings,
   type LucideIcon,
@@ -61,6 +62,12 @@ export function DashboardLayoutClient({
       label: 'Branches',
       href: '/branches',
       icon: Building2,
+      show: userRole === 'owner',
+    },
+    {
+      label: 'Staff',
+      href: '/staff',
+      icon: Users,
       show: userRole === 'owner',
     },
     {

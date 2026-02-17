@@ -1,0 +1,155 @@
+'use client'
+
+import { useState } from 'react'
+import { ShoppingCart, Search } from 'lucide-react'
+import ProductCard from '@/components/pos/product-card'
+import CartSheet from '@/components/pos/cart-sheet'
+import VariantSelector from '@/components/pos/variant-selector'
+
+const CATEGORIES = ['All', 'Pods', 'Mods', 'Juice', 'Accessories', 'Coils']
+
+const PRODUCTS = [
+  { id: 1, name: 'IQOS Heets', price: 220, cost: 150, image: '🟫', category: 'Pods', stock: 45, hasVariants: true },
+  { id: 2, name: 'Voopoo Drag X', price: 2500, cost: 1800, image: '⬛', category: 'Mods', stock: 12, hasVariants: false },
+  { id: 3, name: 'Nice Salt 30mg', price: 350, cost: 200, image: '🟦', category: 'Juice', stock: 28, hasVariants: true },
+  { id: 4, name: 'Coil Set (5pcs)', price: 450, cost: 250, image: '🔶', category: 'Coils', stock: 5, hasVariants: false },
+  { id: 5, name: 'Geekvape Tank', price: 1200, cost: 800, image: '⚪', category: 'Accessories', stock: 18, hasVariants: true },
+  { id: 6, name: 'Replacement Pod', price: 150, cost: 100, image: '🟩', category: 'Pods', stock: 62, hasVariants: false },
+  { id: 7, name: 'Premium Juice Kit', price: 899, cost: 600, image: '🟥', category: 'Juice', stock: 9, hasVariants: true },
+  { id: 8, name: 'Battery Pack', price: 650, cost: 450, image: '🟨', category: 'Accessories', stock: 35, hasVariants: false },
+]
+
+interface CartItem {
+  id: number
+  name: string
+  price: number
+  quantity: number
+  variant?: string | null
+  cost: number
+}
+
+export default function POSScreen() {
+  const [cart, setCart] = useState<any[]>([])
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showCart, setShowCart] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<any>(null)
+  const [showVariantSelector, setShowVariantSelector] = useState(false)
+
+  const filteredProducts = PRODUCTS.filter(product => {
+    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
+
+  const handleAddToCart = (product: any) => {
+    if (product.hasVariants) {
+      setSelectedProduct(product)
+      setShowVariantSelector(true)
+    } else {
+      const existingItem = cart.find(item => item.id === product.id)
+      if (existingItem) {
+        setCart(cart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        ))
+      } else {
+        setCart([...cart, { ...product, quantity: 1, variant: null }])
+      }
+    }
+  }
+
+  const handleAddVariant = (variant: string, quantity: number) => {
+    const existingItem = cart.find(item => item.id === selectedProduct.id && item.variant === variant)
+    if (existingItem) {
+      setCart(cart.map(item =>
+        item.id === selectedProduct.id && item.variant === variant
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      ))
+    } else {
+      setCart([...cart, { ...selectedProduct, quantity, variant }])
+    }
+    setShowVariantSelector(false)
+  }
+
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
+
+  return (
+    <div className="h-full flex flex-col bg-background">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="px-4 py-3 space-y-3">
+          {/* Title & Cart Button */}
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold text-foreground">VapeTrack PH</h1>
+            <button
+              onClick={() => setShowCart(true)}
+              className="relative bg-primary text-primary-foreground px-3 py-2 rounded-[12px] font-semibold text-sm hover:bg-primary/90 transition-colors flex items-center gap-2 touch-target"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Search Bar */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-secondary border border-border/50 rounded-[12px] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors"
+            />
+          </div>
+
+          {/* Category Chips - Horizontal Scroll */}
+          <div className="flex gap-2 overflow-x-auto pb-2 scroll-smooth">
+            {CATEGORIES.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all touch-target ${
+                  selectedCategory === category
+                    ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
+                    : 'bg-secondary/50 text-foreground hover:bg-secondary'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Product Grid - 2 Columns */}
+      <div className="flex-1 overflow-y-auto px-4 py-3 pb-20">
+        <div className="grid grid-cols-2 gap-3">
+          {filteredProducts.map(product => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={() => handleAddToCart(product)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Cart Sheet */}
+      {showCart && <CartSheet items={cart} onClose={() => setShowCart(false)} onUpdateCart={setCart} />}
+
+      {/* Variant Selector */}
+      {showVariantSelector && selectedProduct && (
+        <VariantSelector
+          product={selectedProduct}
+          onAddToCart={handleAddVariant}
+          onClose={() => setShowVariantSelector(false)}
+        />
+      )}
+    </div>
+  )
+}

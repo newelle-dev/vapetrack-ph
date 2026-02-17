@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { DashboardLayoutClient } from './layout-client'
+import { StaffLayoutClient } from './layout-staff'
 
 export default async function DashboardLayout({
   children,
@@ -38,6 +39,20 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
+  // Use simplified staff layout for staff users
+  if (profile.role === 'staff') {
+    return (
+      <StaffLayoutClient
+        userFullName={profile.full_name}
+        userRole={profile.role}
+        canManageInventory={profile.can_manage_inventory ?? false}
+      >
+        {children}
+      </StaffLayoutClient>
+    )
+  }
+
+  // Use full dashboard layout for owners
   return (
     <DashboardLayoutClient
       userFullName={profile.full_name}

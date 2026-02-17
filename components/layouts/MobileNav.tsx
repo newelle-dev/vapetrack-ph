@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, ShoppingCart, Package, BarChart3, Settings, type LucideIcon } from 'lucide-react'
+import { Home, Package, BarChart3, Settings, type LucideIcon } from 'lucide-react'
 
 interface NavItem {
   label: string
@@ -25,9 +25,9 @@ export function MobileNav({
 }: MobileNavProps) {
   const pathname = usePathname()
 
+  // Mobile bottom nav: show only the primary tabs for mobile users
   const navItems: NavItem[] = [
     { label: 'Dashboard', href: '/dashboard', icon: Home, show: true },
-    { label: 'POS', href: '/pos', icon: ShoppingCart, show: true },
     {
       label: 'Inventory',
       href: '/inventory',
@@ -48,7 +48,7 @@ export function MobileNav({
     },
   ]
 
-  const visibleItems = navItems.filter((item) => item.show).slice(0, 5)
+  const visibleItems = navItems.filter((item) => item.show)
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background md:hidden">

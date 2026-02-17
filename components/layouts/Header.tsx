@@ -84,12 +84,22 @@ export function Header({ userFullName, userRole, onMenuClick }: HeaderProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => router.push('/dashboard/settings')}
-              className="cursor-pointer"
-            >
-              Settings
-            </DropdownMenuItem>
+            {userRole === 'staff' && (
+              <DropdownMenuItem
+                onClick={() => router.push('/dashboard')}
+                className="cursor-pointer"
+              >
+                My Sales Today
+              </DropdownMenuItem>
+            )}
+            {userRole === 'owner' && (
+              <DropdownMenuItem
+                onClick={() => router.push('/dashboard/settings')}
+                className="cursor-pointer"
+              >
+                Settings
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-500">
               Logout

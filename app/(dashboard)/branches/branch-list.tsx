@@ -124,62 +124,122 @@ export function BranchList({ branches }: BranchListProps) {
           </p>
         </div>
       ) : (
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {branches.map((branch) => (
-                <TableRow key={branch.id}>
-                  <TableCell className="font-medium">
+        <div className="space-y-4">
+          {/* Mobile cards */}
+          <div className="space-y-4 md:hidden">
+            {branches.map((branch) => (
+              <div
+                key={branch.id}
+                className="rounded-lg border bg-card p-4 space-y-3"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      {branch.name}
+                      <h3 className="font-semibold">{branch.name}</h3>
                       {branch.is_default && (
-                        <Badge variant="default">Default</Badge>
+                        <Badge variant="default" className="text-xs">
+                          Default
+                        </Badge>
                       )}
                     </div>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {branch.address || '—'}
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {branch.phone || '—'}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={branch.is_active ? 'default' : 'secondary'}>
-                      {branch.is_active ? 'Active' : 'Inactive'}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleEdit(branch)}
-                      >
-                        <Pencil className="size-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDelete(branch.id)}
-                        disabled={branch.is_default ?? false}
-                      >
-                        <Trash2 className="size-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
+                    {branch.address && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {branch.address}
+                      </p>
+                    )}
+                    {branch.phone && (
+                      <p className="text-sm text-muted-foreground">
+                        {branch.phone}
+                      </p>
+                    )}
+                  </div>
+                  <Badge variant={branch.is_active ? 'default' : 'secondary'}>
+                    {branch.is_active ? 'Active' : 'Inactive'}
+                  </Badge>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => handleEdit(branch)}
+                  >
+                    <Pencil className="mr-2 size-3" />
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => handleDelete(branch.id)}
+                    disabled={branch.is_default ?? false}
+                  >
+                    <Trash2 className="size-3" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden md:block rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {branches.map((branch) => (
+                  <TableRow key={branch.id}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {branch.name}
+                        {branch.is_default && (
+                          <Badge variant="default">Default</Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {branch.address || '—'}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {branch.phone || '—'}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={branch.is_active ? 'default' : 'secondary'}>
+                        {branch.is_active ? 'Active' : 'Inactive'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleEdit(branch)}
+                        >
+                          <Pencil className="size-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(branch.id)}
+                          disabled={branch.is_default ?? false}
+                        >
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       )}
 
@@ -204,13 +264,13 @@ export function BranchList({ branches }: BranchListProps) {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>Delete Branch?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the branch.
+              This action cannot be undone. This will permanently delete the
+              branch from your organization.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
