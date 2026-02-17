@@ -67,12 +67,12 @@ export function MobileNav({
               key={item.href}
               href={item.href}
               className={cn(
-                'flex min-w-11 min-h-11 flex-col items-center justify-center gap-1 px-3 py-2 transition-colors touch-target',
+                'flex min-w-[44px] min-h-[44px] flex-col items-center justify-center gap-1 px-3 py-2 transition-colors',
                 isActive ? 'text-primary' : 'text-muted-foreground'
               )}
             >
               <Icon className="size-5" />
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-[10px] font-medium leading-none">{item.label}</span>
             </Link>
           )
         })}

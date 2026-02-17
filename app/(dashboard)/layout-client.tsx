@@ -99,7 +99,7 @@ export function DashboardLayoutClient({
           userRole={userRole}
           onMenuClick={() => setMobileMenuOpen(true)}
         />
-        <main className="flex-1 p-4 pb-20 md:p-6 md:pb-6" role="main">{children}</main>
+        <main className="flex-1" role="main">{children}</main>
       </div>
       <MobileNav
         userRole={userRole}
@@ -124,7 +124,7 @@ export function DashboardLayoutClient({
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                    'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors min-h-[44px]',
                     'hover:bg-accent hover:text-accent-foreground',
                     isActive
                       ? 'bg-accent text-accent-foreground'

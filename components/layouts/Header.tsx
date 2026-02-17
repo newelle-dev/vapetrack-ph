@@ -45,12 +45,12 @@ export function Header({ userFullName, userRole, onMenuClick }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
+      <div className="flex h-[60px] items-center justify-between px-4 md:px-6">
         {/* Mobile menu button */}
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="md:hidden min-w-[44px] min-h-[44px]"
           onClick={onMenuClick}
           aria-label="Open menu"
         >
@@ -59,13 +59,13 @@ export function Header({ userFullName, userRole, onMenuClick }: HeaderProps) {
 
         {/* Logo/Brand */}
         <div className="flex items-center gap-2 md:flex-1">
-          <span className="text-lg font-bold">VapeTrack PH</span>
+          <span className="text-base font-semibold">VapeTrack PH</span>
         </div>
 
         {/* User dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-10 gap-2 rounded-full px-2">
+            <Button variant="ghost" className="relative h-10 gap-2 rounded-full px-2 min-w-[44px] min-h-[44px]">
               <Avatar className="size-8">
                 <AvatarFallback className="bg-primary text-primary-foreground">
                   {getInitials(userFullName)}
