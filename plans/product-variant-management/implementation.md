@@ -1587,7 +1587,7 @@ export function ProductDetailsDialog({
 
 #### Step 6: Update Roadmap & Final Polish
 
-- [ ] Update `docs/product/roadmap.md` — locate the "Day 10-11: Product & Variant Management" section and mark all tasks and Definition of Done items as completed:
+- [x] Update `docs/product/roadmap.md` — locate the "Day 10-11: Product & Variant Management" section and mark all tasks and Definition of Done items as completed:
 
 Change the following unchecked items to checked:
 
@@ -1642,25 +1642,25 @@ Change the following unchecked items to checked:
 - [x] Error handling shows user-friendly messages
 ```
 
-- [ ] Update the Sprint 2 completion percentage from `30%` to `60%` in the status table at the top of the roadmap:
+- [x] Update the Sprint 2 completion percentage from `30%` to `60%` in the status table at the top of the roadmap:
 
 ```markdown
 | **Sprint 2: Inventory Management** | 🔄 In Progress   | 60%        |
 ```
 
 ##### Step 6 Verification Checklist
-- [ ] Roadmap reflects completed Day 10-11 tasks
-- [ ] Sprint 2 progress updated to 60%
-- [ ] All Definition of Done items verified:
-  - [ ] Add product form validates required fields
-  - [ ] Can add 1+ variants per product
-  - [ ] Each variant has unique SKU (validated in form)
-  - [ ] Product creation creates inventory records
-  - [ ] Edit product pre-fills existing data
-  - [ ] Can add new variants to existing products
-  - [ ] All operations show success toast
-  - [ ] Error handling shows user-friendly messages
-- [ ] Full end-to-end manual walk-through passes
+- [x] Roadmap reflects completed Day 10-11 tasks
+- [x] Sprint 2 progress updated to 60%
+- [x] All Definition of Done items verified:
+  - [x] Add product form validates required fields
+  - [x] Can add 1+ variants per product
+  - [x] Each variant has unique SKU (validated in form)
+  - [x] Product creation creates inventory records
+  - [x] Edit product pre-fills existing data
+  - [x] Can add new variants to existing products
+  - [x] All operations show success toast
+  - [x] Error handling shows user-friendly messages
+- [x] Full end-to-end manual walk-through passes
 
 #### Step 6 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.

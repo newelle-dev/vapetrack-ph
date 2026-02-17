@@ -17,7 +17,7 @@
 | Sprint                             | Status           | Completion |
 | ---------------------------------- | ---------------- | ---------- |
 | **Sprint 1: Foundation**           | ✅ **COMPLETED** | 100%       |
-| **Sprint 2: Inventory Management** | 🔄 In Progress   | 30%        |
+| **Sprint 2: Inventory Management** | 🔄 In Progress   | 60%        |
 | **Sprint 3: Point of Sale (POS)**  | ⏸️ Not Started   | 0%         |
 | **Sprint 4: Analytics & Polish**   | ⏸️ Not Started   | 0%         |
 
@@ -450,52 +450,52 @@ Before moving to Sprint 2, verify:
 
 **Day 10:**
 
-1. [ ] Create "Add Product" page:
+1. [x] Create "Add Product" page:
    - `app/(dashboard)/inventory/products/new/page.tsx`
    - Form fields: name, brand, description, category
-2. [ ] Add shadcn/ui components:
+2. [x] Add shadcn/ui components:
    ```bash
    npx shadcn@latest add form select textarea
    ```
-3. [ ] Implement product form with validation:
+3. [x] Implement product form with validation:
    - Use React Hook Form or native form validation
    - Required fields: name, category
-4. [ ] Create Server Action:
+4. [x] Create Server Action:
    - `app/actions/products.ts` → `createProduct()`
 
 **Day 11:**
 
-1. [ ] Create variant management component:
-   - `components/inventory/VariantManager.tsx`
+1. [x] Create variant management component:
+   - `components/inventory/variant-manager.tsx`
    - Embedded in product form
    - Add/remove variants dynamically
    - Fields per variant: name, SKU, price, capital cost, initial stock
-2. [ ] Update `createProduct()` Server Action:
+2. [x] Update `createProduct()` Server Action:
    - Insert product
    - Insert variants in single transaction
    - Create initial inventory records (for each branch)
-3. [ ] Create "Edit Product" page:
+3. [x] Create "Edit Product" page:
    - `app/(dashboard)/inventory/products/[id]/edit/page.tsx`
    - Pre-fill form with existing data
    - Allow editing variants (add new, edit existing)
 
 **Deliverables:**
 
-- [ ] Can add product with multiple variants
-- [ ] Variants saved correctly with SKUs and pricing
-- [ ] Initial inventory created for default branch
-- [ ] Can edit existing products and variants
+- [x] Can add product with multiple variants
+- [x] Variants saved correctly with SKUs and pricing
+- [x] Initial inventory created for default branch
+- [x] Can edit existing products and variants
 
 **Definition of Done:**
 
-- [ ] Add product form validates required fields
-- [ ] Can add 1+ variants per product
-- [ ] Each variant has unique SKU (validated)
-- [ ] Product creation creates inventory records
-- [ ] Edit product pre-fills existing data
-- [ ] Can add new variants to existing products
-- [ ] All operations show success toast
-- [ ] Error handling shows user-friendly messages
+- [x] Add product form validates required fields
+- [x] Can add 1+ variants per product
+- [x] Each variant has unique SKU (validated)
+- [x] Product creation creates inventory records
+- [x] Edit product pre-fills existing data
+- [x] Can add new variants to existing products
+- [x] All operations show success toast
+- [x] Error handling shows user-friendly messages
 
 ---
 
