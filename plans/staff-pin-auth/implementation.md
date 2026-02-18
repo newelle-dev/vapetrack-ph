@@ -136,9 +136,9 @@ export async function verifyStaffJwt(
 
 ---
 
-#### Step 2: Staff Management Server Actions
+#### Step 2: Staff Management Server Actions [COMPLETED]
 
-- [ ] Create `lib/validations/staff.ts`:
+- [x] Create `lib/validations/staff.ts`:
 
 ```typescript
 import { z } from "zod";
@@ -187,7 +187,7 @@ export const updateStaffSchema = z.object({
 export type UpdateStaffInput = z.infer<typeof updateStaffSchema>;
 ```
 
-- [ ] Create `app/actions/staff.ts`:
+- [x] Create `app/actions/staff.ts`:
 
 ```typescript
 "use server";
@@ -390,9 +390,9 @@ export async function deleteStaffMember(
 ```
 
 ##### Step 2 Verification Checklist
-- [ ] No build errors
-- [ ] `lib/validations/staff.ts` compiles without errors
-- [ ] `app/actions/staff.ts` compiles without errors
+- [x] No build errors
+- [x] `lib/validations/staff.ts` compiles without errors
+- [x] `app/actions/staff.ts` compiles without errors
 
 #### Step 2 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
