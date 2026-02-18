@@ -709,9 +709,9 @@ const confirmDelete = async () => {
 
 ---
 
-#### Step 4: Staff Login API Route
+#### Step 4: Staff Login API Route [COMPLETED]
 
-- [ ] Create directory `app/api/auth/pin/` and file `app/api/auth/pin/route.ts`:
+- [x] Create directory `app/api/auth/pin/` and file `app/api/auth/pin/route.ts`:
 
 ```typescript
 import { NextResponse } from "next/server";
@@ -827,7 +827,7 @@ export async function POST(request: Request) {
 ```
 
 ##### Step 4 Verification Checklist
-- [ ] No build errors
+- [x] No build errors
 - [ ] Test with `curl` or Postman: `POST /api/auth/pin` with `{ "slug": "your-org-slug", "pin": "123456" }` returns a JWT and user details for a valid staff/PIN combo
 - [ ] Invalid PIN returns 401
 - [ ] Invalid slug returns 401 (generic error, no information leak)
