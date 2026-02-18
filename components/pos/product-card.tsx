@@ -1,50 +1,55 @@
 'use client'
 
 import { Plus, AlertCircle } from 'lucide-react'
-
-interface Product {
-  id: number
-  name: string
-  price: number
-  cost: number
-  image: string
-  category: string
-  stock: number
-  hasVariants: boolean
-}
+import type { PosProduct } from '@/lib/hooks/usePosProducts'
 
 interface ProductCardProps {
-  product: Product
-  onAddToCart: () => void
+  product: PosProduct
+  onTap: () => void
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
-  const isLowStock = product.stock <= 5
-  const isSoldOut = product.stock === 0
-  const profit = Math.round(product.price - product.cost)
-  const profitMargin = Math.round((profit / product.price) * 100)
+export default function ProductCard({ product, onTap }: ProductCardProps) {
+  const variants = product.variants
+
+  // Price display: single price or range
+  const prices = variants.map((v) => v.sellingPrice)
+  const minPrice = Math.min(...prices)
+  const maxPrice = Math.max(...prices)
+  const priceDisplay =
+    minPrice === maxPrice
+      ? `₱${minPrice.toLocaleString()}`
+      : `₱${minPrice.toLocaleString()} – ₱${maxPrice.toLocaleString()}`
+
+  // Stock: show lowest across variants
+  const stocks = variants.map((v) => v.stock)
+  const minStock = Math.min(...stocks)
+  const totalStock = stocks.reduce((a, b) => a + b, 0)
+  const isLowStock = minStock <= 5 && minStock > 0
+  const isSoldOut = totalStock === 0
 
   return (
     <div className="group relative bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/40 transition-all hover:shadow-lg hover:shadow-primary/10 active:scale-[0.98]">
       {/* Product Image Container */}
       <div className="relative w-full aspect-square bg-secondary/40 flex items-center justify-center text-4xl overflow-hidden border-b border-border/30">
-        {product.image}
-        
-        {/* Stock Badge - Floating Position */}
-        <div className={`absolute top-3 right-3 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-md backdrop-blur-sm ${
-          isLowStock && !isSoldOut
-            ? 'bg-accent/90 text-accent-foreground'
-            : isSoldOut
-            ? 'bg-muted text-muted-foreground'
-            : 'bg-primary/80 text-primary-foreground'
-        }`}>
-          {isSoldOut ? '⚠ Out' : `${product.stock}x`}
+        {/* Emoji placeholder - products don't have images yet */}
+        <span className="text-3xl">📦</span>
+
+        {/* Stock Badge */}
+        <div
+          className={`absolute top-3 right-3 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-md backdrop-blur-sm ${isLowStock
+              ? 'bg-[hsl(var(--warning))]/90 text-[#0f0f0f]'
+              : isSoldOut
+                ? 'bg-muted text-muted-foreground'
+                : 'bg-primary/80 text-primary-foreground'
+            }`}
+        >
+          {isSoldOut ? '⚠ Out' : `${minStock}x`}
         </div>
 
         {/* Low Stock Alert Icon */}
         {isLowStock && !isSoldOut && (
           <div className="absolute bottom-3 left-3">
-            <AlertCircle className="w-4 h-4 text-accent animate-pulse" />
+            <AlertCircle className="w-4 h-4 text-[hsl(var(--warning))] animate-pulse" />
           </div>
         )}
 
@@ -63,33 +68,32 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           <h3 className="font-semibold text-sm text-foreground line-clamp-2 text-pretty leading-tight">
             {product.name}
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">{product.category}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {product.categoryName || product.brand || 'Uncategorized'}
+          </p>
         </div>
 
-        {/* Price & Profit Display */}
+        {/* Price Display */}
         <div className="flex items-baseline justify-between gap-2">
           <div className="flex-1">
-            <p className="text-lg font-bold text-primary">₱{product.price.toLocaleString()}</p>
-            {profit > 0 && (
-              <p className="text-xs text-success font-medium">
-                Profit: ₱{profit.toLocaleString()} ({profitMargin}%)
-              </p>
+            <p className="text-lg font-bold text-primary">{priceDisplay}</p>
+            {variants.length > 1 && (
+              <p className="text-xs text-muted-foreground">{variants.length} variants</p>
             )}
           </div>
         </div>
 
-        {/* Add to Cart Button - Touch Optimized */}
+        {/* Add to Cart Button */}
         <button
-          onClick={onAddToCart}
+          onClick={onTap}
           disabled={isSoldOut}
-          className={`w-full rounded-lg py-3 font-semibold text-sm transition-all flex items-center justify-center gap-2 touch-target ${
-            isSoldOut
+          className={`w-full rounded-lg py-3 font-semibold text-sm transition-all flex items-center justify-center gap-2 touch-target ${isSoldOut
               ? 'bg-muted/40 text-muted-foreground cursor-not-allowed'
               : 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 shadow-md hover:shadow-lg'
-          }`}
+            }`}
         >
           <Plus className="w-5 h-5" />
-          Add to Cart
+          {variants.length > 1 ? 'Select Variant' : 'Add to Cart'}
         </button>
       </div>
     </div>

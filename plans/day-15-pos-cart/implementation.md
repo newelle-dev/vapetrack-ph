@@ -320,7 +320,7 @@ export function useBranches() {
 
 This is the main refactor step. We will update all POS components to use real data and Zustand, and create the new `PosCartSidebar` for desktop.
 
-- [ ] Replace the entire contents of `components/pos/product-card.tsx` with the code below:
+- [x] Replace the entire contents of `components/pos/product-card.tsx` with the code below:
 
 ```tsx
 'use client'
@@ -428,7 +428,7 @@ export default function ProductCard({ product, onTap }: ProductCardProps) {
 }
 ```
 
-- [ ] Replace the entire contents of `components/pos/variant-selector.tsx` with the code below:
+- [x] Replace the entire contents of `components/pos/variant-selector.tsx` with the code below:
 
 ```tsx
 'use client'
@@ -625,7 +625,7 @@ export default function VariantSelector({ product, onClose }: VariantSelectorPro
 }
 ```
 
-- [ ] Replace the entire contents of `components/pos/cart-sheet.tsx` with the code below:
+- [x] Replace the entire contents of `components/pos/cart-sheet.tsx` with the code below:
 
 ```tsx
 'use client'
@@ -852,8 +852,8 @@ function CartSheet({ onClose, showProfit }: CartSheetProps) {
 export default CartSheet
 ```
 
-- [ ] Create new file `components/pos/pos-cart-sidebar.tsx`
-- [ ] Copy and paste code below into `components/pos/pos-cart-sidebar.tsx`:
+- [x] Create new file `components/pos/pos-cart-sidebar.tsx`
+- [x] Copy and paste code below into `components/pos/pos-cart-sidebar.tsx`:
 
 ```tsx
 'use client'
@@ -1059,7 +1059,7 @@ export default function PosCartSidebar({ showProfit }: PosCartSidebarProps) {
 }
 ```
 
-- [ ] Replace the entire contents of `app/(dashboard)/pos/page.tsx` with the code below:
+- [x] Replace the entire contents of `app/(dashboard)/pos/page.tsx` with the code below:
 
 ```tsx
 'use client'
@@ -1318,7 +1318,7 @@ export default function POSScreen() {
 ```
 
 ##### Step 4 Verification Checklist
-- [ ] No build errors — dev server is clean
+- [x] No build errors — dev server is clean
 - [ ] Navigate to `/pos` page in the browser
 - [ ] **Branch selector** appears in the POS header and shows your branches
 - [ ] **Category chips** load real categories from database
