@@ -157,7 +157,7 @@ GRANT EXECUTE ON FUNCTION public.adjust_stock(UUID, UUID, INTEGER, TEXT, TEXT, U
 
 This step creates 5 files. Follow the order below.
 
-- [ ] Create `components/inventory/stock-variant-row.tsx`:
+- [x] Create `components/inventory/stock-variant-row.tsx`:
 
 ```tsx
 "use client";
@@ -260,7 +260,7 @@ export function StockVariantRow({ item, onAdjust }: StockVariantRowProps) {
 }
 ```
 
-- [ ] Create `components/inventory/stock-product-group.tsx`:
+- [x] Create `components/inventory/stock-product-group.tsx`:
 
 ```tsx
 "use client";
@@ -352,7 +352,7 @@ export function StockProductGroup({ group, onAdjust }: StockProductGroupProps) {
 }
 ```
 
-- [ ] Create `components/inventory/stock-adjustment-dialog.tsx`:
+- [x] Create `components/inventory/stock-adjustment-dialog.tsx`:
 
 ```tsx
 "use client";
@@ -572,7 +572,7 @@ export function StockAdjustmentDialog({
 }
 ```
 
-- [ ] Create `components/inventory/stock-list-client.tsx`:
+- [x] Create `components/inventory/stock-list-client.tsx`:
 
 ```tsx
 "use client";
@@ -767,7 +767,7 @@ export function StockListClient({
 }
 ```
 
-- [ ] Create the stock page `app/(dashboard)/inventory/stock/page.tsx`:
+- [x] Create the stock page `app/(dashboard)/inventory/stock/page.tsx`:
 
 ```tsx
 import { PageContainer } from "@/components/layouts/page-container";
@@ -806,18 +806,18 @@ export default async function StockPage() {
 ```
 
 ##### Step 3 Verification Checklist
-- [ ] No build errors
-- [ ] Navigate to `/inventory/stock` → see all products grouped with variants and stock levels
-- [ ] Color badges match stock levels (green/yellow/red based on `low_stock_threshold`)
-- [ ] Click "+" on a variant → dialog opens with "Add Stock" pre-selected
-- [ ] Click "−" on a variant → dialog opens with "Remove Stock" pre-selected
-- [ ] Submit adjustment → stock level updates, toast shows success
-- [ ] Try to remove more than available → error toast "Insufficient stock"
-- [ ] Search filters products/variants in real-time
-- [ ] Branch filter dropdown switches between "All Branches" (aggregated) and specific branch
-- [ ] Summary stats (Products, Low Stock, Out of Stock) are accurate
-- [ ] Empty state shows when no inventory records exist
-- [ ] Mobile responsive — stacked cards look good on small screens
+- [x] No build errors
+- [x] Navigate to `/inventory/stock` → see all products grouped with variants and stock levels
+- [x] Color badges match stock levels (green/yellow/red based on `low_stock_threshold`)
+- [x] Click "+" on a variant → dialog opens with "Add Stock" pre-selected
+- [x] Click "−" on a variant → dialog opens with "Remove Stock" pre-selected
+- [x] Submit adjustment → stock level updates, toast shows success
+- [x] Try to remove more than available → error toast "Insufficient stock"
+- [x] Search filters products/variants in real-time
+- [x] Branch filter dropdown switches between "All Branches" (aggregated) and specific branch
+- [x] Summary stats (Products, Low Stock, Out of Stock) are accurate
+- [x] Empty state shows when no inventory records exist
+- [x] Mobile responsive — stacked cards look good on small screens
 
 #### Step 3 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
