@@ -33,8 +33,8 @@ npx shadcn@latest add separator scroll-area
 
 #### Step 2: Create Zustand Cart Store
 
-- [ ] Create new file `lib/hooks/useCart.ts`
-- [ ] Copy and paste code below into `lib/hooks/useCart.ts`:
+- [x] Create new file `lib/hooks/useCart.ts`
+- [x] Copy and paste code below into `lib/hooks/useCart.ts`:
 
 ```typescript
 'use client'
@@ -121,9 +121,9 @@ export const useCartStore = create<CartStore>((set, get) => ({
 ```
 
 ##### Step 2 Verification Checklist
-- [ ] `lib/hooks/useCart.ts` exists and exports `useCartStore` and `CartItem`
-- [ ] No build errors
-- [ ] No TypeScript errors in the file
+- [x] `lib/hooks/useCart.ts` exists and exports `useCartStore` and `CartItem`
+- [x] No build errors
+- [x] No TypeScript errors in the file
 
 #### Step 2 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
