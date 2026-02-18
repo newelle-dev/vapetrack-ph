@@ -132,8 +132,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
 #### Step 3: Create POS Products Query Hook + Branches Hook
 
-- [ ] Create new file `lib/hooks/usePosProducts.ts`
-- [ ] Copy and paste code below into `lib/hooks/usePosProducts.ts`:
+- [x] Create new file `lib/hooks/usePosProducts.ts`
+- [x] Copy and paste code below into `lib/hooks/usePosProducts.ts`:
 
 ```typescript
 'use client'
@@ -275,8 +275,8 @@ export function usePosProducts(filters: PosProductFilters) {
 }
 ```
 
-- [ ] Create new file `lib/hooks/useBranches.ts`
-- [ ] Copy and paste code below into `lib/hooks/useBranches.ts`:
+- [x] Create new file `lib/hooks/useBranches.ts`
+- [x] Copy and paste code below into `lib/hooks/useBranches.ts`:
 
 ```typescript
 'use client'
@@ -306,10 +306,10 @@ export function useBranches() {
 ```
 
 ##### Step 3 Verification Checklist
-- [ ] `lib/hooks/usePosProducts.ts` exists and exports `usePosProducts`, `PosProduct`, `PosVariant`, `PosProductFilters`
-- [ ] `lib/hooks/useBranches.ts` exists and exports `useBranches`
-- [ ] No build errors
-- [ ] No TypeScript errors
+- [x] `lib/hooks/usePosProducts.ts` exists and exports `usePosProducts`, `PosProduct`, `PosVariant`, `PosProductFilters`
+- [x] `lib/hooks/useBranches.ts` exists and exports `useBranches`
+- [x] No build errors
+- [x] No TypeScript errors
 
 #### Step 3 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
