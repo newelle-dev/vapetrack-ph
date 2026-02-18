@@ -1344,7 +1344,7 @@ export default function POSScreen() {
 
 #### Step 5: Update Roadmap & Final Polish
 
-- [ ] Update `docs/product/roadmap.md` at lines 621-664 to mark Day 15 items as complete. Change:
+- [x] Update `docs/product/roadmap.md` at lines 621-664 to mark Day 15 items as complete. Change:
 
 For lines 623-638, update the checkboxes from `[ ]` to `[x]`:
 ```markdown
@@ -1375,18 +1375,18 @@ Also update the Zustand interface checkboxes and the shadcn add line around line
    ```
 ```
 
-- [ ] Delete unused file `components/pos/checkout-cart.tsx` (it was a prototype duplicate of cart-sheet):
+- [x] Delete unused file `components/pos/checkout-cart.tsx` (it was a prototype duplicate of cart-sheet):
 
 ```bash
 rm components/pos/checkout-cart.tsx
 ```
 
-- [ ] Verify the dev server has no errors
+- [x] Verify the dev server has no errors
 
 ##### Step 5 Verification Checklist
-- [ ] Roadmap updated with Day 15 items checked off
-- [ ] `checkout-cart.tsx` removed (unused prototype)
-- [ ] Dev server clean — no build errors
+- [x] Roadmap updated with Day 15 items checked off
+- [x] `checkout-cart.tsx` removed (unused prototype)
+- [x] Dev server clean — no build errors
 - [ ] Full E2E flow: Login → POS → select branch → search/filter products → add to cart → see totals
 - [ ] Responsive: test mobile (375px), tablet (768px), desktop (1280px)
 - [ ] No console errors
