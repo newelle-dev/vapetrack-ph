@@ -1,5 +1,23 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { jwtVerify } from "jose";
+
+const STAFF_SESSION_COOKIE = "sb-staff-token";
+
+async function getStaffSession(request: NextRequest) {
+  const token = request.cookies.get(STAFF_SESSION_COOKIE)?.value;
+  if (!token) return null;
+
+  try {
+    const secret = new TextEncoder().encode(process.env.SUPABASE_JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret, {
+      audience: "authenticated",
+    });
+    return payload;
+  } catch {
+    return null;
+  }
+}
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -26,16 +44,18 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // 2. Get current user from session
+  // 2. Check both auth methods
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const isAuthenticated = !!user;
+  const staffSession = await getStaffSession(request);
+  const isAuthenticated = !!user || !!staffSession;
 
   console.log('[Middleware]', {
     path: request.nextUrl.pathname,
     isAuthenticated,
-    userId: user?.id,
+    authType: user ? 'supabase' : staffSession ? 'staff-pin' : 'none',
+    userId: user?.id || (staffSession?.sub as string) || null,
   });
 
   // 3. Define route types
@@ -49,7 +69,10 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/inventory") ||
     request.nextUrl.pathname.startsWith("/products") ||
     request.nextUrl.pathname.startsWith("/sales") ||
-    request.nextUrl.pathname.startsWith("/reports");
+    request.nextUrl.pathname.startsWith("/reports") ||
+    request.nextUrl.pathname.startsWith("/staff") ||
+    request.nextUrl.pathname.startsWith("/branches") ||
+    request.nextUrl.pathname.startsWith("/settings");
 
   // 4. Redirect authenticated users away from auth pages
   if (isAuthRoute && isAuthenticated) {

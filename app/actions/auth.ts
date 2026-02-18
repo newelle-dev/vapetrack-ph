@@ -27,9 +27,9 @@ export async function signUp(
   // Verify service role key is configured
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     console.error("SUPABASE_SERVICE_ROLE_KEY is not configured");
-    return { 
-      success: false, 
-      error: "Server configuration error. Please contact support." 
+    return {
+      success: false,
+      error: "Server configuration error. Please contact support."
     };
   }
 
@@ -239,6 +239,16 @@ export async function signOut(): Promise<void> {
 
   await supabase.auth.signOut();
 
+  revalidatePath("/", "layout");
+  redirect("/login");
+}
+
+/**
+ * Sign out a staff user (clears custom JWT cookie)
+ */
+export async function signOutStaff(): Promise<void> {
+  const cookieStore = await (await import("next/headers")).cookies();
+  cookieStore.delete("sb-staff-token");
   revalidatePath("/", "layout");
   redirect("/login");
 }

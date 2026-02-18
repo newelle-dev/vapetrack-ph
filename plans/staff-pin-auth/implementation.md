@@ -1059,9 +1059,9 @@ export async function DELETE() {
 
 ---
 
-#### Step 6: Middleware & Security Verification
+#### Step 6: Middleware & Security Verification [COMPLETED]
 
-- [ ] Update `lib/supabase/proxy.ts` to also check for the staff JWT cookie and allow access to dashboard routes for staff users:
+- [x] Update `lib/supabase/proxy.ts` to also check for the staff JWT cookie and allow access to dashboard routes for staff users:
 
 ```typescript
 import { createServerClient } from "@supabase/ssr";
@@ -1183,7 +1183,7 @@ export const config = {
 };
 ```
 
-- [ ] Update the dashboard layout `app/(dashboard)/layout.tsx` to handle staff JWT sessions by reading the staff cookie when the Supabase user is null:
+- [x] Update the dashboard layout `app/(dashboard)/layout.tsx` to handle staff JWT sessions by reading the staff cookie when the Supabase user is null:
 
 ```tsx
 import { createClient, createServiceClient } from '@/lib/supabase/server'
@@ -1308,7 +1308,7 @@ export default async function DashboardLayout({
 }
 ```
 
-- [ ] Add a staff sign-out action in `app/actions/auth.ts`. Add the following function at the bottom of the file:
+- [x] Add a staff sign-out action in `app/actions/auth.ts`. Add the following function at the bottom of the file:
 
 ```typescript
 /**
@@ -1323,7 +1323,7 @@ export async function signOutStaff(): Promise<void> {
 ```
 
 ##### Step 6 Verification Checklist
-- [ ] No build errors
+- [x] No build errors
 - [ ] Staff user can log in via `/login/staff` with org slug + PIN and is redirected to `/dashboard`
 - [ ] Staff user sees the staff layout (no sidebar, FAB actions)
 - [ ] Staff user session persists across page refreshes (cookie-based)
