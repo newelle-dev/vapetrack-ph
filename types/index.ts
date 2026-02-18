@@ -34,3 +34,31 @@ export interface PaginatedResponse<T> {
   pageCount: number;
   currentPage: number;
 }
+
+// ─── Inventory / Stock Types ───
+
+export interface InventoryItem {
+  variant_id: string;
+  variant_name: string;
+  sku: string;
+  product_id: string;
+  product_name: string;
+  brand: string | null;
+  low_stock_threshold: number | null;
+  quantity: number;
+  branch_id: string | null; // null when aggregated across branches
+}
+
+export interface StockGroupedByProduct {
+  product_id: string;
+  product_name: string;
+  brand: string | null;
+  variants: InventoryItem[];
+}
+
+export interface Branch {
+  id: string;
+  name: string;
+  is_default: boolean | null;
+}
+

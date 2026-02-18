@@ -634,10 +634,10 @@ export type Database = {
         Update: {
           branch_id?: string
           created_at?: string
+          id?: string
           customer_name?: string | null
           customer_notes?: string | null
           gross_profit?: number
-          id?: string
           organization_id?: string
           payment_method?: string | null
           payment_status?: string | null
@@ -738,6 +738,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      adjust_stock: {
+        Args: {
+          p_branch_id: string
+          p_movement_type: string
+          p_quantity: number
+          p_reason?: string
+          p_user_id?: string
+          p_variant_id: string
+        }
+        Returns: number
+      }
       get_user_organization_id: { Args: never; Returns: string }
     }
     Enums: {
