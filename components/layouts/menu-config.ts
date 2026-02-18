@@ -16,15 +16,20 @@ export interface NavItem {
     show: boolean
     /** Whether to show in mobile bottom nav */
     mobile?: boolean
+    /** Optional badge count to display */
+    badge?: number
+    /** Color of the badge (default: constructive/red) */
+    badgeColor?: "default" | "warning" | "destructive"
 }
 
 interface NavConfigProps {
     userRole: string
     canManageInventory: boolean
     canViewReports: boolean
+    lowStockCount?: number
 }
 
-export function getNavItems({ userRole, canManageInventory, canViewReports }: NavConfigProps): NavItem[] {
+export function getNavItems({ userRole, canManageInventory, canViewReports, lowStockCount = 0 }: NavConfigProps): NavItem[] {
     return [
         {
             label: 'Dashboard',
@@ -45,7 +50,9 @@ export function getNavItems({ userRole, canManageInventory, canViewReports }: Na
             href: '/inventory',
             icon: Package,
             show: canManageInventory,
-            mobile: true
+            mobile: true,
+            badge: lowStockCount > 0 ? lowStockCount : undefined,
+            badgeColor: "warning"
         },
         {
             label: 'Branches',

@@ -20,6 +20,7 @@ interface DashboardLayoutClientProps {
   userRole: string
   canManageInventory: boolean
   canViewReports: boolean
+  lowStockCount: number
 }
 
 export function DashboardLayoutClient({
@@ -28,6 +29,7 @@ export function DashboardLayoutClient({
   userRole,
   canManageInventory,
   canViewReports,
+  lowStockCount,
 }: DashboardLayoutClientProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -44,6 +46,7 @@ export function DashboardLayoutClient({
         userRole={userRole}
         canManageInventory={canManageInventory}
         canViewReports={canViewReports}
+        lowStockCount={lowStockCount}
       />
       <div className="flex flex-col md:pl-60">
         <Header
@@ -57,6 +60,7 @@ export function DashboardLayoutClient({
         userRole={userRole}
         canManageInventory={canManageInventory}
         canViewReports={canViewReports}
+        lowStockCount={lowStockCount}
       />
 
       {/* Mobile navigation sheet */}
@@ -71,6 +75,7 @@ export function DashboardLayoutClient({
             canManageInventory={canManageInventory}
             canViewReports={canViewReports}
             onLinkClick={() => setMobileMenuOpen(false)}
+            lowStockCount={lowStockCount}
           />
 
           <div className="border-t border-border p-4 bg-card">

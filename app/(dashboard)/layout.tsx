@@ -107,6 +107,10 @@ export default async function DashboardLayout({
     )
   }
 
+  // Fetch low stock count
+  const { getLowStockCount } = await import('@/app/actions/inventory')
+  const lowStockCount = await getLowStockCount()
+
   // Use full dashboard layout for owners
   return (
     <DashboardLayoutClient
@@ -114,6 +118,7 @@ export default async function DashboardLayout({
       userRole={profile.role}
       canManageInventory={profile.can_manage_inventory ?? false}
       canViewReports={profile.can_view_reports ?? false}
+      lowStockCount={lowStockCount}
     >
       {children}
     </DashboardLayoutClient>

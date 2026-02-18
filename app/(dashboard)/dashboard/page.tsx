@@ -2,9 +2,11 @@ import { TrendingUp, AlertCircle, ShoppingCart, Building2 } from 'lucide-react'
 import { PageContainer } from '@/components/layouts/page-container'
 import { MetricsCard } from '@/components/dashboard/metrics-card'
 import { StatCard } from '@/components/dashboard/stat-card'
+import { getLowStockProducts } from '@/app/actions/inventory'
+import Link from 'next/link'
 
-export default function Dashboard() {
-  // Sample data
+export default async function Dashboard() {
+  // Sample data (keep these for now until we have real transactions)
   const userName = 'Juan' // TODO: Replace with actual user data
   const currentBranch = 'Manila (Main)' // TODO: Replace with actual branch data
 
@@ -15,10 +17,8 @@ export default function Dashboard() {
   const todayProfit = 8200
   const profitMargin = ((todayProfit / todayRevenue) * 100).toFixed(1)
 
-  const lowStockProducts = [
-    { id: 1, name: 'Sony 18650', stock: 2, minStock: 10 },
-    { id: 4, name: 'Coil Pack (5pcs)', stock: 5, minStock: 15 },
-  ]
+  // Fetch real low stock products
+  const lowStockProducts = await getLowStockProducts(5)
 
   const topSellers = [
     { name: 'Juice 30ml Bottle', sales: 45, revenue: 11250 },
@@ -96,17 +96,28 @@ export default function Dashboard() {
             Low Stock Alerts
           </h3>
           <div className="space-y-3">
-            {lowStockProducts.map(product => (
-              <div key={product.id} className="bg-accent/10 border-l-4 border-accent rounded-xl p-3 flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-sm text-foreground">{product.name}</p>
-                  <p className="text-xs text-muted-foreground">Only {product.stock} left</p>
+            {lowStockProducts.length > 0 ? (
+              lowStockProducts.map(item => (
+                <div key={`${item.variant_id}-${item.branch_id || 'all'}`} className="bg-accent/10 border-l-4 border-accent rounded-xl p-3 flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-sm text-foreground">{item.product_name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {item.variant_name} • Only {item.quantity} left
+                    </p>
+                  </div>
+                  <Link
+                    href="/inventory/stock"
+                    className="text-xs font-bold text-accent bg-accent/20 px-4 py-2 rounded-xl min-h-[44px] touch-target flex items-center justify-center"
+                  >
+                    Restock
+                  </Link>
                 </div>
-                <button className="text-xs font-bold text-accent bg-accent/20 px-4 py-2 rounded-xl min-h-[44px] touch-target flex items-center justify-center">
-                  Restock
-                </button>
+              ))
+            ) : (
+              <div className="bg-secondary/30 rounded-xl p-4 text-center border border-border/50">
+                <p className="text-sm text-primary font-medium">All stock levels are healthy!</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 

@@ -9,17 +9,19 @@ interface MobileNavProps {
   userRole: string
   canManageInventory: boolean
   canViewReports: boolean
+  lowStockCount?: number
 }
 
 export function MobileNav({
   userRole,
   canManageInventory,
   canViewReports,
+  lowStockCount
 }: MobileNavProps) {
   const pathname = usePathname()
 
   // Mobile bottom nav: show only the primary tabs for mobile users
-  const navItems = getNavItems({ userRole, canManageInventory, canViewReports })
+  const navItems = getNavItems({ userRole, canManageInventory, canViewReports, lowStockCount })
   const visibleItems = navItems.filter((item) => item.show && item.mobile)
 
   return (
@@ -38,11 +40,21 @@ export function MobileNav({
               key={item.href}
               href={item.href}
               className={cn(
-                'flex min-w-[44px] min-h-[44px] flex-col items-center justify-center gap-1 px-3 py-2 transition-colors rounded-lg',
+                'relative flex min-w-[44px] min-h-[44px] flex-col items-center justify-center gap-1 px-3 py-2 transition-colors rounded-lg',
                 isActive ? 'text-primary bg-primary/10' : 'text-muted-foreground'
               )}
             >
-              <Icon className="size-5" />
+              <div className="relative">
+                <Icon className="size-5" />
+                {item.badge !== undefined && item.badge > 0 && (
+                  <span className={cn(
+                    "absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold border border-background",
+                    item.badgeColor === 'warning' ? "bg-yellow-500 text-white" : "bg-primary text-primary-foreground"
+                  )}>
+                    {item.badge}
+                  </span>
+                )}
+              </div>
               <span className="text-[10px] font-medium leading-none">{item.label}</span>
             </Link>
           )

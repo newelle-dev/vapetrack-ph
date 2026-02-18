@@ -236,3 +236,51 @@ export async function getBranches(): Promise<Branch[]> {
 
     return data || [];
 }
+
+// ─── GET LOW STOCK COUNT ───
+
+export async function getLowStockCount(branchId?: string): Promise<number> {
+    const ctx = await getAuthContext();
+    if (!ctx) return 0;
+    const { supabase } = ctx;
+
+    // Use a custom query to count low stock items
+    // Since low_stock_threshold is on product_variants, we need to join slightly differently
+    // or just fetch all and filter in memory if the dataset is small, but let's try to be efficient.
+    // For MVP, fetching all inventory rows and filtering in JS is safer given the complex join logic.
+    // We already have getInventoryWithProducts which is optimized.
+
+    const allStock = await getInventoryWithProducts(branchId);
+    let count = 0;
+
+    for (const group of allStock) {
+        for (const variant of group.variants) {
+            const threshold = variant.low_stock_threshold ?? 5; // Default threshold 5
+            if (variant.quantity <= threshold) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+
+// ─── GET LOW STOCK PRODUCTS (FOR DASHBOARD) ───
+
+export async function getLowStockProducts(limit = 5): Promise<InventoryItem[]> {
+    const allStock = await getInventoryWithProducts(); // Aggregate across all branches for owner dashboard
+    const lowStockItems: InventoryItem[] = [];
+
+    for (const group of allStock) {
+        for (const variant of group.variants) {
+            const threshold = variant.low_stock_threshold ?? 5;
+            if (variant.quantity <= threshold) {
+                lowStockItems.push(variant);
+            }
+        }
+    }
+
+    // Sort by most critical (lowest counts first)
+    return lowStockItems.sort((a, b) => a.quantity - b.quantity).slice(0, limit);
+}

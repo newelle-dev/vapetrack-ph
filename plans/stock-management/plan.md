@@ -47,10 +47,16 @@ Also adds RLS-compatible INSERT policies on `stock_movements` and an UPDATE poli
 4. Revalidates `/inventory/stock` path
 5. Returns `ActionResult` with success/error
 
-Also add a `getInventoryWithProducts()` server action that fetches all inventory records joined with product variants and products, grouped by product for the stock view page.
+Also add a `getInventoryWithProducts(branchId?: string)` server action that:
+- If **no branchId** (default "All Branches"): fetches all inventory records, then **aggregates quantities across branches** per variant (SUM). This gives a total stock count per variant across the entire organization.
+- If **branchId provided**: fetches inventory filtered to that specific branch.
+- Joins with `product_variants` → `products` for display names, SKUs, and `low_stock_threshold`.
+- Groups results by product.
+
+Also add a `getBranches()` helper to fetch all active branches for the branch filter dropdown.
 
 Add new types to `types/index.ts`:
-- `InventoryItem` — inventory row + variant name, SKU, product name, low_stock_threshold
+- `InventoryItem` — variant name, SKU, product name, low_stock_threshold, quantity (aggregated or per-branch), branch_id (null if aggregated)
 - `StockGroupedByProduct` — product with its variants' inventory data
 - `StockAdjustmentInput` — Zod inferred type
 
@@ -69,8 +75,8 @@ Add new types to `types/index.ts`:
 - `components/inventory/stock-adjustment-dialog.tsx` (new)
 
 **What:** Build the stock management page:
-1. **Server Component** (`page.tsx`): Fetches inventory data via `getInventoryWithProducts()`, passes to client component. Includes `PageContainer` with title "Stock Levels" and branch selector.
-2. **Client Component** (`stock-list-client.tsx`): Renders the grouped inventory list, handles search filtering, and manages dialog state for stock adjustments.
+1. **Server Component** (`page.tsx`): Fetches inventory data via `getInventoryWithProducts()` and branches list for the filter. Passes to client component. Includes `PageContainer` with title "Stock Levels".
+2. **Client Component** (`stock-list-client.tsx`): Renders the grouped inventory list, handles search filtering, branch filter dropdown, and manages dialog state for stock adjustments.
 3. **Product Group** (`stock-product-group.tsx`): Collapsible card showing product name, brand, and total stock summary. Contains variant rows.
 4. **Variant Row** (`stock-variant-row.tsx`): Shows variant name, SKU, current quantity with color-coded badge:
    - 🟢 **Green**: quantity > low_stock_threshold (sufficient)
@@ -78,15 +84,22 @@ Add new types to `types/index.ts`:
    - 🔴 **Red**: quantity = 0 (out of stock)
    - Inline "+" and "−" buttons for quick adjustment
 5. **Adjustment Dialog** (`stock-adjustment-dialog.tsx`): Modal with:
+   - **Branch selector** (required — user must pick which branch to adjust since stock is per-branch)
    - Quantity input field
    - Movement type selector (Add Stock / Remove Stock)
    - Reason text field
    - Submit calls `adjustStock()` server action
    - Shows toast on success/error
 
+**Branch Filter Behavior:**
+- **Default: "All Branches"** — Shows aggregated (summed) stock across all branches per variant. Gives an organization-wide overview.
+- **Specific branch selected** — Shows stock for that branch only.
+- When adjusting stock (via +/− buttons), the dialog always requires selecting a specific branch, even when in "All Branches" view. If a specific branch is already selected in the filter, it is pre-filled in the dialog.
+
 **UI/UX Details:**
 - Mobile-first: Stacked card layout, full-width variant rows
 - Desktop: Wider cards with inline stock badges
+- Branch filter: Dropdown at top of page ("All Branches" + list of branches)
 - Search bar to filter by product name or SKU
 - Summary stats at top: Total Products, Low Stock Count, Out of Stock Count
 - Empty state if no inventory records exist
