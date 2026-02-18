@@ -40,7 +40,6 @@
 
 ### ⚠️ Deferred to Post-MVP
 
-- Staff PIN authentication
 - Password reset flow
 - Email verification
 - PayMongo billing integration
@@ -85,7 +84,6 @@ Build a **Minimum Viable Product (MVP)** that allows a single vape shop owner to
 
 **What's OUT (Post-MVP):**
 
-- Staff PIN authentication (owner-only for MVP)
 - Multi-branch comparison reports
 - Advanced analytics (charts, trends)
 - Email notifications
@@ -619,7 +617,16 @@ Before moving to Sprint 3, verify:
 
 **Day 15:**
 
-1. [ ] Create POS layout (mobile-first):
+1. [ ] Create Staff Management & PIN Auth:
+   - `app/(dashboard)/settings/staff/page.tsx`
+   - List staff members
+   - Add/Edit staff modal (Name, Role, Branch, PIN)
+   - Store PIN as hashed value (bcrypt/argon2)
+2. [ ] Create Staff Login API:
+   - `app/api/auth/pin/route.ts`
+   - Validate 6-digit PIN
+   - Return custom JWT with `role: staff`
+3. [ ] Create POS layout (mobile-first):
    - `app/(dashboard)/pos/page.tsx`
    - Mobile: Full-screen product grid + floating cart button
    - Tablet/Desktop: Split view (products left, cart right)
@@ -729,6 +736,19 @@ Before moving to Sprint 3, verify:
 1. [ ] Create Postgres function for transaction processing:
    - `supabase/migrations/003_transaction_functions.sql`
    ```sql
+   -- Staff PIN Validation Function
+   CREATE OR REPLACE FUNCTION verify_staff_pin(
+     p_pin TEXT,
+     p_branch_id UUID
+   ) RETURNS TABLE (
+     id UUID,
+     role TEXT,
+     full_name TEXT
+   ) AS $$
+   -- Verify PIN hash
+   -- Return staff details if valid
+   $$ LANGUAGE plpgsql;
+
    CREATE OR REPLACE FUNCTION process_sale(
      p_branch_id UUID,
      p_items JSONB, -- Array of {variant_id, quantity, price}

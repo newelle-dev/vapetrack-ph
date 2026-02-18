@@ -12,7 +12,7 @@ The **Multi-Tenant Authentication** logic for Shop Owners (Email/Password) and s
 
 However, there are **two critical gaps** where the implementation does not match the documentation:
 1.  **Staff PIN Authentication**: Documented in `architecture/authentication.md` but **completely missing** from the codebase.
-2.  **Middleware Protection**: Documented in `roadmap.md` and referenced in `server.ts`, but the `middleware.ts` file itself is **missing**, leaving routes potentially unprotected.
+2.  **Middleware Protection**: Implemented via **Next.js Proxy** pattern in `proxy.ts` (root) and `lib/supabase/proxy.ts`, handling route protection and security headers.
 
 ---
 
@@ -27,7 +27,7 @@ However, there are **two critical gaps** where the implementation does not match
 | Component | Status | Code Location | Documentation | Description |
 |-----------|--------|---------------|---------------|-------------|
 | **Staff PIN Auth** | **MISSING** | `app/api/auth/pin/` (Missing) | `docs/architecture/authentication.md` | The documented custom JWT flow for staff PIN login does not exist. |
-| **Middleware** | **MISSING** | `middleware.ts` (Missing) | `docs/product/roadmap.md` | No middleware to protect `/dashboard` routes. |
+| **Middleware** | **IMPLEMENTED** | `proxy.ts` / `lib/supabase/proxy.ts` | `docs/architecture/authentication.md` | Route protection and CSP implemented using Next.js Proxy pattern. |
 | **API Directory** | **MISSING** | `app/api/` (Missing) | `docs/architecture/authentication.md` | API routes folder is missing entirely. |
 
 ### 📝 Documentation Inconsistencies
@@ -90,6 +90,6 @@ However, there are **two critical gaps** where the implementation does not match
 ---
 
 ## 6. Action Plan
-1.  **Immediate Code Fix**: Create `middleware.ts` to protect dashboard routes.
+1.  **Code Action**: Verification of `proxy.ts` activation (rename to `middleware.ts` or ensure custom server usage).
 2.  **Documentation Fix**: Update `authentication.md` to reflect the missing PIN auth (mark as future).
 3.  **Documentation Enhancement**: Add the "Tenant Onboarding" details to `multi_tenancy.md`.

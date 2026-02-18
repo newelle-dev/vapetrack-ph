@@ -67,3 +67,25 @@ export async function POST(request: Request) {
 - **Owner:** Supabase Auth session (1 hour access token, 30-day refresh)
 - **Staff:** Custom JWT (8-hour expiry, no refresh)
 - **Storage:** HTTP-only cookies (mitigate XSS)
+
+## Middleware & Proxy
+
+The application utilizes a **Next.js Proxy** pattern (implemented in `proxy.ts`) to handle authentication checks, route protection, and security headers before requests reach the page components.
+
+### Implementation Details (`lib/supabase/proxy.ts`)
+
+1.  **Supabase Client Creation**: Initializes a server-side Supabase client with cookie handling (`getAll`/`setAll`) to manage the session.
+2.  **Session Refresh**: Automatically refreshes the Auth token if it has expired.
+3.  **Route Protection**:
+    *   **Public Routes**: `/login`, `/signup`, `_next/*`, public assets.
+    *   **Protected Routes**: `/dashboard`, `/pos`, `/inventory`, `/products`, `/sales`, `/reports`.
+    *   **Logic**:
+        *   Unauthenticated users on protected routes ➔ Redirect to `/login`.
+        *   Authenticated users on auth routes ➔ Redirect to `/dashboard`.
+4.  **Security Headers**:
+    *   **CSP (Content Security Policy)**: strict-dynamic, denies frame ancestors, restricts sources to `self` and Supabase domains.
+    *   **X-Frame-Options**: DENY
+    *   **X-Content-Type-Options**: nosniff
+    *   **Referrer-Policy**: strict-origin-when-cross-origin
+    *   **Permissions-Policy**: Camera, Microphone, Geolocation disabled by default.
+
