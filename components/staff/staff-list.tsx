@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { Plus, Pencil, Trash2, Key } from 'lucide-react'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { deleteStaffMember } from '@/app/actions/staff'
 import {
   Table,
   TableBody,
@@ -57,6 +59,7 @@ export function StaffList({ staffMembers }: StaffListProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [deletingStaffId, setDeletingStaffId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const router = useRouter()
 
   const handleEdit = (staff: StaffMember) => {
     setEditingStaff(staff)
@@ -74,11 +77,15 @@ export function StaffList({ staffMembers }: StaffListProps) {
     setIsDeleting(true)
 
     try {
-      // TODO: Implement deleteStaff action
-      toast.error('Delete functionality not yet implemented')
+      const result = await deleteStaffMember(deletingStaffId)
+      if (result.success) {
+        toast.success('Staff member removed')
+        router.refresh()
+      } else {
+        toast.error(result.error || 'Failed to delete staff member')
+      }
       setDeleteDialogOpen(false)
       setDeletingStaffId(null)
-      // router.refresh()
     } catch (error) {
       toast.error('An unexpected error occurred')
       console.error('Delete error:', error)

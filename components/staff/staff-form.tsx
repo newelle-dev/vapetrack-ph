@@ -3,8 +3,8 @@
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -17,22 +17,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
-
-const staffFormSchema = z.object({
-  full_name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address').optional().or(z.literal('')),
-  pin: z
-    .string()
-    .regex(/^\d{4,6}$/, 'PIN must be 4-6 digits')
-    .optional()
-    .or(z.literal('')),
-  is_active: z.boolean().default(true),
-  can_manage_inventory: z.boolean().default(false),
-  can_view_profits: z.boolean().default(false),
-  can_view_reports: z.boolean().default(false),
-})
-
-type StaffFormValues = z.infer<typeof staffFormSchema>
+import {
+  createStaffSchema,
+  updateStaffSchema,
+  type CreateStaffInput,
+  type UpdateStaffInput,
+} from '@/lib/validations/staff'
+import { createStaffMember, updateStaffMember } from '@/app/actions/staff'
 
 interface StaffFormProps {
   staff?: {
@@ -48,15 +39,27 @@ interface StaffFormProps {
   onSuccess: () => void
 }
 
+type StaffFormValues = {
+  full_name: string
+  email?: string
+  pin?: string
+  is_active: boolean
+  can_manage_inventory: boolean
+  can_view_profits: boolean
+  can_view_reports: boolean
+}
+
 export function StaffForm({ staff, onSuccess }: StaffFormProps) {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+  const isEditing = !!staff
 
-  const form = useForm({
-    resolver: zodResolver(staffFormSchema),
+  const form = useForm<StaffFormValues>({
+    resolver: zodResolver(isEditing ? updateStaffSchema : createStaffSchema) as any,
     defaultValues: {
       full_name: staff?.full_name || '',
       email: staff?.email || '',
-      pin: '', // Don't prefill PIN for security
+      pin: '',
       is_active: staff?.is_active ?? true,
       can_manage_inventory: staff?.can_manage_inventory ?? false,
       can_view_profits: staff?.can_view_profits ?? false,
@@ -67,14 +70,21 @@ export function StaffForm({ staff, onSuccess }: StaffFormProps) {
   const onSubmit = (data: StaffFormValues) => {
     startTransition(async () => {
       try {
-        // TODO: Implement createStaff or updateStaff action
-        console.log('Staff data:', data)
-        toast.error('Staff actions not yet implemented')
-        // toast.success(staff ? 'Staff member updated' : 'Staff member created')
-        // router.refresh()
-        // onSuccess()
+        const result = isEditing
+          ? await updateStaffMember(staff.id, data as UpdateStaffInput)
+          : await createStaffMember(data as CreateStaffInput)
+
+        if (result.success) {
+          toast.success(
+            isEditing ? 'Staff member updated' : 'Staff member created'
+          )
+          router.refresh()
+          onSuccess()
+        } else {
+          toast.error(result.error || 'An error occurred')
+        }
       } catch (error) {
-        toast.error('An error occurred')
+        toast.error('An unexpected error occurred')
         console.error('Staff form error:', error)
       }
     })
@@ -124,12 +134,13 @@ export function StaffForm({ staff, onSuccess }: StaffFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {staff ? 'New PIN (leave blank to keep current)' : 'PIN'}
+                {isEditing ? 'New PIN (leave blank to keep current)' : 'PIN'}
               </FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   placeholder="4-6 digit PIN"
+                  inputMode="numeric"
                   maxLength={6}
                   {...field}
                 />
@@ -142,7 +153,7 @@ export function StaffForm({ staff, onSuccess }: StaffFormProps) {
           )}
         />
 
-        <div className="space-y-4 rounded-lg border p-4">
+        {/* <div className="space-y-4 rounded-lg border p-4">
           <h3 className="font-semibold">Permissions</h3>
 
           <FormField
@@ -228,7 +239,7 @@ export function StaffForm({ staff, onSuccess }: StaffFormProps) {
               </FormItem>
             )}
           />
-        </div>
+        </div> */}
 
         <div className="flex justify-end gap-3">
           <Button
@@ -240,7 +251,11 @@ export function StaffForm({ staff, onSuccess }: StaffFormProps) {
             Cancel
           </Button>
           <Button type="submit" disabled={isPending}>
-            {isPending ? 'Saving...' : staff ? 'Update Staff' : 'Create Staff'}
+            {isPending
+              ? 'Saving...'
+              : isEditing
+                ? 'Update Staff'
+                : 'Create Staff'}
           </Button>
         </div>
       </form>

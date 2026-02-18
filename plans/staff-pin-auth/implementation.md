@@ -399,9 +399,9 @@ export async function deleteStaffMember(
 
 ---
 
-#### Step 3: Staff Management UI (Wire Up Forms)
+#### Step 3: Staff Management UI (Wire Up Forms) [COMPLETED]
 
-- [ ] Update `components/staff/staff-form.tsx` — replace the entire file with the fully wired-up version:
+- [x] Update `components/staff/staff-form.tsx` — replace the entire file with the fully wired-up version:
 
 ```tsx
 'use client'
@@ -660,7 +660,7 @@ export function StaffForm({ staff, onSuccess }: StaffFormProps) {
 }
 ```
 
-- [ ] Update `components/staff/staff-list.tsx` — replace the `confirmDelete` function body (around line 71-88) to wire up the real action:
+- [x] Update `components/staff/staff-list.tsx` — replace the `confirmDelete` function body (around line 71-88) to wire up the real action:
 
 Find the existing `confirmDelete` function and replace the `// TODO` line with the actual call:
 
@@ -698,11 +698,11 @@ const confirmDelete = async () => {
 ```
 
 ##### Step 3 Verification Checklist
-- [ ] No build errors
-- [ ] Navigate to `/staff` page — "Add Staff Member" dialog opens and creates a staff record with hashed PIN
-- [ ] Edit dialog updates staff member details
-- [ ] Delete confirmation soft-deletes the staff member
-- [ ] PIN validation shows errors for non-numeric or wrong-length input
+- [x] No build errors
+- [x] Navigate to `/staff` page — "Add Staff Member" dialog opens and creates a staff record with hashed PIN
+- [x] Edit dialog updates staff member details
+- [x] Delete confirmation soft-deletes the staff member
+- [x] PIN validation shows errors for non-numeric or wrong-length input
 
 #### Step 3 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
