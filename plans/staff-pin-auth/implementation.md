@@ -837,9 +837,9 @@ export async function POST(request: Request) {
 
 ---
 
-#### Step 5: Staff Login Page
+#### Step 5: Staff Login Page [COMPLETED]
 
-- [ ] Create `app/(auth)/login/staff/page.tsx`:
+- [x] Create `app/(auth)/login/staff/page.tsx`:
 
 ```tsx
 'use client'
@@ -975,7 +975,7 @@ export default function StaffLoginPage() {
 }
 ```
 
-- [ ] Create `app/api/auth/pin/session/route.ts` to set the JWT as an HTTP-only cookie:
+- [x] Create `app/api/auth/pin/session/route.ts` to set the JWT as an HTTP-only cookie:
 
 ```typescript
 import { NextResponse } from "next/server";
@@ -1025,7 +1025,7 @@ export async function DELETE() {
 }
 ```
 
-- [ ] Update `app/(auth)/login/page.tsx` — add a link to the staff login page. Add the following block just before the closing `</div>` of the component (after the "Don't have an account?" section):
+- [x] Update `app/(auth)/login/page.tsx` — add a link to the staff login page. Add the following block just before the closing `</div>` of the component (after the "Don't have an account?" section):
 
 ```tsx
       <div className="relative">
@@ -1048,7 +1048,7 @@ export async function DELETE() {
 ```
 
 ##### Step 5 Verification Checklist
-- [ ] No build errors
+- [x] No build errors
 - [ ] Navigate to `/login` — "Staff PIN login →" link is visible and navigates to `/login/staff`
 - [ ] On `/login/staff`, entering a valid org slug and staff PIN logs the user in and redirects to `/dashboard`
 - [ ] Invalid credentials show an error message

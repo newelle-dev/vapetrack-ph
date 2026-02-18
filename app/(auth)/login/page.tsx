@@ -123,6 +123,24 @@ export default function LoginPage() {
           Sign up
         </Link>
       </div>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-card px-2 text-muted-foreground">Or</span>
+        </div>
+      </div>
+
+      <div className="text-center">
+        <Link
+          href="/login/staff"
+          className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+        >
+          Staff PIN login →
+        </Link>
+      </div>
     </div>
   )
 }
