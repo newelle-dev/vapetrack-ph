@@ -16,6 +16,9 @@ High-level system design, technology stack, and security architecture.
 - [Deployment](architecture/deployment.md)
 - [Project Structure](architecture/project_structure.md)
 
+### [🧪 Testing & QA](development/testing.md)
+Testing strategy, Playwright E2E, Unit/Integration testing guidelines, and CI/CD pipelines.
+
 ### [💾 Database](database/functions.md)
 Schema definitions, RPCs, and migration guides.
 *(Note: Schema details coming soon)*
