@@ -1063,8 +1063,8 @@ describe("getProfit", () => {
 
 #### Step 5: Expand E2E Tests — POS & Inventory Critical Paths
 
-- [ ] Create the `e2e/helpers/` directory.
-- [ ] Copy and paste the code below into `e2e/helpers/auth.ts`:
+- [x] Create the `e2e/helpers/` directory.
+- [x] Copy and paste the code below into `e2e/helpers/auth.ts`:
 
 ```typescript
 import { Page } from "@playwright/test";
@@ -1091,7 +1091,7 @@ export async function signUpAndLogin(page: Page): Promise<string> {
 }
 ```
 
-- [ ] Copy and paste the code below into `e2e/pos-checkout.spec.ts`:
+- [x] Copy and paste the code below into `e2e/pos-checkout.spec.ts`:
 
 ```typescript
 import { test, expect } from "@playwright/test";
@@ -1134,7 +1134,7 @@ test.describe("POS - Cart Interactions", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `e2e/inventory-management.spec.ts`:
+- [x] Copy and paste the code below into `e2e/inventory-management.spec.ts`:
 
 ```typescript
 import { test, expect } from "@playwright/test";
@@ -1169,7 +1169,7 @@ test.describe("Inventory Management", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `e2e/staff-management.spec.ts`:
+- [x] Copy and paste the code below into `e2e/staff-management.spec.ts`:
 
 ```typescript
 import { test, expect, Page } from "@playwright/test";
@@ -1234,11 +1234,11 @@ test.describe("Staff Management", () => {
 ```
 
 ##### Step 5 Verification Checklist
-- [ ] Ensure the development server is running (`npm run dev` in a separate terminal) before running E2E tests.
-- [ ] Run `npm run test:e2e` — all 5 spec files (3 existing + 2 new) should be found.
-- [ ] The 3 existing spec files (`auth-routes.spec.ts`, `dashboard-multi-tenant.spec.ts`, `dashboard-navigation.spec.ts`) must remain green.
-- [ ] The new specs may pass partially depending on how far the POS/Staff UI is implemented. Any "visible element not found" failures in the new specs are acceptable if those features aren't fully wired up yet — adjust selectors as needed.
-- [ ] No spec file should throw JavaScript errors or fail with timeouts on page navigation.
+- [x] Ensure the development server is running (`npm run dev` in a separate terminal) before running E2E tests.
+- [x] Run `npm run test:e2e` — all 5 spec files (3 existing + 2 new) should be found.
+- [x] The 3 existing spec files (`auth-routes.spec.ts`, `dashboard-multi-tenant.spec.ts`, `dashboard-navigation.spec.ts`) must remain green.
+- [x] The new specs may pass partially depending on how far the POS/Staff UI is implemented. Any "visible element not found" failures in the new specs are acceptable if those features aren't fully wired up yet — adjust selectors as needed.
+- [x] No spec file should throw JavaScript errors or fail with timeouts on page navigation.
 
 #### Step 5 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
