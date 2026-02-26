@@ -107,8 +107,8 @@ The final `scripts` block should look like:
 
 #### Step 2: Unit Tests — Zod Validation Schemas
 
-- [ ] Create the `__tests__` directory: `lib/validations/__tests__/`
-- [ ] Copy and paste the code below into `lib/validations/__tests__/auth.test.ts`:
+- [x] Create the `__tests__` directory: `lib/validations/__tests__/`
+- [x] Copy and paste the code below into `lib/validations/__tests__/auth.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -211,7 +211,7 @@ describe("signupSchema", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `lib/validations/__tests__/product.test.ts`:
+- [x] Copy and paste the code below into `lib/validations/__tests__/product.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -335,7 +335,7 @@ describe("updateProductSchema", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `lib/validations/__tests__/inventory.test.ts`:
+- [x] Copy and paste the code below into `lib/validations/__tests__/inventory.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -432,7 +432,7 @@ describe("stockAdjustmentSchema", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `lib/validations/__tests__/staff.test.ts`:
+- [x] Copy and paste the code below into `lib/validations/__tests__/staff.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -547,7 +547,7 @@ describe("updateStaffSchema", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `lib/validations/__tests__/branch.test.ts`:
+- [x] Copy and paste the code below into `lib/validations/__tests__/branch.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -595,7 +595,7 @@ describe("branchCreateSchema", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `lib/validations/__tests__/category.test.ts`:
+- [x] Copy and paste the code below into `lib/validations/__tests__/category.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -651,7 +651,7 @@ describe("categorySchema", () => {
 });
 ```
 
-- [ ] Copy and paste the code below into `lib/validations/__tests__/organization.test.ts`:
+- [x] Copy and paste the code below into `lib/validations/__tests__/organization.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -693,9 +693,9 @@ describe("organizationUpdateSchema", () => {
 ```
 
 ##### Step 2 Verification Checklist
-- [ ] Run `npm test` — all schema test files should be found and pass.
-- [ ] Expected output: `7 test files` with all tests green.
-- [ ] No import errors or TypeScript errors.
+- [x] Run `npm test` — all schema test files should be found and pass.
+- [x] Expected output: `7 test files` with all tests green.
+- [x] No import errors or TypeScript errors.
 
 #### Step 2 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
