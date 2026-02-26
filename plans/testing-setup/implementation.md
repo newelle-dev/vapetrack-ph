@@ -704,8 +704,8 @@ describe("organizationUpdateSchema", () => {
 
 #### Step 3: Unit Tests — Pure Utility Functions
 
-- [ ] Create the `__tests__` directory: `lib/utils/__tests__/`
-- [ ] Copy and paste the code below into `lib/utils/__tests__/slugify.test.ts`:
+- [x] Create the `__tests__` directory: `lib/utils/__tests__/`
+- [x] Copy and paste the code below into `lib/utils/__tests__/slugify.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -795,8 +795,8 @@ describe("generateUniqueSlug", () => {
 });
 ```
 
-- [ ] Create the `__tests__` directory: `lib/auth/__tests__/`
-- [ ] Copy and paste the code below into `lib/auth/__tests__/password.test.ts`:
+- [x] Create the `__tests__` directory: `lib/auth/__tests__/`
+- [x] Copy and paste the code below into `lib/auth/__tests__/password.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -854,9 +854,9 @@ describe("verifyPin", () => {
 ```
 
 ##### Step 3 Verification Checklist
-- [ ] Run `npm test` — all utility test files pass.
-- [ ] Note: `password.test.ts` tests use `bcryptjs` with SALT_ROUNDS=12 so they may be slightly slower (~500ms). This is expected.
-- [ ] Expected total output: schema tests + utility tests all green, no errors.
+- [x] Run `npm test` — all utility test files pass.
+- [x] Note: `password.test.ts` tests use `bcryptjs` with SALT_ROUNDS=12 so they may be slightly slower (~500ms). This is expected.
+- [x] Expected total output: schema tests + utility tests all green, no errors.
 
 #### Step 3 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
