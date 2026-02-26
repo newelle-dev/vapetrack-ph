@@ -865,8 +865,8 @@ describe("verifyPin", () => {
 
 #### Step 4: Unit Tests — Zustand Cart Store
 
-- [ ] Create the `__tests__` directory: `lib/hooks/__tests__/`
-- [ ] Copy and paste the code below into `lib/hooks/__tests__/useCart.test.ts`:
+- [x] Create the `__tests__` directory: `lib/hooks/__tests__/`
+- [x] Copy and paste the code below into `lib/hooks/__tests__/useCart.test.ts`:
 
 ```typescript
 import { describe, it, expect, beforeEach } from "vitest";
@@ -1052,9 +1052,9 @@ describe("getProfit", () => {
 ```
 
 ##### Step 4 Verification Checklist
-- [ ] Run `npm test` — all 3 test suites (schemas, utilities, cart store) pass.
-- [ ] No errors or unexpected failures.
-- [ ] Run `npm run test:coverage` to see initial coverage report.
+- [x] Run `npm test` — all 3 test suites (schemas, utilities, cart store) pass.
+- [x] No errors or unexpected failures.
+- [x] Run `npm run test:coverage` to see initial coverage report.
 
 #### Step 4 STOP & COMMIT
 **STOP & COMMIT:** Agent must stop here and wait for the user to test, stage, and commit the change.
