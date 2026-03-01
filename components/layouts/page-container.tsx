@@ -97,7 +97,13 @@ export function PageContainer({
             )}
 
             {/* Main content */}
-            <div className={cn(fullHeight && 'flex-1 overflow-y-auto', noPaddingTop && 'px-4 pb-20 md:px-6 md:pb-6')}>
+            <div
+                className={cn(
+                    fullHeight && 'flex-1 overflow-y-auto',
+                    noPaddingTop && 'px-4 md:px-6 md:pb-6'
+                )}
+                style={noPaddingTop ? { paddingBottom: 'var(--safe-area-bottom)' } : undefined}
+            >
                 {children}
             </div>
         </div>

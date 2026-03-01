@@ -1,18 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { ShoppingCart, Package } from 'lucide-react'
+import { Package } from 'lucide-react'
 import { Header } from '@/components/layouts/Header'
-import { Button } from '@/components/ui/button'
 import { SidebarNav } from '@/components/layouts/Sidebar'
-import { MobileNav } from '@/components/layouts/MobileNav'
+import { ActionFAB } from '@/components/layouts/ActionFAB'
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 interface StaffLayoutClientProps {
@@ -38,7 +36,7 @@ export function StaffLayoutClient({
       className="min-h-screen"
       style={{
         // @ts-ignore - CSS variable
-        '--safe-area-bottom': '5rem'
+        '--safe-area-bottom': '0'
       } as React.CSSProperties}
     >
       <Header
@@ -51,12 +49,6 @@ export function StaffLayoutClient({
         {children}
       </main>
 
-      <MobileNav
-        userRole={userRole}
-        canManageInventory={canManageInventory}
-        canViewReports={false}
-      />
-
       {/* Staff Navigation Sheet */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side="left" className="w-60 p-0 flex flex-col">
@@ -67,7 +59,7 @@ export function StaffLayoutClient({
             <SidebarNav
               userRole={userRole}
               canManageInventory={canManageInventory}
-              canViewReports={false} // Staff cannot view reports in this simplified layout? Reference: original code didn't have reports.
+              canViewReports={false}
               onLinkClick={() => setMobileMenuOpen(false)}
             />
           </div>
@@ -76,28 +68,10 @@ export function StaffLayoutClient({
 
       {/* Quick Actions FAB - Show only on non-POS pages */}
       {!isPosPage && (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-          {canManageInventory && (
-            <Button
-              size="lg"
-              variant="secondary"
-              className="size-14 rounded-full shadow-lg"
-              onClick={() => setInventorySheetOpen(true)}
-              title="Quick Inventory Lookup"
-            >
-              <Package className="size-6" />
-            </Button>
-          )}
-          <Link href="/pos">
-            <Button
-              size="lg"
-              className="size-16 rounded-full shadow-xl"
-              title="Open POS"
-            >
-              <ShoppingCart className="size-7" />
-            </Button>
-          </Link>
-        </div>
+        <ActionFAB
+          onInventoryClick={() => setInventorySheetOpen(true)}
+          canManageInventory={canManageInventory}
+        />
       )}
 
       {/* Quick Inventory Lookup Sheet */}

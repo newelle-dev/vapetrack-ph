@@ -62,21 +62,21 @@ export function getNavItems({ userRole, canManageInventory, canViewReports, lowS
             href: '/inventory/categories',
             icon: Tags,
             show: canManageInventory,
-            mobile: true
+            mobile: false
         },
         {
             label: 'Stock Adjustment',
             href: '/inventory/stock',
             icon: ArrowRightLeft,
             show: canManageInventory,
-            mobile: true
+            mobile: false
         },
         {
             label: 'History',
             href: '/inventory/history',
             icon: History,
             show: canManageInventory,
-            mobile: true
+            mobile: false
         },
         {
             label: 'Branches',

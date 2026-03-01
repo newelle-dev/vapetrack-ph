@@ -10,9 +10,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
 
 interface DashboardLayoutClientProps {
   children: React.ReactNode
