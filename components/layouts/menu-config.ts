@@ -6,6 +6,9 @@ import {
     Users,
     BarChart3,
     Settings,
+    Tags,
+    ArrowRightLeft,
+    History,
     type LucideIcon,
 } from 'lucide-react'
 
@@ -53,6 +56,27 @@ export function getNavItems({ userRole, canManageInventory, canViewReports, lowS
             mobile: true,
             badge: lowStockCount > 0 ? lowStockCount : undefined,
             badgeColor: "warning"
+        },
+        {
+            label: 'Categories',
+            href: '/inventory/categories',
+            icon: Tags,
+            show: canManageInventory,
+            mobile: true
+        },
+        {
+            label: 'Stock Adjustment',
+            href: '/inventory/stock',
+            icon: ArrowRightLeft,
+            show: canManageInventory,
+            mobile: true
+        },
+        {
+            label: 'History',
+            href: '/inventory/history',
+            icon: History,
+            show: canManageInventory,
+            mobile: true
         },
         {
             label: 'Branches',
