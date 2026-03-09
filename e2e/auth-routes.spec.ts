@@ -44,7 +44,7 @@ test.describe("Route Protection (Unauthenticated)", () => {
   test("allows access to /login when not authenticated", async ({ page }) => {
     await page.goto("/login");
     await expect(page).toHaveURL(/\/login/);
-    await expect(page.locator("h1")).toContainText("Welcome back");
+    await expect(page.locator("h1")).toContainText("Log In");
   });
 
   test("allows access to /signup when not authenticated", async ({ page }) => {

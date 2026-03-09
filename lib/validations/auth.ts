@@ -11,6 +11,15 @@ export const loginSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 
 /**
+ * Validation schema for passwordless (magic link) login
+ */
+export const magicLinkSchema = z.object({
+  email: z.string().email("Valid email required"),
+});
+
+export type MagicLinkInput = z.infer<typeof magicLinkSchema>;
+
+/**
  * Validation schema for signup form
  */
 export const signupSchema = z
